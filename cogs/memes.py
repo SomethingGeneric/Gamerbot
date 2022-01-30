@@ -32,12 +32,14 @@ class Memes(commands.Cog):
             "rms": "RMS is a pedo",
             "stallman": "RMS is a pedo",
             "epstein": "didn't kill himself",
+            "forgor":"they forgor :skull:",
+            "rember":"they rember :angel:",
         }
 
         if message.author != self.bot.user:
             if "hello there" in mc:
                 await mchan.send(
-                    "General Kenobi\nhttps://media1.giphy.com/media/UIeLsVh8P64G4/giphy.gif"
+                    "General Kenobi\nhttps://media1.giphy.com/media/UIeLsVh8P64G4/giphy.gif", reference=message
                 )
             else:
                 try:
@@ -56,20 +58,20 @@ class Memes(commands.Cog):
                             )
                     else:
                         if mc in triggers:
-                            await mchan.send(triggers[mc])
+                            await mchan.send(triggers[mc], reference=message)
                 except Exception as e:
                     await mchan.send(embed=errmsg("Error", "```" + str(e) + "```"))
 
             if "comrade sharkfact" in mc:
                 with open("data/sharkfacts.txt", encoding="cp1252") as f:
                     sharkList = f.read().split("\n")
-                await mchan.send(embed=infmsg("Sharkfact", random.choice(sharkList)))
+                await mchan.send(embed=infmsg("Sharkfact", random.choice(sharkList)), reference=message)
 
             if DO_IMAGE_RESPONSE:
                 if random.randint(
                     1, IMAGE_RESPONSE_PROB
                 ) == IMAGE_RESPONSE_PROB and "filename" in str(message.attachments):
-                    await mchan.send(random.choice(IMAGE_RESPONSES))
+                    await mchan.send(random.choice(IMAGE_RESPONSES), reference=message)
 
     @commands.command()
     async def figlet(self, ctx, *, text):
