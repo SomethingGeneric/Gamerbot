@@ -57,7 +57,7 @@ WS_KEY:f35006ff9cb12a5d660572cb4791508f
 # Music Stuff
 # NEED TO CHANGE (unless also on an ubuntu-based distro)
 # you can just "sudo find / -name "libopus.so"
-OPUS_FN:/usr/lib/x86_64-linux-gnu/libopus.so
+OPUS_FN:/usr/lib/libopus.so
 
 # Google Maps
 # (for tracemap)
