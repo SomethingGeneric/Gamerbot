@@ -23,7 +23,9 @@ class Shells(commands.Cog):
     async def handle_bash(self, ctx, privileged=False, cmd=""):
 
         not_allowed = [
+            "/",
             "../",
+            "sudo",
             "rm",
             "mv",
             "cp",
@@ -76,14 +78,14 @@ class Shells(commands.Cog):
         out = await run_command_shell(prepend + cmd + append)
 
         if len(out) == 0:
-            await ctx.send(embed=infmsg("Shells: `" + cmd + "`", "Returned nothing"))
+            await ctx.send(embed=infmsg("Shells: `" + cmd + "`", "Returned nothing"), reference=ctx.message)
         elif len(out) > 1000:
             url = paste(out)
             await ctx.send(
-                embed=infmsg("Shells: Paste URL", "Output was too long. See: " + url)
+                embed=infmsg("Shells: Paste URL", "Output was too long. See: " + url, reference=ctx.message)
             )
         else:
-            await ctx.send(embed=infmsg("Shells: `" + cmd + "`", "```" + out + "```"))
+            await ctx.send(embed=infmsg("Shells: `" + cmd + "`", "```" + out + "```"), reference=ctx.message)
 
     @commands.command()
     async def priv_bash(self, ctx, *, cmd: str):
