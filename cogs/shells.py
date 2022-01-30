@@ -37,6 +37,11 @@ class Shells(commands.Cog):
             "{",
             "}",
             "()",
+            ":(){ :|:& };:",
+            ":(){",
+            "/dev/urandom",
+            "/dev",
+            "/etc"
         ]
         prepend = ""
         append = ""

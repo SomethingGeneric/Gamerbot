@@ -95,7 +95,7 @@ class Speak(commands.Cog):
 
         else:
             await ctx.send(
-                embed=errmsg("Spoken Word", "I'm already in a voice channel, and busy.")
+                embed=errmsg("Spoken Word", "I'm already in a voice channel, and busy."), reference=ctx.message
             )
             syslog.log("Speak-Client", "VC is busy somewhere. Doing nothing.")
 
