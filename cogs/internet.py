@@ -346,34 +346,6 @@ class Internet(commands.Cog):
                 "Internet-Important", "Had an issue making trmap: `" + str(e) + "`"
             )
 
-    @commands.command()
-    async def google(self, ctx, *, query):
-        """Google smth"""
-        try:
-            syslog.log("Internet", "Querying google for " + query)
-            out = await run_command_shell("cd bin && ./googler --np -C -n 1 " + query)
-            if len(out) > 1024:
-                link = paste(out)
-                await ctx.send(
-                    ctx.message.author.mention,
-                    embed=infmsg(
-                        "Googler Output",
-                        "The search output is too long, so here's a link: " + link,
-                    ),
-                )
-
-            else:
-                await ctx.send(
-                    ctx.message.author.mention,
-                    embed=infmsg("Googler Output", "```" + str(out) + "```"),
-                )
-        except Exception as e:
-            await ctx.send(embed=errmsg("googler error", "`" + str(e) + "`"))
-            syslog.log(
-                "Internet-Important", "Had an issue running googler: `" + str(e) + "`"
-            )
-
-
 # End fun internet things
 def setup(bot):
     bot.add_cog(Internet(bot))

@@ -49,7 +49,7 @@ class Speak(commands.Cog):
                         "Speak-Client",
                         "The author is in a channel, so we're attempting to join them.",
                     )
-                    await run_command_shell('espeak -w espeak.wav "' + text + '"')
+                    await run_command_shell('espeak-ng -w espeak.wav "' + text + '"')
                     syslog.log(
                         "Speak-Client", "We have the TTS audio file ready. Playing it."
                     )
@@ -105,37 +105,7 @@ class Speak(commands.Cog):
         syslog.log(
             "Speak-Client", "Calling speakInChannel for " + ctx.author.display_name
         )
-        await self.speakInChannel(ctx, thing, None, False)
-
-    @commands.command()
-    async def vcask(self, ctx, *, query):
-        """Googler output in VC"""
-        syslog.log(
-            "Speak-Client", "Calling speakInChannel for " + ctx.author.display_name
-        )
-        try:
-            query = query.replace("&", "").replace(";", "")
-            thing = await run_command_shell(
-                'cd bin && ./googler --np -C -n 1 "' + query + '" && cd ../'
-            )
-
-            await ctx.send(embed=infmsg("Googler Result", "```" + thing + "```"))
-            if not thing.lower() == "":
-                await self.speakInChannel(ctx, query + " is " + thing, None, False)
-            else:
-                await self.speakInChannel(
-                    ctx,
-                    "Googler had no good results. The links are in chat",
-                    None,
-                    False,
-                )
-        except Exception as e:
-            await self.speakInChannel(ctx, "We had an issue with Googler: " + str(e))
-            await ctx.send(
-                embed=errmsg(
-                    "Spoken Word - Tuxi", "We had an issue with Googler: " + str(e)
-                )
-            )
+        await self.speakInChannel(ctx, ctx.author.display_name + " says " + thing, None, False)
 
     @commands.Cog.listener()
     async def on_message(self, message):
