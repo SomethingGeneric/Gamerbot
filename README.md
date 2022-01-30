@@ -12,7 +12,7 @@ The update function from git will not work unless you properly clone the repo an
 * `pip3 install -r requirements.txt`
 * Other requirements per cog (if you're going to disable a cog, you shouldn't need it's requirements):
     * Music:
-        * Arch: `sudo pacman -S opus libffi` (You'll also need to `sudo find / -name "libopus.so"` and edit `config.txt`)
+        * Arch: `sudo pacman -S opus libffi ffmpeg` (You'll also need to `sudo find / -name "libopus.so"` and edit `config.txt`)
         * Debian: `sudo apt install -y libopus-dev libffi-dev python-dev` (Will probably have the same path as Ubuntu, if not follow above)
     * Internet:
         * Arch: `sudo pacman -S curl traceroute whois nmap` 
