@@ -24,7 +24,7 @@ UNLOAD_COGS:
 # NEED TO CHANGE
 # Paste service stuff
 # The user running the bot needs write acces to below path (for saving pastes)
-PASTE_BASE:/home/matt/gamerbot2/stuff
+PASTE_BASE:/home/gamerbot/gamerbot2/stuff
 # Replace :// with // below
 PASTE_URL_BASE:https//gamerbot.xhec.us/
 
