@@ -21,7 +21,7 @@ The update function from git will not work unless you properly clone the repo an
         * Arch: `sudo pacman -S figlet`
         * Debian-based are probably the same
     * Speak:
-        * Arch: `sudo pacman -S espeak`
+        * Arch: `sudo pacman -S espeak-ng`
         * Debian-based are probably the same
     * Shells:
         * Install `notop` and `nofetch` from https://github.com/jnats
