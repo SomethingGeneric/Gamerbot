@@ -87,7 +87,7 @@ class Shells(commands.Cog):
         elif len(out) > 1000:
             url = paste(out)
             await ctx.send(
-                embed=infmsg("Shells: Paste URL", "Output was too long. See: " + url, reference=ctx.message)
+                embed=infmsg("Shells: Paste URL", "Output was too long. See: " + url), reference=ctx.message
             )
         else:
             await ctx.send(embed=infmsg("Shells: `" + cmd + "`", "```" + out + "```"), reference=ctx.message)
