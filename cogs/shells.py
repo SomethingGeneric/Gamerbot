@@ -42,7 +42,8 @@ class Shells(commands.Cog):
             "/etc",
             "gamerbot",
             "gamerbot2",
-            "token" "~",
+            "token",
+            "~",
         ]
 
     async def handle_bash(self, ctx, privileged=False, cmd=""):
@@ -56,6 +57,15 @@ class Shells(commands.Cog):
             prepend = "cd " + dir + " && "
             append = " && cd ../"
 
+            if "/etc/systemd" in cmd:
+                await ctx.send(
+                    embed=errmsg(
+                        "Shells error",
+                        "You're a whore",
+                    ),
+                    reference=ctx.message,
+                )
+
             if " " in cmd:
                 bits = cmd.split(" ")
                 for bit in bits:
@@ -66,7 +76,8 @@ class Shells(commands.Cog):
                                 "The command `"
                                 + bit
                                 + "` is not allowed in unprivileged shells",
-                            )
+                            ),
+                            reference=ctx.message,
                         )
                         return
             else:
@@ -77,7 +88,8 @@ class Shells(commands.Cog):
                             "The command `"
                             + cmd
                             + "` is not allowed in unprivileged shells",
-                        )
+                        ),
+                        reference=ctx.message,
                     )
                     return
 
