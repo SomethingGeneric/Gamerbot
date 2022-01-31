@@ -156,6 +156,7 @@ class Shells(commands.Cog):
     async def pyval(self, ctx, *, expr: str):
         """Run expression with python's eval() function"""
         expr = expr.replace(";", "").replace("import", "")
+        dont = False
         for evil in self.not_allowed:
             if evil in expr:
                 dont = True
