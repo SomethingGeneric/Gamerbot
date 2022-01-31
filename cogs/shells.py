@@ -44,6 +44,7 @@ class Shells(commands.Cog):
             "gamerbot2",
             "token",
             "~",
+            "/proc",
         ]
 
     async def handle_bash(self, ctx, privileged=False, cmd=""):
