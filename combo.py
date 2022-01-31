@@ -2,7 +2,7 @@
 # E.G. "BOTTOKEN=<something> python3 combo.py"
 
 # Standard python imports
-import os, string, unicodedata, sys, re, random, time, datetime, subprocess, json, traceback
+import os, string, unicodedata, sys, re, random, time, datetime, subprocess, json, traceback, signal
 import urllib.parse
 import importlib
 
@@ -147,6 +147,15 @@ async def getsyslog(ctx):
         await ctx.send(embed=errmsg("Oops", wrongperms("getsyslog")))
 
 
+token = ""
+
+
+def fuckoff(foo, bar):
+    with open(my_homedir + "/token", "w") as f:
+        f.write(token)
+    sys.exit(0)
+
+
 if UNLOAD_COGS is not None:
     # Remove any cogs as per config
     for item in UNLOAD_COGS:
@@ -158,4 +167,15 @@ if UNLOAD_COGS is not None:
             except:
                 syslog.log("Main", "Failed to remove '" + item + "'")
 
-bot.run(sys.argv[1])
+if not os.path.exists(my_homedir + "/token"):
+    print("No token file. Panic!")
+else:
+    with open(my_homedir + "/token") as f:
+        token = f.read()
+    os.remove(my_homedir + "/token")
+
+signal.signal(signal.SIGTERM, fuckoff)
+signal.signal(signal.SIGINT, fuckoff)
+
+
+bot.run(token)
