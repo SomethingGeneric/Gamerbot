@@ -95,7 +95,10 @@ class Speak(commands.Cog):
 
         else:
             await ctx.send(
-                embed=errmsg("Spoken Word", "I'm already in a voice channel, and busy."), reference=ctx.message
+                embed=errmsg(
+                    "Spoken Word", "I'm already in a voice channel, and busy."
+                ),
+                reference=ctx.message,
             )
             syslog.log("Speak-Client", "VC is busy somewhere. Doing nothing.")
 
@@ -105,7 +108,9 @@ class Speak(commands.Cog):
         syslog.log(
             "Speak-Client", "Calling speakInChannel for " + ctx.author.display_name
         )
-        await self.speakInChannel(ctx, ctx.author.display_name + " says " + thing, None, False)
+        await self.speakInChannel(
+            ctx, ctx.author.display_name + " says " + thing, None, False
+        )
 
     @commands.Cog.listener()
     async def on_message(self, message):

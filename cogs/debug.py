@@ -130,7 +130,9 @@ class Debug(commands.Cog):
         """Delete all existing syslogs (USE WITH CARE) (Owner only)"""
         if ctx.message.author.id == OWNER:
             purged = await run_command_shell("rm system_log* -v")
-            await ctx.send(embed=infmsg("Syslog Purger", "We purged:\n```" + purged + "```"))
+            await ctx.send(
+                embed=infmsg("Syslog Purger", "We purged:\n```" + purged + "```")
+            )
         else:
             await ctx.send(embed=errmsg("Oops", wrongperms("purgesyslog")))
 

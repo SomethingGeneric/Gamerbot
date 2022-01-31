@@ -33,18 +33,17 @@ class Memes(commands.Cog):
             "stallman": "RMS is a pedo",
             "epstein": "didn't kill himself",
             "forgor": "💀 they forgor",
-            "rember": "👼 they rember"
+            "rember": "👼 they rember",
         }
 
         if message.author != self.bot.user:
             if "hello there" in mc:
                 await mchan.send(
-                    "General Kenobi\nhttps://media1.giphy.com/media/UIeLsVh8P64G4/giphy.gif", reference=message
+                    "General Kenobi\nhttps://media1.giphy.com/media/UIeLsVh8P64G4/giphy.gif",
+                    reference=message,
                 )
             elif "michal moment" in mc:
-                await mchan.send(
-                    "yeah......", reference=message
-                )
+                await mchan.send("yeah......", reference=message)
             else:
                 try:
                     if " " in mc:
@@ -58,7 +57,8 @@ class Memes(commands.Cog):
                             await mchan.send(triggers[act], reference=message)
                         elif tw > 1:
                             await mchan.send(
-                                message.author.mention + " don't be an asshat. :angry:", reference=message
+                                message.author.mention + " don't be an asshat. :angry:",
+                                reference=message,
                             )
                     else:
                         if mc in triggers:
@@ -69,14 +69,16 @@ class Memes(commands.Cog):
             if "comrade sharkfact" in mc:
                 with open("data/sharkfacts.txt", encoding="cp1252") as f:
                     sharkList = f.read().split("\n")
-                await mchan.send(embed=infmsg("Sharkfact", random.choice(sharkList)), reference=message)
+                await mchan.send(
+                    embed=infmsg("Sharkfact", random.choice(sharkList)),
+                    reference=message,
+                )
 
             if DO_IMAGE_RESPONSE:
                 if random.randint(
                     1, IMAGE_RESPONSE_PROB
                 ) == IMAGE_RESPONSE_PROB and "filename" in str(message.attachments):
                     await mchan.send(random.choice(IMAGE_RESPONSES), reference=message)
-
 
     @commands.command()
     async def figlet(self, ctx, *, text):
@@ -94,9 +96,7 @@ class Memes(commands.Cog):
                 )
         except Exception as e:
             await ctx.send(
-                embed=errmsg(
-                    "Error", "Had an issue running figlet: `" + str(e) + "`"
-                )
+                embed=errmsg("Error", "Had an issue running figlet: `" + str(e) + "`")
             )
             syslog.log(
                 "Memes-Important", "Had an issue running figlet: `" + str(e) + "`"
@@ -169,7 +169,6 @@ class Memes(commands.Cog):
         await ctx.send(
             "https://tenor.com/view/fnaf-security-breach-security-breach-vanessa-fnaf-vanny-fnaf-vanny-gif-24218761",
         )
-
 
     @commands.command()
     async def deadchat(self, ctx):
@@ -310,17 +309,6 @@ class Memes(commands.Cog):
             fake
             + "||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||"
             + real
-        )
-
-    @commands.command(hidden=True)
-    async def ivd(self, ctx, fake, real):
-        await ctx.message.delete()
-        await ctx.send(
-            "```"
-            + fake
-            + "||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||"
-            + real
-            + "```"
         )
 
 

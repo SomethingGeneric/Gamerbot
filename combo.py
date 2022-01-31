@@ -107,6 +107,7 @@ async def on_message(message):
 
         await bot.process_commands(message)
 
+
 @bot.event
 async def on_command_error(ctx, error):
     syslog.log("Main", "Error in command: " + str(error))
@@ -157,10 +158,8 @@ if UNLOAD_COGS is not None:
             except:
                 syslog.log("Main", "Failed to remove '" + item + "'")
 
-if os.environ["bottoken"] != "":
-    bot.run(os.environ["bottoken"])
+if not os.path.exists(my_homedir + "/token"):
+    print("No token file. Panic!")
 else:
-    print(
-        "You need to call this file with a variable 'bottoken' set to your bot token."
-    )
-    sys.exit(1)
+    token = open(my_homedir + "/token").read()
+    bot.run(token)

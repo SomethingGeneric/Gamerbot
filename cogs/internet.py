@@ -28,7 +28,6 @@ class Internet(commands.Cog):
         except Exception as e:
             return '{"haha":"heeho"}'
 
-
     @commands.command()
     async def weather(self, ctx, *, search):
         """Forecast gang"""
@@ -345,6 +344,7 @@ class Internet(commands.Cog):
             syslog.log(
                 "Internet-Important", "Had an issue making trmap: `" + str(e) + "`"
             )
+
 
 # End fun internet things
 def setup(bot):

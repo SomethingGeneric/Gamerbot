@@ -20,9 +20,7 @@ class Shells(commands.Cog):
         self.bash_sandboxed = self.confmgr.getasbool("BASH_SANDBOXED")
         self.do_python = self.confmgr.getasbool("PYTHON_SHELL")
 
-    async def handle_bash(self, ctx, privileged=False, cmd=""):
-
-        not_allowed = [
+        self.not_allowed = [
             "/",
             "../",
             "sudo",
@@ -41,8 +39,14 @@ class Shells(commands.Cog):
             ":(){",
             "/dev/urandom",
             "/dev",
-            "/etc"
+            "/etc",
+            "gamerbot",
+            "gamerbot2",
+            "token" "~",
         ]
+
+    async def handle_bash(self, ctx, privileged=False, cmd=""):
+
         prepend = ""
         append = ""
 
@@ -55,7 +59,7 @@ class Shells(commands.Cog):
             if " " in cmd:
                 bits = cmd.split(" ")
                 for bit in bits:
-                    if bit in not_allowed:
+                    if bit in self.not_allowed:
                         await ctx.send(
                             embed=errmsg(
                                 "Shells error",
@@ -66,7 +70,7 @@ class Shells(commands.Cog):
                         )
                         return
             else:
-                if cmd in not_allowed:
+                if cmd in self.not_allowed:
                     await ctx.send(
                         embed=errmsg(
                             "Shells error",
@@ -83,14 +87,21 @@ class Shells(commands.Cog):
         out = await run_command_shell(prepend + cmd + append)
 
         if len(out) == 0:
-            await ctx.send(embed=infmsg("Shells: `" + cmd + "`", "Returned nothing"), reference=ctx.message)
+            await ctx.send(
+                embed=infmsg("Shells: `" + cmd + "`", "Returned nothing"),
+                reference=ctx.message,
+            )
         elif len(out) > 1000:
             url = paste(out)
             await ctx.send(
-                embed=infmsg("Shells: Paste URL", "Output was too long. See: " + url), reference=ctx.message
+                embed=infmsg("Shells: Paste URL", "Output was too long. See: " + url),
+                reference=ctx.message,
             )
         else:
-            await ctx.send(embed=infmsg("Shells: `" + cmd + "`", "```" + out + "```"), reference=ctx.message)
+            await ctx.send(
+                embed=infmsg("Shells: `" + cmd + "`", "```" + out + "```"),
+                reference=ctx.message,
+            )
 
     @commands.command()
     async def priv_bash(self, ctx, *, cmd: str):
@@ -132,8 +143,21 @@ class Shells(commands.Cog):
     @commands.command()
     async def pyval(self, ctx, *, expr: str):
         """Run expression with python's eval() function"""
-        out = str(eval(expr))
-        await ctx.send(embed=infmsg("Shells", "```" + out + "```"))
+        expr = expr.replace(";", "").replace("import", "")
+        for evil in self.not_allowed:
+            if evil in expr:
+                dont = True
+                cmd = evil
+        if not dont:
+            out = str(eval(expr))
+            await ctx.send(embed=infmsg("Shells", "```" + out + "```"))
+        else:
+            await ctx.send(
+                embed=errmsg(
+                    "Shells error",
+                    "The command `" + cmd + "` is not allowed in unprivileged shells",
+                )
+            )
 
     @commands.command()
     async def sysinfo(self, ctx):

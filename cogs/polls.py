@@ -43,9 +43,7 @@ class Polls(commands.Cog):
                             name=f"{choice}", value=f"{EMOJIS[eid]}", inline=False
                         )
                         eid += 1
-                    embed.set_footer(
-                        text="Remember, count reactions-1 as total votes."
-                    )
+                    embed.set_footer(text="Remember, count reactions-1 as total votes.")
                     msg = await ctx.send(embed=embed)
                     eid = 0
                     for choice in things:
