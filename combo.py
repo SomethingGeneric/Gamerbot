@@ -160,10 +160,10 @@ if UNLOAD_COGS is not None:
             except:
                 syslog.log("Main", "Failed to remove '" + item + "'")
 
-if not os.path.exists(my_homedir + "/token"):
-    print("No token file. Panic!")
-else:
-    with open(my_homedir + "/token") as f:
-        token = f.read()
+#if not os.path.exists(my_homedir + "/token"):
+#    print("No token file. Panic!")
+#else:
+#    with open(my_homedir + "/token") as f:
+#        token = f.read()
 
-bot.run(token)
+bot.run(input("Token: "))
