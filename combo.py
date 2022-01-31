@@ -149,13 +149,6 @@ async def getsyslog(ctx):
 
 token = ""
 
-
-def fuckoff(foo, bar):
-    with open(my_homedir + "/token", "w") as f:
-        f.write(token)
-    sys.exit(0)
-
-
 if UNLOAD_COGS is not None:
     # Remove any cogs as per config
     for item in UNLOAD_COGS:
@@ -172,10 +165,5 @@ if not os.path.exists(my_homedir + "/token"):
 else:
     with open(my_homedir + "/token") as f:
         token = f.read()
-    os.remove(my_homedir + "/token")
-
-signal.signal(signal.SIGTERM, fuckoff)
-signal.signal(signal.SIGINT, fuckoff)
-
 
 bot.run(token)
