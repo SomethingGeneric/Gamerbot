@@ -59,7 +59,7 @@ class Shells(commands.Cog):
             prepend = "cd " + dir + " && "
             append = " && cd ../"
 
-            if "/etc/systemd" in cmd or "token":
+            if "/etc/systemd" in cmd or "token" in cmd:
                 await ctx.send(
                     embed=errmsg(
                         "Shells error",
