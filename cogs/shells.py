@@ -67,6 +67,7 @@ class Shells(commands.Cog):
                     ),
                     reference=ctx.message,
                 )
+                return
 
             if " " in cmd:
                 bits = cmd.split(" ")
