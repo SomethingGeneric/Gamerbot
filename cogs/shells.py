@@ -43,6 +43,7 @@ class Shells(commands.Cog):
             "gamerbot",
             "gamerbot2",
             "token",
+            "~/token",
             "~",
             "/proc",
         ]
