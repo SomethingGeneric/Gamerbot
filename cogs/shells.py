@@ -54,6 +54,7 @@ class Shells(commands.Cog):
         append = ""
 
         if not privileged:
+            cmd = cmd.replace("\"","")
             prepend = "ssh foo@192.168.122.205 \""
             append = "\""
 
