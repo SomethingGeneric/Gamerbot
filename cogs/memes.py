@@ -37,7 +37,9 @@ class Memes(commands.Cog):
         }
 
         if message.author != self.bot.user:
-            if "hello there" in mc:
+            if "crystalux" in mc.lower():
+                await mchan.send("Stop deadnaming Crystal Linux :angry:", reference=message)
+            elif "hello there" in mc:
                 await mchan.send(
                     "General Kenobi\nhttps://media1.giphy.com/media/UIeLsVh8P64G4/giphy.gif",
                     reference=message,
