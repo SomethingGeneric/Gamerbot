@@ -46,6 +46,8 @@ class Shells(commands.Cog):
             "~/token",
             "~",
             "/proc",
+            "\"",
+            "\'"
         ]
 
     async def handle_bash(self, ctx, privileged=False, cmd=""):
@@ -54,7 +56,8 @@ class Shells(commands.Cog):
         append = ""
 
         if not privileged:
-            cmd = cmd.replace("\"","")
+            for bad in self.not_allowed:
+                cmd = cmd.replace(bad,"")
             prepend = "ssh foo@192.168.122.205 \""
             append = "\""
 
