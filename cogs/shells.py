@@ -54,47 +54,8 @@ class Shells(commands.Cog):
         append = ""
 
         if not privileged:
-            dir = await run_command_shell("mktemp -d")
-
-            prepend = "cd " + dir + " && "
-            append = " && cd ../"
-
-            if "/etc/systemd" in cmd or "token" in cmd:
-                await ctx.send(
-                    embed=errmsg(
-                        "Shells error",
-                        "You're a whore",
-                    ),
-                    reference=ctx.message,
-                )
-                return
-
-            if " " in cmd:
-                bits = cmd.split(" ")
-                for bit in bits:
-                    if bit in self.not_allowed:
-                        await ctx.send(
-                            embed=errmsg(
-                                "Shells error",
-                                "The command `"
-                                + bit
-                                + "` is not allowed in unprivileged shells",
-                            ),
-                            reference=ctx.message,
-                        )
-                        return
-            else:
-                if cmd in self.not_allowed:
-                    await ctx.send(
-                        embed=errmsg(
-                            "Shells error",
-                            "The command `"
-                            + cmd
-                            + "` is not allowed in unprivileged shells",
-                        ),
-                        reference=ctx.message,
-                    )
-                    return
+            prepend = "ssh foo@192.168.122.205 \""
+            append = "\""
 
         if "\n" in cmd:
             cmd = cmd.split("\n")[0]
@@ -154,26 +115,6 @@ class Shells(commands.Cog):
             )
         else:  # it's enabled
             await self.handle_bash(ctx, False, cmd)
-
-    @commands.command()
-    async def pyval(self, ctx, *, expr: str):
-        """Run expression with python's eval() function"""
-        expr = expr.replace(";", "").replace("import", "")
-        dont = False
-        for evil in self.not_allowed:
-            if evil in expr:
-                dont = True
-                cmd = evil
-        if not dont:
-            out = str(eval(expr))
-            await ctx.send(embed=infmsg("Shells", "```" + out + "```"))
-        else:
-            await ctx.send(
-                embed=errmsg(
-                    "Shells error",
-                    "The command `" + cmd + "` is not allowed in unprivileged shells",
-                )
-            )
 
     @commands.command()
     async def sysinfo(self, ctx):
