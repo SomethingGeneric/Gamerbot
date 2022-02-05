@@ -30,7 +30,7 @@ class IOT(commands.Cog):
             "purple": PURPLE,
             "pink": PINK
         }
-        if not not os.path.exists(".lifx_disabled"):
+        if not os.path.exists(".lifx_disabled"):
             ran = False
             while not ran:
                 try:
