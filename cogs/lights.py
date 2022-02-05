@@ -53,12 +53,15 @@ class IOT(commands.Cog):
     @commands.command()
     async def toggle_lifx(self, ctx):
         """(Bot owner only) Enable/disable light control"""
-        if not os.path.exists(".lifx_disabled"):
-            os.system("touch .lifx_disabled")
-            await ctx.send("Light control is disabled.", reference=ctx.message)
+        if ctx.message.author.id == OWNER:
+            if not os.path.exists(".lifx_disabled"):
+                os.system("touch .lifx_disabled")
+                await ctx.send("Light control is disabled.", reference=ctx.message)
+            else:
+                os.remove(".lifx_disabled")
+                await ctx.send("Light control is enabled.", reference=ctx.message)
         else:
-            os.remove("touch .lifx_disabled")
-            await ctx.send("Light control is enabled.", reference=ctx.message)
+            await ctx.send("You're not the bot owner. :angry:")
 
 def setup(bot):
     bot.add_cog(IOT(bot))
