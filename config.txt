@@ -13,7 +13,7 @@ DEFAULT_STATUS_TYPE:playing
 # These are currently the only substitutions
 # - {number_users}
 # - {guild_count}
-DEFAULT_STATUS_TEXT:with {number_users} other gamers
+DEFAULT_STATUS_TEXT:in {guild_count} servers
 
 # Any default cogs you don't want to load:
 # Example: UNLOAD_COGS:Internet,Speak

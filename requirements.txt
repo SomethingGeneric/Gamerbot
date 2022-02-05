@@ -7,3 +7,4 @@ pillow
 requests
 youtube_dl
 gmplot
+lifxlan

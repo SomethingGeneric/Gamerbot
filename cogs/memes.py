@@ -44,8 +44,6 @@ class Memes(commands.Cog):
                     "General Kenobi\nhttps://media1.giphy.com/media/UIeLsVh8P64G4/giphy.gif",
                     reference=message,
                 )
-            elif "michal moment" in mc:
-                await mchan.send("yeah......", reference=message)
             else:
                 try:
                     if " " in mc:
@@ -114,62 +112,6 @@ class Memes(commands.Cog):
             pass
         await ctx.send(
             "https://media.tenor.com/images/a16246936101a550918944740789de8a/tenor.gif",
-        )
-
-    @commands.command()
-    async def forgor(self, ctx):
-        """🦀🦀🦀🦀🦀"""
-        try:
-            await ctx.message.delete()
-        except Exception as e:
-            # This should only break if we don't have manage message perm
-            pass
-        await ctx.send(
-            "https://tenor.com/view/i-forgot-i-forgor-meme-memes-kinemaster-gif-22374063",
-        )
-
-    @commands.command()
-    async def cum(self, ctx):
-        try:
-            await ctx.message.delete()
-        except Exception as e:
-            # This should only break if we don't have manage message perm
-            pass
-        await ctx.send(
-            "https://cdn.discordapp.com/attachments/902778416238034984/902779807832625182/Cum_Song.mp4",
-        )
-
-    @commands.command()
-    async def elb(self, ctx):
-        try:
-            await ctx.message.delete()
-        except Exception as e:
-            # This should only break if we don't have manage message perm
-            pass
-        await ctx.send(
-            "https://tenor.com/view/i-request-elaboration-white-vision-paul-bettany-wandavision-i-want-an-explanation-gif-22928362",
-        )
-
-    @commands.command()
-    async def facepalm(self, ctx):
-        try:
-            await ctx.message.delete()
-        except Exception as e:
-            # This should only break if we don't have manage message perm
-            pass
-        await ctx.send(
-            "https://tenor.com/view/facepalm-anime-jfc-gif-19368854",
-        )
-
-    @commands.command()
-    async def michal(self, ctx):
-        try:
-            await ctx.message.delete()
-        except Exception as e:
-            # This should only break if we don't have manage message perm
-            pass
-        await ctx.send(
-            "https://tenor.com/view/fnaf-security-breach-security-breach-vanessa-fnaf-vanny-fnaf-vanny-gif-24218761",
         )
 
     @commands.command()
