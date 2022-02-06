@@ -87,8 +87,10 @@ class IOT(commands.Cog):
             await ctx.send("You can also say `random`, `sample`, `on`, or `off`")
             return
         elif "#" in cmd:
-            tmp = cmd.replace("#","")
-            cmd = self.hex_to_hsbk(tmp)
+            #tmp = cmd.replace("#","")
+            #cmd = self.hex_to_hsbk(tmp)
+            await ctx.send("Temporarly disabled hex codes", reference=ctx.message)
+            return
 
         if not os.path.exists(".lifx_disabled"):
             ran = False
