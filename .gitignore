@@ -5,6 +5,7 @@ restarted.txt
 music/*
 .voice_state
 system_log.txt*
+.emailpw
 
 # End gamerbot stuff
 
