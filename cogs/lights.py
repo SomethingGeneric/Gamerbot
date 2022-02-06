@@ -20,7 +20,7 @@ class IOT(commands.Cog):
 
     @commands.command()
     async def lifx(self, ctx, *, cmd=""):
-        """Set Matt's light to a color or 'random' for true random, or 'pick' to pick randomly from preset colors"""
+        """Set Matt's light to a color. (Run w/o arguements for help info)"""
         colors = {
             "red": RED,
             "orange": ORANGE,
@@ -34,8 +34,12 @@ class IOT(commands.Cog):
         }
 
         if cmd == "":
-            await ctx.send("Colors: " + ",".join(colors.keys()))
-            await ctx.send("You can also say 'random', 'sample', 'on', or 'off'")
+            i = "Colors: "
+            for c in colors.keys():
+                i += "`" + c + "`, "
+            await ctx.send(i)
+            await ctx.send("You can also say `random`, `sample`, `on`, or `off`")
+            return
 
         if not os.path.exists(".lifx_disabled"):
             ran = False
