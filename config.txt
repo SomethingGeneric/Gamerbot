@@ -103,4 +103,4 @@ SMTP_EMAIL_ADDR:matt@tar.black
 SMTP_PASSWORD_FILE:.emailpw
 
 # Nag config
-NAG_RECIEVER:3019745990@vzwpix.com
+NAG_RECIEVER:generic@salyut.one
