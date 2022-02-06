@@ -1,4 +1,5 @@
 import os, re, random
+from random import randint
 
 import discord
 from discord.ext import commands
@@ -19,7 +20,7 @@ class IOT(commands.Cog):
 
     @commands.command()
     async def lifx(self, ctx, *, cmd):
-        """Set Matt's light to a color or 'random'"""
+        """Set Matt's light to a color or 'random' for true random, or 'pick' to pick randomly from preset colors"""
         colors = {
             "red": RED,
             "orange": ORANGE,
@@ -40,15 +41,17 @@ class IOT(commands.Cog):
                         self.light.set_power(True)
                     elif cmd in colors:
                         self.light.set_color(colors[cmd])
-                    elif cmd == "random":
+                    elif cmd == "pick":
                         c = random.choice(list(colors.values()))
                         self.light.set_color(c)
+                    elif cmd == "random":
+                        c = [randint(0,65535), randint(0,65535), randint(0,65535), randint(0,65535),]
                     ran = True
                 except Exception as e:
                     syslog.log("IOT", "LIFX error `" + str(e) + "`")
             await ctx.send("Set light to `" + cmd + "`", reference=ctx.message)
         else:
-            await ctx.send("Light control is disabled.", reference=ctx.message)
+            await ctx.send("Light control is currently disabled.", reference=ctx.message)
 
     @commands.command()
     async def toggle_lifx(self, ctx):
