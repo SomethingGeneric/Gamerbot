@@ -79,43 +79,46 @@ class IOT(commands.Cog):
             "crystal": [50929, 65535, 65535, 4000],
         }
 
-        if cmd == "":
-            i = "Colors: "
-            for c in colors.keys():
-                i += "`" + c + "`, "
-            await ctx.send(i)
-            await ctx.send("You can also say `random`, `sample`, `on`, or `off`")
-            return
-        elif "#" in cmd:
-            #tmp = cmd.replace("#","")
-            #cmd = self.hex_to_hsbk(tmp)
-            await ctx.send("Temporarly disabled hex codes", reference=ctx.message)
-            return
+        if not isinstance(ctx.channel, discord.channel.DMChannel):
+            if cmd == "":
+                i = "Colors: "
+                for c in colors.keys():
+                    i += "`" + c + "`, "
+                await ctx.send(i)
+                await ctx.send("You can also say `random`, `sample`, `on`, or `off`")
+                return
+            elif "#" in cmd:
+                #tmp = cmd.replace("#","")
+                #cmd = self.hex_to_hsbk(tmp)
+                await ctx.send("Temporarly disabled hex codes", reference=ctx.message)
+                return
 
-        if not os.path.exists(".lifx_disabled"):
-            ran = False
-            while not ran:
-                try:
-                    if cmd == "off":
-                        self.light.set_power(False)
-                    elif cmd == "on":
-                        self.light.set_power(True)
-                    elif cmd in colors:
-                        self.light.set_color(colors[cmd])
-                    elif cmd == "pick":
-                        c = random.choice(list(colors.values()))
-                        self.light.set_color(c)
-                    elif cmd == "random":
-                        c = [randint(0,65535), randint(0,65535), randint(0,65535), randint(0,65535)]
-                        self.light.set_color(c)
-                    else:
-                        self.light.set_color(cmd)
-                    break
-                except Exception as e:
-                    syslog.log("IOT", "LIFX error `" + str(e) + "`")
-            await ctx.send("Set light to `" + cmd + "`", reference=ctx.message)
+            if not os.path.exists(".lifx_disabled"):
+                ran = False
+                while not ran:
+                    try:
+                        if cmd == "off":
+                            self.light.set_power(False)
+                        elif cmd == "on":
+                            self.light.set_power(True)
+                        elif cmd in colors:
+                            self.light.set_color(colors[cmd])
+                        elif cmd == "pick":
+                            c = random.choice(list(colors.values()))
+                            self.light.set_color(c)
+                        elif cmd == "random":
+                            c = [randint(0,65535), randint(0,65535), randint(0,65535), randint(0,65535)]
+                            self.light.set_color(c)
+                        else:
+                            self.light.set_color(cmd)
+                        break
+                    except Exception as e:
+                        syslog.log("IOT", "LIFX error `" + str(e) + "`")
+                await ctx.send("Set light to `" + cmd + "`", reference=ctx.message)
+            else:
+                await ctx.send("Light control is currently disabled.", reference=ctx.message)
         else:
-            await ctx.send("Light control is currently disabled.", reference=ctx.message)
+            await ctx.send("Use this in a server, coward. :angry:", reference=ctx.message)
 
     @commands.command()
     async def toggle_lifx(self, ctx):

@@ -99,10 +99,10 @@ async def on_message(message):
 
     if message.author != bot.user:
 
-        mc = message.content
+        mc = message.content.lower()
         if "bot" in mc:
             # we're being talked to
-            if "bad" in mc or "sucks" in mc:
+            if "bad" in mc and "sucks" in mc and "bot" in mc:
                 await message.channel.send(":(")
 
         await bot.process_commands(message)

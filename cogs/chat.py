@@ -78,5 +78,25 @@ class Chat(commands.Cog):
             pass
         await ctx.send(file=discord.File("images/stop_talking.png"))
 
+    @commands.command()
+    async def forkbomb(self, ctx):
+        """rip to myself"""
+        try:
+            await ctx.message.delete()
+        except Exception as e:
+            # This should only break if we don't have manage message perm
+            pass
+        await ctx.send(file=discord.File("images/forkbomb.jpg"))
+
+    @commands.command()
+    async def permit(self, ctx):
+        """go right ahead."""
+        try:
+            await ctx.message.delete()
+        except Exception as e:
+            # This should only break if we don't have manage message perm
+            pass
+        await ctx.send(file=discord.File("images/permit_crab.jpg"))
+
 def setup(bot):
     bot.add_cog(Chat(bot))
