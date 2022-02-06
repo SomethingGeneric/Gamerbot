@@ -350,7 +350,7 @@ class Admin(commands.Cog):
                 g = await self.bot.fetch_guild(int(id))
                 await g.create_text_channel(name)
                 await ctx.send("Done. :relieved:")
-            except:
+            except Exception as e:
                 await ownerman.send("```" + str(e) + "```")
         else:
             await ctx.send("You're not matt.")
