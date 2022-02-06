@@ -87,7 +87,8 @@ class IOT(commands.Cog):
             await ctx.send("You can also say `random`, `sample`, `on`, or `off`")
             return
         elif "#" in cmd:
-            cmd = self.hex_to_hsbk(cmd.replace("#",""))
+            tmp = cmd.replace("#","")
+            cmd = self.hex_to_hsbk(tmp)
 
         if not os.path.exists(".lifx_disabled"):
             ran = False
@@ -107,7 +108,7 @@ class IOT(commands.Cog):
                         self.light.set_color(c)
                     else:
                         self.light.set_color(cmd)
-                    ran = True
+                    break
                 except Exception as e:
                     syslog.log("IOT", "LIFX error `" + str(e) + "`")
             await ctx.send("Set light to `" + cmd + "`", reference=ctx.message)
