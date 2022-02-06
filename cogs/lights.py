@@ -59,10 +59,10 @@ class IOT(commands.Cog):
         if ctx.message.author.id == OWNER:
             if not os.path.exists(".lifx_disabled"):
                 os.system("touch .lifx_disabled")
-                await ctx.send("Light control is disabled.", reference=ctx.message)
+                await ctx.send("Light control is now disabled.", reference=ctx.message)
             else:
                 os.remove(".lifx_disabled")
-                await ctx.send("Light control is enabled.", reference=ctx.message)
+                await ctx.send("Light control is now enabled.", reference=ctx.message)
         else:
             await ctx.send("You're not the bot owner. :angry:")
 
