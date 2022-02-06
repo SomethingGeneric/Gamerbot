@@ -18,7 +18,7 @@ class IOT(commands.Cog):
         self.bot = bot
         self.light = Light(LIFX_MAC, LIFX_IP)
 
-    def hex_to_hsbk(hex):
+    def hex_to_hsbk(self, hex):
         rgb=tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
         r=rgb[0]/255
         g=rgb[1]/255
