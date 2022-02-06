@@ -16,7 +16,7 @@ class IOT(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.light = Light("d0:73:d5:03:58:0d", "10.0.0.33")
+        self.light = Light(LIFX_MAC, LIFX_IP)
 
     @commands.command()
     async def lifx(self, ctx, *, cmd):

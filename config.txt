@@ -89,3 +89,18 @@ BASH_SANDBOXED:True
 
 # Enable python command?
 PYTHON_SHELL:True
+
+# For LIFX/IOT Cog:
+LIFX_IP:10.0.0.33
+# Replace ":" w/ "-"
+LIFX_MAC:d0-73-d5-03-58-0d
+
+# Email config
+SMTP_SERVER_ADDR:tar.black
+SMTP_SERVER_PORT:587
+# (vv) sender addr
+SMTP_EMAIL_ADDR:matt@tar.black
+SMTP_PASSWORD_FILE:.emailpw
+
+# Nag config
+NAG_RECIEVER:3019745990@vzwpix.com

@@ -44,6 +44,17 @@ OWNER = confmgr.getasint("OWNER")
 DEFAULT_STATUS_TYPE = confmgr.get("DEFAULT_STATUS_TYPE")
 DEFAULT_STATUS_TEXT = confmgr.get("DEFAULT_STATUS_TEXT")
 
+LIFX_IP = confmgr.get("LIFX_IP")
+LIFX_MAC = confmgr.get("LIFX_MAC").replace("-",":")
+
+SMTP_SERVER_ADDR = confmgr.get("SMTP_SERVER_ADDR")
+SMTP_SERVER_PORT = confmgr.getasint("SMTP_SERVER_PORT")
+SMTP_EMAIL_ADDR = confmgr.get("SMTP_EMAIL_ADDR")
+SMTP_PASSWORD_FILE = confmgr.get("SMTP_PASSWORD_FILE")
+
+NAG_RECIEVER = confmgr.get("NAG_RECIEVER")
+
+
 UNLOAD_COGS = confmgr.getaslist("UNLOAD_COGS")
 # <-------------- End --------------------->
 
