@@ -19,7 +19,7 @@ class IOT(commands.Cog):
         self.light = Light(LIFX_MAC, LIFX_IP)
 
     @commands.command()
-    async def lifx(self, ctx, *, cmd):
+    async def lifx(self, ctx, *, cmd=""):
         """Set Matt's light to a color or 'random' for true random, or 'pick' to pick randomly from preset colors"""
         colors = {
             "red": RED,
@@ -29,13 +29,19 @@ class IOT(commands.Cog):
             "cyan": CYAN,
             "blue": BLUE,
             "purple": PURPLE,
-            "pink": PINK
+            "pink": PINK,
+            "crystal": [50972, 65535, 65535, 4000],
         }
+
+        if cmd == "":
+            await ctx.send("Colors: " + ",".join(colors.keys()))
+            await ctx.send("You can also say 'random', 'sample', 'on', or 'off'")
+
         if not os.path.exists(".lifx_disabled"):
             ran = False
             while not ran:
                 try:
-                    if cmd == "" or cmd == None or cmd == "off":
+                    if cmd == "off":
                         self.light.set_power(False)
                     elif cmd == "on":
                         self.light.set_power(True)
