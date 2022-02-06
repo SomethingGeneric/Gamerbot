@@ -21,8 +21,11 @@ class Nag(commands.Cog):
     @commands.command()
     async def nag(self, ctx, *, message):
         """Nag the bot owner"""
-        self.email.send(self.who_gets, message)
-        await ctx.send("Sent.", reference=ctx.message)
+        try:
+            self.email.send(self.who_gets, message)
+            await ctx.send("Sent.", reference=ctx.message)
+        except Exception as e:
+            await ctx.send("Error: `" + str(e) + "`", reference=ctx.message)
 
 def setup(bot):
     bot.add_cog(Nag(bot))
