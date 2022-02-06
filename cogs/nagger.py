@@ -20,6 +20,7 @@ class Nag(commands.Cog):
 
     @commands.command()
     async def nag(self, ctx, *, message):
+        """Nag the bot owner"""
         self.email.send(self.who_gets, message)
         await ctx.send("Sent.", reference=ctx.message)
 
