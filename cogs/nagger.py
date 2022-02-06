@@ -8,14 +8,14 @@ import asyncio
 
 from util_functions import *
 from server_config import serverconfig
-from email import Email
+from memail import MEmail
 
 class Nag(commands.Cog):
     """When Matt doesn't respond"""
 
     def __init__(self, bot):
         self.bot = bot
-        self.email = Email()
+        self.email = MEmail()
         self.who_gets = NAG_RECIEVER
 
     @commands.command()

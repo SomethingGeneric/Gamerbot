@@ -2,7 +2,7 @@ import smtplib, ssl,sys,os
 
 from util_functions import *
 
-class Email:
+class MEmail:
     def __init__(self):
         smtp_server = SMTP_SERVER_ADDR
         port = SMTP_SERVER_PORT
