@@ -40,7 +40,7 @@ INTRO_CHANNEL:You should go to {channel}, since it's your first time here.
 
 # No substitutions are available here.
 # LISTS are split on comma
-IMAGE_RESPONSES:Cool meme bro.,Nice meme.,LMAO a nice one.,I am severely depressed.,i am severely depress but at least i am swag #poggers AMEN,#poggers,#froggers,Meow
+IMAGE_RESPONSES:Cool meme bro.,Nice meme.,LMAO a nice one.,I am severely depressed.,i am severely depress but at least i am swag #poggers AMEN,#poggers,#froggers,Meow,Nice cock bro.,Nice cock.
 
 # This one is hopefully self-explanatory
 DO_IMAGE_RESPONSES:True

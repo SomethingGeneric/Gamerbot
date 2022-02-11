@@ -151,10 +151,14 @@ class Speak(commands.Cog):
         for guild in self.bot.guilds:
             for vc in guild.voice_channels:
                 if len(vc.members) != 0:
-                    if random.randint(1,10) == 5:
+                    if random.randint(1, 10) == 5:
                         await self.speakInChannel(
                             None, random.choice(IMAGE_RESPONSES), chan=vc, stealth=True
                         )
+            for chan in guild.text_channels:
+                if chan.can_send():
+                    if random.randint(1, 100) == 50:
+                        await chan.send(random.choice(IMAGE_RESPONSES))
 
     @troll_task.before_loop
     async def before_the_troll_task(self):
