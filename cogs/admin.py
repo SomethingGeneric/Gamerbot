@@ -372,16 +372,17 @@ class Admin(commands.Cog):
         else:
             await ctx.send("You're not matt.")
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def selfsan(self, ctx):
-        lol = await ctx.send("Deleting all messages.")
-        for channel in ctx.guild.text_channels:
-            sent = await channel.send("Purging myself from this channel.")
-            async for message in channel.history():
-                if message.author == bot.user:
-                    await message.delete()
-            await sent.delete()
-        await lol.delete()
+        if ctx.message.author.id == OWNER:
+            lol = await ctx.send("Deleting all messages.")
+            for channel in ctx.guild.text_channels:
+                sent = await channel.send("Purging myself from this channel.")
+                async for message in channel.history():
+                    if message.author == self.bot.user:
+                        await message.delete()
+                await sent.delete()
+            await lol.delete()
 
 
 def setup(bot):
