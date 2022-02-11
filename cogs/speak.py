@@ -146,14 +146,15 @@ class Speak(commands.Cog):
                     await message.channel.send("`" + quote + "`")
                     syslog.log("Speak-Memes", "SENT BEE MOVIE QUOTE IN TEXT CHAT")
 
-    @tasks.loop(seconds=10.0)
+    @tasks.loop(seconds=30.0)
     async def troll_task(self):
         for guild in self.bot.guilds:
             for vc in guild.voice_channels:
                 if len(vc.members) != 0:
-                    await self.speakInChannel(
-                        None, random.choice(IMAGE_RESPONSES), chan=vc, stealth=True
-                    )
+                    if random.randint(1,10) == 5:
+                        await self.speakInChannel(
+                            None, random.choice(IMAGE_RESPONSES), chan=vc, stealth=True
+                        )
 
     @troll_task.before_loop
     async def before_the_troll_task(self):
