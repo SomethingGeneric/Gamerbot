@@ -1,6 +1,7 @@
-import smtplib, ssl,sys,os
+import smtplib, ssl, sys, os
 
 from util_functions import *
+
 
 class MEmail:
     def __init__(self):
@@ -10,10 +11,19 @@ class MEmail:
         if os.path.exists(SMTP_PASSWORD_FILE):
             password = open(SMTP_PASSWORD_FILE).read().strip()
         else:
-            print("Could not find " + SMTP_PASSWORD_FILE + ", as set in config. Failing.")
+            print(
+                "Could not find " + SMTP_PASSWORD_FILE + ", as set in config. Failing."
+            )
             sys.exit(1)
         context = ssl.create_default_context()
-        print("Trying to log in to " + smtp_server + " on port " + str(port) + " as user " + self.sender_email)
+        print(
+            "Trying to log in to "
+            + smtp_server
+            + " on port "
+            + str(port)
+            + " as user "
+            + self.sender_email
+        )
         try:
             self.server = smtplib.SMTP(smtp_server, port)
             self.server.ehlo()
@@ -24,6 +34,7 @@ class MEmail:
             print(str(e))
             print("Failing b/c of above error")
             sys.exit(1)
+
     def send(self, to, msg):
         try:
             self.server.sendmail(self.sender_email, to, msg)

@@ -10,6 +10,7 @@ from server_config import serverconfig
 
 # I hate this file ngl
 
+
 class ThatsFuckedUp(commands.Cog):
     """Stuff from Jasio"""
 
@@ -25,7 +26,6 @@ class ThatsFuckedUp(commands.Cog):
             if "michal moment" in mc:
                 await mchan.send("yeah......", reference=message)
 
-    
     @commands.command()
     async def forgor(self, ctx):
         """🦀🦀🦀🦀🦀"""
@@ -81,6 +81,7 @@ class ThatsFuckedUp(commands.Cog):
         await ctx.send(
             "https://tenor.com/view/fnaf-security-breach-security-breach-vanessa-fnaf-vanny-fnaf-vanny-gif-24218761",
         )
+
 
 def setup(bot):
     bot.add_cog(ThatsFuckedUp(bot))

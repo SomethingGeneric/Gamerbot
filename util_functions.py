@@ -45,7 +45,7 @@ DEFAULT_STATUS_TYPE = confmgr.get("DEFAULT_STATUS_TYPE")
 DEFAULT_STATUS_TEXT = confmgr.get("DEFAULT_STATUS_TEXT")
 
 LIFX_IP = confmgr.get("LIFX_IP")
-LIFX_MAC = confmgr.get("LIFX_MAC").replace("-",":")
+LIFX_MAC = confmgr.get("LIFX_MAC").replace("-", ":")
 
 SMTP_SERVER_ADDR = confmgr.get("SMTP_SERVER_ADDR")
 SMTP_SERVER_PORT = confmgr.getasint("SMTP_SERVER_PORT")

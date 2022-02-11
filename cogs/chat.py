@@ -9,12 +9,13 @@ import asyncio
 from util_functions import *
 from server_config import serverconfig
 
+
 class Chat(commands.Cog):
     """Images for use in chat"""
 
     def __init__(self, bot):
         self.bot = bot
-        
+
     @commands.command()
     async def crab(self, ctx):
         """🦀🦀🦀🦀🦀"""
@@ -97,6 +98,7 @@ class Chat(commands.Cog):
             # This should only break if we don't have manage message perm
             pass
         await ctx.send(file=discord.File("images/permit_crab.jpg"))
+
 
 def setup(bot):
     bot.add_cog(Chat(bot))

@@ -10,6 +10,7 @@ from util_functions import *
 from server_config import serverconfig
 from memail import MEmail
 
+
 class Nag(commands.Cog):
     """When Matt doesn't respond"""
 
@@ -26,6 +27,7 @@ class Nag(commands.Cog):
             await ctx.send("Sent.", reference=ctx.message)
         except Exception as e:
             await ctx.send("Error: `" + str(e) + "`", reference=ctx.message)
+
 
 def setup(bot):
     bot.add_cog(Nag(bot))

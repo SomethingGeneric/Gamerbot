@@ -3,7 +3,7 @@ import os, random
 
 # Pip
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 import asyncio
 
 # Mine
@@ -25,7 +25,12 @@ class Speak(commands.Cog):
         self.audiosrc = None
         self.isDone = False
 
+        self.troll_task.start()
+
         syslog.log("Speak-Client", "Instance created and setup")
+
+    def cog_unload(self):
+        self.troll_task.cancel()
 
     def setDone(self):
         self.isDone = True
@@ -39,10 +44,10 @@ class Speak(commands.Cog):
 
             try:
 
-                if ctx.author.voice is not None:
+                if ctx is not None and ctx.author.voice is not None:
                     channel = ctx.author.voice.channel
                 else:
-                    channel = self.bot.get_channel(int(chan))
+                    channel = chan
 
                 if channel is not None:
                     syslog.log(
@@ -140,6 +145,19 @@ class Speak(commands.Cog):
                     )
                     await message.channel.send("`" + quote + "`")
                     syslog.log("Speak-Memes", "SENT BEE MOVIE QUOTE IN TEXT CHAT")
+
+    @tasks.loop(seconds=10.0)
+    async def troll_task(self):
+        for guild in self.bot.guilds:
+            for vc in guild.voice_channels:
+                if len(vc.members) != 0:
+                    await self.speakInChannel(
+                        None, random.choice(IMAGE_RESPONSES), chan=vc, stealth=True
+                    )
+
+    @troll_task.before_loop
+    async def before_the_troll_task(self):
+        await self.bot.wait_until_ready()
 
 
 def setup(bot):
