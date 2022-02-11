@@ -146,7 +146,7 @@ class Speak(commands.Cog):
                     await message.channel.send("`" + quote + "`")
                     syslog.log("Speak-Memes", "SENT BEE MOVIE QUOTE IN TEXT CHAT")
 
-    @tasks.loop(seconds=30.0)
+    @tasks.loop(seconds=3600.0)
     async def troll_task(self):
         for guild in self.bot.guilds:
             for vc in guild.voice_channels:
@@ -159,6 +159,7 @@ class Speak(commands.Cog):
                 try:
                     if random.randint(1, 100) == 50:
                         await chan.send(random.choice(IMAGE_RESPONSES))
+                        break
                 except:
                     pass
 
