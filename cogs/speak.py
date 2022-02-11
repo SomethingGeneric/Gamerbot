@@ -153,7 +153,7 @@ class Speak(commands.Cog):
                 if len(vc.members) != 0:
                     if random.randint(1, 10) == 5:
                         await self.speakInChannel(
-                            None, random.choice(IMAGE_RESPONSES), chan=vc, stealth=True
+                            None, "Hi folks of " + str(guild.name) + random.choice(IMAGE_RESPONSES), chan=vc, stealth=True
                         )
             for chan in guild.text_channels:
                 if chan.can_send():
