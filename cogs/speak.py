@@ -156,9 +156,11 @@ class Speak(commands.Cog):
                             None, "Hi folks of " + str(guild.name) + random.choice(IMAGE_RESPONSES), chan=vc, stealth=True
                         )
             for chan in guild.text_channels:
-                if chan.can_send():
+                try:
                     if random.randint(1, 100) == 50:
                         await chan.send(random.choice(IMAGE_RESPONSES))
+                except:
+                    pass
 
     @troll_task.before_loop
     async def before_the_troll_task(self):
