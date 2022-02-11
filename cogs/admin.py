@@ -380,7 +380,10 @@ class Admin(commands.Cog):
                 sent = await channel.send("Purging myself from this channel.")
                 async for message in channel.history():
                     if message.author == self.bot.user:
-                        await message.delete()
+                        try:
+                            await message.delete()
+                        except:
+                            pass
                 await sent.delete()
             await lol.delete()
 
