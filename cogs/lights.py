@@ -94,26 +94,29 @@ class IOT(commands.Cog):
                 
             if not os.path.exists(".lifx_disabled"):
                 try:
-                    if cmd == "off":
-                        self.light.set_power(False)
-                    elif cmd == "on":
-                        self.light.set_power(True)
-                    elif cmd in colors:
-                        self.light.set_color(colors[cmd])
-                    elif cmd == "pick":
-                        c = random.choice(list(colors.values()))
-                        self.light.set_color(c)
-                    elif cmd == "random":
-                        c = [
-                            randint(0, 65535),
-                            randint(0, 65535),
-                            randint(0, 65535),
-                            randint(0, 65535),
-                        ]
-                        self.light.set_color(c)
-                        await ctx.send("Color code: `" + str(c) + "`")
-                    else:
+                    if type(cmd) == list:
                         self.light.set_color(cmd)
+                    else:
+                        if cmd == "off":
+                            self.light.set_power(False)
+                        elif cmd == "on":
+                            self.light.set_power(True)
+                        elif cmd in colors:
+                            self.light.set_color(colors[cmd])
+                        elif cmd == "pick":
+                            c = random.choice(list(colors.values()))
+                            self.light.set_color(c)
+                        elif cmd == "random":
+                            c = [
+                                randint(0, 65535),
+                                randint(0, 65535),
+                                randint(0, 65535),
+                                randint(0, 65535),
+                            ]
+                            self.light.set_color(c)
+                            await ctx.send("Color code: `" + str(c) + "`")
+                        else:
+                            self.light.set_color(cmd)
                     await ctx.send("Set light to `" + cmd + "`", reference=ctx.message)
                 except Exception as e:
                     syslog.log("IOT", "LIFX error `" + str(e) + "`")
