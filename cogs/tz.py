@@ -20,7 +20,7 @@ class TZ(commands.Cog):
     async def timein(self, ctx, first, second):
         """Get current time in a place"""
         r = requests.get("https://worldtimeapi.org/api/timezone/" + first + "/" + second)
-        obj = r.json
+        obj = r.json()
         dt = obj['datetime']
         await ctx.send(dt)
 
