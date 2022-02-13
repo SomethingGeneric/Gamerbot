@@ -28,7 +28,7 @@ class Cats(commands.Cog):
     @commands.command()
     async def catgif(self, ctx):
         r = requests.get("https://cataas.com/cat/gif", allow_redirects=True)
-        name = "".join(random.sample(string.ascii_lowercase+string.digits, 5)) + ".jpeg"
+        name = "".join(random.sample(string.ascii_lowercase+string.digits, 5)) + ".gif"
         open(name, "wb").write(r.content)
         await ctx.send(file=discord.File(name))
         os.remove(name)
