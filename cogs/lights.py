@@ -79,6 +79,7 @@ class IOT(commands.Cog):
             "pink": PINK,
             "crystal": [50929, 65535, 65535, 4000],
             "titties": [59313, 61439, 65535, 4000],
+            "acid": [33595, 62384, 65535, 4000],
         }
 
         if not isinstance(ctx.channel, discord.channel.DMChannel):
