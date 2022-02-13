@@ -16,7 +16,7 @@ class Floppa(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def catpic(self, ctx):
+    async def floppa(self, ctx):
         files = os.listdir("floppa")
         await ctx.send(file=discord.File(random.choice(files)))
 
