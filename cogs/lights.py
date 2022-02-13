@@ -95,32 +95,30 @@ class IOT(commands.Cog):
                 return
 
             if not os.path.exists(".lifx_disabled"):
-                ran = False
-                while not ran:
-                    try:
-                        if cmd == "off":
-                            self.light.set_power(False)
-                        elif cmd == "on":
-                            self.light.set_power(True)
-                        elif cmd in colors:
-                            self.light.set_color(colors[cmd])
-                        elif cmd == "pick":
-                            c = random.choice(list(colors.values()))
-                            self.light.set_color(c)
-                        elif cmd == "random":
-                            c = [
-                                randint(0, 65535),
-                                randint(0, 65535),
-                                randint(0, 65535),
-                                randint(0, 65535),
-                            ]
-                            self.light.set_color(c)
-                        else:
-                            self.light.set_color(cmd)
-                        break
-                    except Exception as e:
-                        syslog.log("IOT", "LIFX error `" + str(e) + "`")
-                await ctx.send("Set light to `" + cmd + "`", reference=ctx.message)
+                try:
+                    if cmd == "off":
+                        self.light.set_power(False)
+                    elif cmd == "on":
+                        self.light.set_power(True)
+                    elif cmd in colors:
+                        self.light.set_color(colors[cmd])
+                    elif cmd == "pick":
+                        c = random.choice(list(colors.values()))
+                        self.light.set_color(c)
+                    elif cmd == "random":
+                        c = [
+                            randint(0, 65535),
+                            randint(0, 65535),
+                            randint(0, 65535),
+                            randint(0, 65535),
+                        ]
+                        self.light.set_color(c)
+                    else:
+                        self.light.set_color(cmd)
+                    await ctx.send("Set light to `" + cmd + "`", reference=ctx.message)
+                except Exception as e:
+                    syslog.log("IOT", "LIFX error `" + str(e) + "`")
+                    await ctx.send("LIFX Error: ```" + str(e) + "```")
             else:
                 await ctx.send(
                     "Light control is currently disabled.", reference=ctx.message
