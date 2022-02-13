@@ -113,6 +113,7 @@ class IOT(commands.Cog):
                             randint(0, 65535),
                         ]
                         self.light.set_color(c)
+                        await ctx.send("Color code: `" + str(c) + "`")
                     else:
                         self.light.set_color(cmd)
                     await ctx.send("Set light to `" + cmd + "`", reference=ctx.message)
