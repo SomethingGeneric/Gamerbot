@@ -37,7 +37,7 @@ class Cats(commands.Cog):
 
     @commands.command()
     async def catsays(self, ctx, *, msg):
-        r = requests.get("https://cataas.com/cat" + urllib.parse.quote(msg.encode("utf-8")), allow_redirects=True)
+        r = requests.get("https://cataas.com/cat/says/" + urllib.parse.quote(msg.encode("utf-8")), allow_redirects=True)
         name = "".join(random.sample(string.ascii_lowercase+string.digits, 5)) + ".jpeg"
         open(name, "wb").write(r.content)
         await ctx.send(file=discord.File(name))
