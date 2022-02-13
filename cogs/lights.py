@@ -117,7 +117,7 @@ class IOT(commands.Cog):
                             await ctx.send("Color code: `" + str(c) + "`")
                         else:
                             self.light.set_color(cmd)
-                    await ctx.send("Set light to `" + cmd + "`", reference=ctx.message)
+                    await ctx.send("Set light to `" + str(cmd) + "`", reference=ctx.message)
                 except Exception as e:
                     syslog.log("IOT", "LIFX error `" + str(e) + "`")
                     await ctx.send("LIFX Error: ```" + str(e) + "```")
