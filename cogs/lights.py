@@ -78,6 +78,7 @@ class IOT(commands.Cog):
             "purple": PURPLE,
             "pink": PINK,
             "crystal": [50929, 65535, 65535, 4000],
+            "titties": [59313, 61439, 65535, 4000],
         }
 
         if not isinstance(ctx.channel, discord.channel.DMChannel):
@@ -121,6 +122,8 @@ class IOT(commands.Cog):
                 except Exception as e:
                     syslog.log("IOT", "LIFX error `" + str(e) + "`")
                     await ctx.send("LIFX Error: ```" + str(e) + "```")
+                    if isinstance(e, WorkflowException):
+                        await ctx.send("Since this is a case of the light being non-responsive, it's safe to try again.", reference=ctx.message)
             else:
                 await ctx.send(
                     "Light control is currently disabled.", reference=ctx.message
