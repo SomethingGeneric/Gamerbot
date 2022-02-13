@@ -8,7 +8,7 @@ from util_functions import *
 class WhenThe(commands.Cog):
     
     def __init__(self, bot):
-    self.bot = bot
+        self.bot = bot
 
     @commands.command()
     async def whenthe(self, ctx):
