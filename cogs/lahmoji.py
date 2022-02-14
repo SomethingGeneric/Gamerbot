@@ -6,7 +6,6 @@ import discord
 from discord.ext import commands
 
 from util_functions import *
-from server_config import serverconfig
 
 
 class lahmoji(commands.Cog):

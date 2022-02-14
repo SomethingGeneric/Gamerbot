@@ -7,12 +7,12 @@ from discord.ext import commands
 import asyncio
 
 from util_functions import *
-from server_config import serverconfig
+
 from memail import MEmail
 
 
-class Nag(commands.Cog):
-    """When Matt doesn't respond"""
+class SM(commands.Cog):
+    """When the owner doesn't respond"""
 
     def __init__(self, bot):
         self.bot = bot
@@ -30,4 +30,4 @@ class Nag(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(Nag(bot))
+    bot.add_cog(SM(bot))

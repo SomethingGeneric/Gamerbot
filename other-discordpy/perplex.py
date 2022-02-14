@@ -15,7 +15,7 @@ async def download(session):
     # Send GET request
     async with session.get(url) as request:
         # Generate file name
-        name = "".join(random.sample(string.ascii_lowercase+string.digits, 5))
+        name = "".join(random.sample(string.ascii_lowercase + string.digits, 5))
         # Open the file
         with open(f"./images/cat_{name}.png", "wb") as file:
             # Get each chunk & write
@@ -23,6 +23,7 @@ async def download(session):
                 file.write(chunk)
 
         print(f"Cat image downloaded: {name}")
+
 
 # Start the tasks
 async def start():
@@ -35,6 +36,7 @@ async def start():
 
         # Start each task
         await asyncio.gather(*tasks)
+
 
 # Start the start
 asyncio.get_event_loop().run_until_complete(start())

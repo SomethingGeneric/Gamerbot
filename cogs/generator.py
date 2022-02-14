@@ -7,7 +7,7 @@ import asyncio
 from PIL import Image, ImageDraw, ImageFont
 
 from util_functions import *
-from server_config import serverconfig
+
 
 # Hopefully we'll never need logging here
 # (but who knows)
@@ -18,7 +18,6 @@ class Memes(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.sconf = serverconfig()
 
     @commands.Cog.listener()
     async def on_message(self, message):

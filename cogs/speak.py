@@ -9,15 +9,12 @@ import asyncio
 # Mine
 from channel_state import VoiceState
 from util_functions import *
-from server_config import serverconfig
 
 
 class Speak(commands.Cog):
     """Text to speech go brr"""
 
     def __init__(self, bot):
-
-        self.sconf = serverconfig
         self.vs = VoiceState()
 
         self.bot = bot

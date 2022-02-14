@@ -36,10 +36,7 @@ IMAGE_RESPONSES = confmgr.getaslist("IMAGE_RESPONSES")
 DO_IMAGE_RESPONSE = confmgr.getasbool("DO_IMAGE_RESPONSES")
 IMAGE_RESPONSE_PROB = confmgr.getasint("IMAGE_RESPONSE_PROB")
 
-# list of integers
-MOD_IDS = confmgr.getasintlist("MOD_IDS")
-# and an int (vv)
-OWNER = confmgr.getasint("OWNER")
+OWNER_ID = confmgr.getasint("OWNER_ID")
 
 DEFAULT_STATUS_TYPE = confmgr.get("DEFAULT_STATUS_TYPE")
 DEFAULT_STATUS_TEXT = confmgr.get("DEFAULT_STATUS_TEXT")

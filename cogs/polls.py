@@ -5,7 +5,7 @@ from discord.ext import commands
 # (but who knows :/)
 
 from util_functions import *
-from server_config import serverconfig
+
 
 # Start polls
 class Polls(commands.Cog):
@@ -13,7 +13,6 @@ class Polls(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.sconf = serverconfig()
 
     @commands.command()
     async def poll(self, ctx, *, info=None):

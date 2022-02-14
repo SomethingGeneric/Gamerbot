@@ -68,14 +68,10 @@ MAPS_KEY:AIzaSyD4VzGxnlYLa0OTOxcHefmzjvDU0e-Kacg
 # Enable developer mode in discord, and right click a user/channel to get it's ID for the relevant sections
 # --------------------
 
+OWNER_ID:117445905572954121
+
 # NEED TO CHANGE
 # Permissions
-
-# Who gets sent messages abt swearing and can run privileged commands
-MOD_IDS:117445905572954121
-
-# Who gets all log messages, and run extra-privileged commands
-OWNER:117445905572954121
 
 # Should the owner get a DM when the bot restarts
 OWNER_DM_RESTART:True

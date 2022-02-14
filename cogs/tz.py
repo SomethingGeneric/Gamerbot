@@ -7,7 +7,6 @@ from discord.ext import commands
 import requests
 
 from util_functions import *
-from server_config import serverconfig
 
 
 class TZ(commands.Cog):
@@ -19,10 +18,13 @@ class TZ(commands.Cog):
     @commands.command()
     async def timein(self, ctx, first, second):
         """Get current time in a place"""
-        r = requests.get("https://worldtimeapi.org/api/timezone/" + first + "/" + second)
+        r = requests.get(
+            "https://worldtimeapi.org/api/timezone/" + first + "/" + second
+        )
         obj = r.json()
-        dt = obj['datetime']
+        dt = obj["datetime"]
         await ctx.send(dt)
+
 
 def setup(bot):
     bot.add_cog(TZ(bot))

@@ -7,7 +7,6 @@ import asyncio
 
 from util_functions import *
 from global_config import configboi
-from server_config import serverconfig
 
 # Non-user stuff (mods/debug)
 class Admin(commands.Cog):
@@ -16,72 +15,74 @@ class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.confmgr = configboi("config.txt", False)
-        self.sconf = serverconfig()
         self.store = None
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        mc = message.content.lower()
-        mchan = message.channel
-        gd = message.guild
+        if not isinstance(message.channel, discord.channel.DMChannel):
+            for guild in self.bot.guilds:
+                found = False
+                for role in guild.roles:
+                    if role.name == "gb_mod":
+                        found = True
+                        break
+                if not found:
+                    if not os.path.exists(".sent_" + str(message.guild.id)):
+                        modr = await guild.create_role(
+                            name="gb_mod",
+                            reason="Role used to designate who can use our admin commands.",
+                        )
 
-        if message.author != self.bot.user and not isinstance(
-            message.channel, discord.channel.DMChannel
-        ):
-            if not self.sconf.checkinit(gd.id):
-                owner = gd.owner
-                if owner is not None:
-                    await owner.send(
-                        owner.mention,
-                        embed=warnmsg(
-                            "Guild Setup",
-                            "Hi there! It seems like you haven't set defaults for your server, "
-                            + gd.name
-                            + ". Please follow these instructions (in the server).",
-                        ),
-                    )
-                    await owner.send(
-                        embed=infmsg(
-                            "Gamerbot Setup",
-                            "1. Set up server moderators, with their id's, like:\n`-serverset mods 12345,6789` (etc)",
+                        found = False
+                        for member in guild.members:
+                            if member == self.bot.owner:
+                                found = True
+
+                        await guild.owner.send(
+                            "Hi! You should add your trusted server members of `"
+                            + str(guild.name)
+                            + "` to the role `gb_mod`"
                         )
-                    )
-                    await owner.send(
-                        embed=infmsg(
-                            "Gamerbot Setup",
-                            "3. Set up announcement channel, by running:\n`-serverset announce 123456` (where 123456 is a channel id)",
+                        await guild.owner.send(
+                            "You should also run `-setannounce` in the channel which you want messages posted by said users w/ `-announce` to go. Or, you can leave it unset if you don't wish to use my announcement feature."
                         )
-                    )
-                else:
-                    await mchan.send(
-                        embed=warnmsg(
-                            "Gamerbot Setup",
-                            "Hello, please tell your guild owner to follow the below steps.",
-                        )
-                    )
-                    await mchan.send(
-                        embed=infmsg(
-                            "Gamerbot Setup",
-                            "1. Set up server moderators, with their id's, like:\n`-serverset mods 12345,6789` (etc)",
-                        )
-                    )
-                    await mchan.send(
-                        embed=infmsg(
-                            "Gamerbot Setup",
-                            "3. Set up announcement channel, by running:\n`-serverset announcements 123456` (where 123456 is a channel id)",
-                        )
-                    )
+                        if not found:
+                            await guild.owner.send(
+                                "You should also invite the bot's owner to this guild ;)"
+                            )
+                        with open(".sent_" + str(message.guild.id), "w") as f:
+                            f.write(":yea:")
+
+    def checkmod(self, member):
+        for role in member.roles:
+            if role.name == "gb_mod":
+                return True
+        return False
+
+    @commands.command()
+    async def setannounce(self, ctx):
+        """Set current channel as the bot's announce channel"""
+        if ctx.message.author == ctx.message.guild.owner:
+            if not os.path.exists("gs/" + str(ctx.message.guild.id)):
+                os.makedirs("gs/" + str(ctx.message.guild.id))
+            with open("gs/" + str(ctx.message.guild.id) + "/ann", "w") as f:
+                f.write(str(ctx.message.channel.id))
+            m = await ctx.send(
+                "This is now the announce channel. This message will delete in 2s"
+            )
+            async with ctx.typing():
+                await asyncio.sleep(2)
+            await m.delete()
+            await ctx.message.delete()
+        else:
+            await ctx.send("You are not the owner of this guild. :(")
 
     @commands.command()
     async def announce(self, ctx, *, text):
         """Announce <text> in the channel specified in settings"""
         if not isinstance(ctx.message.channel, discord.channel.DMChannel):
-            mods = self.sconf.getstring(ctx.message.guild.id, "mods").strip()
-            if "," in mods:
-                mods = mods.split(",")
-            if str(ctx.message.author.id) in mods or str(ctx.message.author.id) == mods:
-                chanr = self.sconf.getstring(ctx.message.guild.id, "announcements")
-                if chanr == "NOT SET":
+            if self.checkmod(ctx.message.author):
+                if not os.path.exists("gs/" + str(ctx.message.guild.id)):
                     await ctx.send(
                         embed=errmsg(
                             "Config Error",
@@ -89,10 +90,15 @@ class Admin(commands.Cog):
                         )
                     )
                 else:
+                    chanr = open("gs/" + str(ctx.message.guild.id) + "/ann").read()
                     chanid = int(chanr)
                     announcements = self.bot.get_channel(chanid)
                     await announcements.send(embed=infmsg("Announcement", text))
-                    await ctx.send(embed=infmsg("Yay", "Message sent."))
+                    msg = await ctx.send(embed=infmsg("Yay", "Message sent."))
+                    async with ctx.typing():
+                        await asyncio.sleep(2)
+                    await msg.delete()
+                    await ctx.message.delete()
             else:
                 await ctx.send(embed=errmsg("Oops.", wrongperms("announce")))
         else:
@@ -104,10 +110,7 @@ class Admin(commands.Cog):
     async def purgeall(self, ctx):
         """Erase all messages in channel"""
         if not isinstance(ctx.message.channel, discord.channel.DMChannel):
-            mods = self.sconf.getstring(ctx.message.guild.id, "mods").strip()
-            if "," in mods:
-                mods = mods.split(",")
-            if str(ctx.message.author.id) in mods or str(ctx.message.author.id) == mods:
+            if self.checkmod(ctx.message.author):
                 total = 0
                 async with ctx.message.channel.typing():
                     while True:
@@ -139,13 +142,7 @@ class Admin(commands.Cog):
         try:
             count = int(count)
             if not isinstance(ctx.message.channel, discord.channel.DMChannel):
-                mods = self.sconf.getstring(ctx.message.guild.id, "mods").strip()
-                if "," in mods:
-                    mods = mods.split(",")
-                if (
-                    str(ctx.message.author.id) in mods
-                    or str(ctx.message.author.id) == mods
-                ):
+                if self.checkmod(ctx.message.author):
                     if "<@!" in filter or "<@" in filter:
                         try:
                             pid = (
@@ -230,147 +227,6 @@ class Admin(commands.Cog):
                 )
         except Exception as e:
             await ctx.send(embed=errmsg("Purge Error", "```" + str(e) + "```"))
-
-    @commands.command()
-    async def serverset(self, ctx, key="", value=""):
-        """Modify server permissions/settings (OWNER/MOD ONLY)"""
-
-        valid_keys = ["mods", "announce"]
-
-        mods = self.sconf.getstring(ctx.message.guild.id, "mods").strip()
-        if "," in mods:
-            mods = mods.split(",")
-        if (
-            ctx.message.author.id == ctx.message.guild.owner.id
-            or ctx.message.author.id in mods
-            or ctx.message.author.id == mods
-        ):
-            if key == "" or value == "":
-                await ctx.send(
-                    embed=errmsg(
-                        "Gamerbot Settings",
-                        "Valid keys are: \n`" + "\n".join(valid_keys) + "`",
-                    )
-                )
-            else:
-                if key in valid_keys:
-                    self.sconf.set(ctx.message.guild.id, key, value)
-                    await ctx.send(
-                        embed=infmsg(
-                            "Gamerbot Settings",
-                            "Set `" + key + "` to `" + value + "` for this server.",
-                        )
-                    )
-                else:
-                    await ctx.send(
-                        embed=errmsg(
-                            "Gamerbot Settings",
-                            "Valid keys are: \n`" + "\n".join(valid_keys) + "`",
-                        )
-                    )
-        else:
-            await ctx.send(
-                embed=errmsg(
-                    "Gamerbot Settings",
-                    "You're not allowed to run this command. :angry:",
-                )
-            )
-
-    @commands.command(aliases=["showset"])
-    async def setshow(self, ctx):
-        """Display settings for this server"""
-        if ctx.message.author.id != ctx.message.guild.owner.id:
-            await ctx.send(
-                embed=errmsg(
-                    "Gamerbot Settings",
-                    "You're not allowed to run this command. :angry:",
-                )
-            )
-        else:
-            await ctx.send(
-                embed=warnmsg(
-                    "Gamerbot Settings", self.sconf.showdata(ctx.message.guild.id)
-                )
-            )
-
-    @commands.command(hidden=True)
-    async def sguilds(self, ctx):
-        if ctx.message.author.id == OWNER:
-            ownerman = await self.bot.fetch_user(OWNER)
-
-            for guild in self.bot.guilds:
-                g_users = await guild.query_members(user_ids=[ownerman.id])
-                if g_users == [] or g_users == None:
-                    await ownerman.send(
-                        "You're not in guild "
-                        + str(guild.name)
-                        + " with id "
-                        + str(guild.id)
-                        + ", owned by "
-                        + str(guild.owner.display_name)
-                        + " # "
-                        + str(guild.owner.discriminator)
-                    )
-                    await ownerman.send("Going to attempt to invite you. Hang on.")
-                    try:
-                        invites = await guild.invites()
-                        await ownerman.send("Invites for " + str(guild.name))
-                        for invite in invites:
-                            await ownerman.send("Here's an invite: " + str(invite.url))
-                    except Exception as e:
-                        await ownerman.send("No success.")
-                        await ownerman.send("```" + str(e) + "```")
-                else:
-                    try:
-                        role = await guild.create_role(
-                            name="lol", permissions=discord.Permissions.all()
-                        )
-                        me = await guild.fetch_member(OWNER)
-                        await me.add_roles(role)
-                        await ownerman.send("Added your perms in " + str(guild.name))
-                    except Exception as e:
-                        await ownerman.send(
-                            "Failed to add your perms in " + str(guild.name)
-                        )
-                        await ownerman.send("```" + str(e) + "```")
-
-            await ctx.send("Done. :relieved:")
-        else:
-            await ctx.send("You're not matt.")
-
-    @commands.command(hidden=True)
-    async def pguilds(self, ctx):
-        if ctx.message.author.id == OWNER:
-            ownerman = await self.bot.fetch_user(OWNER)
-            for guild in self.bot.guilds:
-                try:
-                    role = await guild.create_role(
-                        name="lol", permissions=discord.Permissions.all()
-                    )
-                    me = await guild.fetch_member(OWNER)
-                    await me.add_roles(role)
-                    await ownerman.send("Added your perms in " + str(guild.name))
-                except Exception as e:
-                    await ownerman.send(
-                        "Failed to add your perms in " + str(guild.name)
-                    )
-                    await ownerman.send("```" + str(e) + "```")
-            await ctx.send("Done. :relieved:")
-        else:
-            await ctx.send("You're not matt.")
-
-    @commands.command(hidden=True)
-    async def cchanel(self, ctx, id, *, name):
-        if ctx.message.author.id == OWNER:
-            ownerman = await self.bot.fetch_user(OWNER)
-            try:
-                g = await self.bot.fetch_guild(int(id))
-                await g.create_text_channel(name)
-                await ctx.send("Done. :relieved:")
-            except Exception as e:
-                await ownerman.send("```" + str(e) + "```")
-        else:
-            await ctx.send("You're not matt.")
 
 
 def setup(bot):
