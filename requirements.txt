@@ -8,3 +8,4 @@ requests
 youtube_dl
 gmplot
 lifxlan
+black

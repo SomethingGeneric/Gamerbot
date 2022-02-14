@@ -7,7 +7,7 @@ from discord.ext import commands
 import asyncio
 
 from util_functions import *
-from server_config import serverconfig
+
 
 from lifxlan import *
 
@@ -91,9 +91,9 @@ class IOT(commands.Cog):
                 await ctx.send("You can also say `random`, `sample`, `on`, or `off`")
                 return
             elif "#" in cmd:
-                tmp = cmd.replace("#","")
+                tmp = cmd.replace("#", "")
                 cmd = self.hex_to_hsbk(tmp)
-                
+
             if not os.path.exists(".lifx_disabled"):
                 try:
                     if type(cmd) == list:
@@ -119,12 +119,17 @@ class IOT(commands.Cog):
                             await ctx.send("Color code: `" + str(c) + "`")
                         else:
                             self.light.set_color(cmd)
-                    await ctx.send("Set light to `" + str(cmd) + "`", reference=ctx.message)
+                    await ctx.send(
+                        "Set light to `" + str(cmd) + "`", reference=ctx.message
+                    )
                 except Exception as e:
                     syslog.log("IOT", "LIFX error `" + str(e) + "`")
                     emsg = await ctx.send("LIFX Error: ```" + str(e) + "```")
                     if isinstance(e, WorkflowException):
-                        await ctx.send("Since this is a case of the light being non-responsive, it's safe to try again.", reference=emsg)
+                        await ctx.send(
+                            "Since this is a case of the light being non-responsive, it's safe to try again.",
+                            reference=emsg,
+                        )
             else:
                 await ctx.send(
                     "Light control is currently disabled.", reference=ctx.message
@@ -137,7 +142,7 @@ class IOT(commands.Cog):
     @commands.command()
     async def toggle_lifx(self, ctx):
         """(Bot owner only) Enable/disable light control"""
-        if ctx.message.author.id == OWNER:
+        if ctx.message.author.id == self.bot.owner_id:
             if not os.path.exists(".lifx_disabled"):
                 os.system("touch .lifx_disabled")
                 await ctx.send("Light control is now disabled.", reference=ctx.message)

@@ -6,7 +6,6 @@ from discord.ext import commands
 import asyncio
 
 from util_functions import *
-from server_config import serverconfig
 
 
 class Shells(commands.Cog):
@@ -94,9 +93,7 @@ class Shells(commands.Cog):
                 )
             )
         else:  # it's enabled, but is this user allowed?
-            if (
-                ctx.message.author.id in MOD_IDS or ctx.message.author.id == OWNER
-            ):  # yes they are
+            if self.bot.is_owner(ctx.message.author):  # yes they are
                 await self.handle_bash(ctx, True, cmd)
             else:
                 await ctx.send(

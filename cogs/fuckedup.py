@@ -6,7 +6,7 @@ from discord.ext import commands
 import asyncio
 
 from util_functions import *
-from server_config import serverconfig
+
 
 # I hate this file ngl
 

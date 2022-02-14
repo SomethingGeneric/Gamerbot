@@ -19,13 +19,11 @@ from pretty_help import DefaultMenu, PrettyHelp
 # My own classes n such
 from global_config import configboi
 from util_functions import *
-from server_config import serverconfig
 
 if os.path.sep == "\\":
     print("This bot is only supported on UNIX-like systems. Aborting.")
     sys.exit(1)
 
-sconf = serverconfig()
 
 intents = discord.Intents.default()
 intents.members = True
@@ -35,6 +33,7 @@ bot = commands.Bot(
     command_prefix=commands.when_mentioned_or("-"),
     description="It's always gamer hour",
     intents=intents,
+    owner_id=OWNER_ID,
 )
 
 helpmenu = DefaultMenu("◀️", "▶️", "❌")
@@ -67,7 +66,7 @@ async def on_ready():
             )
         os.remove("restarted.txt")
 
-    ownerman = await bot.fetch_user(OWNER)
+    ownerman = await bot.fetch_user(bot.owner_id)
 
     notifyowner = confmgr.getasbool("OWNER_DM_RESTART")
 
@@ -117,7 +116,7 @@ async def on_command_error(ctx, error):
 @bot.command()
 async def removecog(ctx, name):
     """Un-load a cog that was loaded by default."""
-    if ctx.message.author.id in MOD_IDS:
+    if bot.is_owner(ctx.message.author):
         await ctx.send(embed=infmsg("Gotcha", "Ok, I'll try to disable `" + name + "`"))
         try:
             bot.remove_cog(name)
@@ -134,7 +133,7 @@ async def removecog(ctx, name):
 @bot.command()
 async def getsyslog(ctx):
     """Get a copy of the system log"""
-    if ctx.message.author.id in MOD_IDS:
+    if bot.is_owner(ctx.message.author):
         log = syslog.getlog()
         if len(log) > 1994:
             text = paste(log)

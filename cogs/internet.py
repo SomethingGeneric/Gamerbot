@@ -10,7 +10,6 @@ import gmplot
 from util_functions import *
 from global_config import configboi
 
-from server_config import serverconfig
 
 # Fun internet things
 class Internet(commands.Cog):
@@ -19,7 +18,6 @@ class Internet(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.confmgr = configboi("config.txt", False)
-        self.sconf = serverconfig()
 
     async def getasjson(self, url):
         try:

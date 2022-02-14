@@ -3,7 +3,7 @@ from discord.ext import commands
 
 from util_functions import *
 from global_config import configboi
-from server_config import serverconfig
+
 
 # Hopefully we'll never need logging here
 
@@ -14,7 +14,6 @@ class Debug(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.confmgr = configboi("config.txt", False)
-        self.sconf = serverconfig()
 
     @commands.command()
     async def resetgd(self, ctx):
@@ -45,7 +44,7 @@ class Debug(commands.Cog):
     @commands.command()
     async def restart(self, ctx):
         """Restart the bot (Mod. only)"""
-        if ctx.message.author.id in MOD_IDS:
+        if self.bot.is_owner(ctx.message.author):
             await ctx.send(embed=infmsg("Sad", "Ok, restarting"))
             if ctx.voice_client is not None:
                 await ctx.voice_client.disconnect()
@@ -65,7 +64,7 @@ class Debug(commands.Cog):
     @commands.command()
     async def update(self, ctx):
         """Update bot from Git, and restart (Mod. only)"""
-        if ctx.message.author.id in MOD_IDS:
+        if self.bot.is_owner(ctx.message.author):
             await ctx.send(embed=infmsg("Updater", "Updating..."))
             syslog.log(
                 "Admin-Important",
@@ -102,7 +101,7 @@ class Debug(commands.Cog):
     @commands.command()
     async def chbranch(self, ctx, *, branch):
         """Switch bot's upstream to a given branch (Mod. only)"""
-        if ctx.message.author.id in MOD_IDS:
+        if self.bot.is_owner(ctx.message.author):
             await ctx.send(embed=infmsg("Updater", "Switching branch..."))
             syslog.log(
                 "Admin-Important",
@@ -128,7 +127,7 @@ class Debug(commands.Cog):
     @commands.command()
     async def purgesyslog(self, ctx):
         """Delete all existing syslogs (USE WITH CARE) (Owner only)"""
-        if ctx.message.author.id == OWNER:
+        if ctx.message.author.id == self.bot.owner_id:
             purged = await run_command_shell("rm system_log* -v")
             await ctx.send(
                 embed=infmsg("Syslog Purger", "We purged:\n```" + purged + "```")
