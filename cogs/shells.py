@@ -93,7 +93,7 @@ class Shells(commands.Cog):
                 )
             )
         else:  # it's enabled, but is this user allowed?
-            if self.bot.is_owner(ctx.message.author):  # yes they are
+            if await self.bot.is_owner(ctx.message.author):  # yes they are
                 await self.handle_bash(ctx, True, cmd)
             else:
                 await ctx.send(

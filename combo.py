@@ -116,7 +116,7 @@ async def on_command_error(ctx, error):
 @bot.command()
 async def removecog(ctx, name):
     """Un-load a cog that was loaded by default."""
-    if bot.is_owner(ctx.message.author):
+    if await bot.is_owner(ctx.message.author):
         await ctx.send(embed=infmsg("Gotcha", "Ok, I'll try to disable `" + name + "`"))
         try:
             bot.remove_cog(name)
@@ -133,7 +133,7 @@ async def removecog(ctx, name):
 @bot.command()
 async def getsyslog(ctx):
     """Get a copy of the system log"""
-    if bot.is_owner(ctx.message.author):
+    if await bot.is_owner(ctx.message.author):
         log = syslog.getlog()
         if len(log) > 1994:
             text = paste(log)
