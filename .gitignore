@@ -7,6 +7,9 @@ music/*
 system_log.txt*
 .emailpw
 *.zip
+system_log*
+gs/*
+.sent_*
 
 # End gamerbot stuff
 
