@@ -35,7 +35,7 @@ class Admin(commands.Cog):
 
                         found = False
                         for member in guild.members:
-                            if member == self.bot.owner:
+                            if await self.bot.is_owner(member):
                                 found = True
 
                         await guild.owner.send(
