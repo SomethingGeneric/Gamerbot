@@ -17,7 +17,7 @@ class Shells(commands.Cog):
 
         self.bash_priv = self.confmgr.getasbool("BASH_PRIV")
         self.bash_sandboxed = self.confmgr.getasbool("BASH_SANDBOXED")
-        self.do_python = self.confmgr.getasbool("PYTHON_SHELL")
+        self.sandbox_ssh_tgt = self.confmgr.get("SANDBOX_SSH_TGT")
 
         self.not_allowed = [
             "/",
@@ -57,7 +57,7 @@ class Shells(commands.Cog):
         if not privileged:
             for bad in self.not_allowed:
                 cmd = cmd.replace(bad, "")
-            prepend = 'ssh foo@192.168.122.205 "'
+            prepend = "ssh " + self.sandbox_ssh_tgt + ' "'
             append = '"'
 
         if "\n" in cmd:
