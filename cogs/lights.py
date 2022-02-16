@@ -153,6 +153,19 @@ class IOT(commands.Cog):
             await ctx.send("You're not the bot owner. :angry:")
 
     @commands.command()
+    async def toggle_webcam(self, ctx):
+        """(Bot owner only) Enable/disable webcam capture"""
+        if ctx.message.author.id == self.bot.owner_id:
+            if not os.path.exists(".webcam_disable"):
+                os.system("touch .webcam_disable")
+                await ctx.send("Webcam is now disabled.", reference=ctx.message)
+            else:
+                os.remove(".webcam_disable")
+                await ctx.send("Webcam is now enabled.", reference=ctx.message)
+        else:
+            await ctx.send("You're not the bot owner. :angry:")
+
+    @commands.command()
     async def room_pic(self, ctx):
         """Is the light on?"""
         if not DO_WEBCAM or os.path.exists(".webcam_disable"):
