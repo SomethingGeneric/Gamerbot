@@ -1,4 +1,5 @@
 import os, re, random
+from tempfile import TemporaryFile
 
 import discord
 from discord.ext import commands
@@ -41,6 +42,29 @@ class Memes(commands.Cog):
                     "Stop deadnaming Crystal Linux :angry:", reference=message
                 )
                 await mchan.send("(And stop deadnaming in general)")
+
+                COUNT = ".deadnames_" + str(message.author.id)
+                if not os.path.exists(COUNT):
+                    with open(COUNT, "w") as f:
+                        f.write("1")
+                    tc = 1
+                else:
+                    tc = int(open(COUNT).read()) + 1
+                    os.remove(COUNT)
+                    with open(COUNT, "w") as f:
+                        f.write(str(tc))
+
+                if tc == 10:
+                    try:
+                        await message.guild.kick(message.author)
+                        await message.author.send(
+                            "You were kicked for deadnaming too much."
+                        )
+                    except:
+                        await message.guild.owner.send(
+                            "You should kick/ban " + str(message.author.name)
+                        )
+
             elif "hello there" in mc:
                 await mchan.send(
                     "General Kenobi\nhttps://media1.giphy.com/media/UIeLsVh8P64G4/giphy.gif",
