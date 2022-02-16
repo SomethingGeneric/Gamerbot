@@ -20,6 +20,8 @@ The update function from git will not work unless you properly clone the repo an
     * Speak:
         * Arch: `sudo pacman -S espeak-ng`
         * Debian-based are probably the same
+    * Lights (LIFX):
+        * If you want webcam command to work, you need `fswebcam`. On Arch, this is in the AUR
 * Review things in config labeled `# NEED TO CHANGE`
 * Put bot's token in the user's `~/.token`, and run `python3 combo.py`
     * System-d service example:
