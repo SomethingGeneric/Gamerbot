@@ -152,6 +152,35 @@ class IOT(commands.Cog):
         else:
             await ctx.send("You're not the bot owner. :angry:")
 
+    @commands.command()
+    async def room_pic(self, ctx):
+        """Is the light on?"""
+        if not DO_WEBCAM or os.path.exists(".webcam_disable"):
+            await ctx.send("Bot owner has disabled webcam", reference=ctx.message)
+            return
+        else:
+            await ctx.send("Getting a pic. :camera_with_flash:")
+            if WEBCAM_LOCAL:
+                await run_command_shell("fswebcam --save gb_temp.jpg")
+            else:
+                if isup(SSH_TGT.split("@")[1]):
+                    await run_command_shell(
+                        "ssh " + SSH_TGT + ' "fswebcam --save gb_temp.jpg"'
+                    )
+                    await run_command_shell("scp " + SSH_TGT + ":gb_temp.jpg .")
+                    await run_command_shell("ssh " + SSH_TGT + ' `"rm gb_temp.jpg"')
+                else:
+                    await ctx.send(
+                        "Remote webcam host seems to be down. :(", reference=ctx.message
+                    )
+                    return
+
+        if os.path.exists("gb_temp.jpg"):
+            await ctx.send(file=discord.File("gb_temp.jpg"), reference=ctx.message)
+            os.remove("gb_temp.jpg")
+        else:
+            await ctx.send("Something went wrong.", reference=ctx.message)
+
 
 def setup(bot):
     bot.add_cog(IOT(bot))

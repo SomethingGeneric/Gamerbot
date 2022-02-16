@@ -51,6 +51,9 @@ SMTP_PASSWORD_FILE = confmgr.get("SMTP_PASSWORD_FILE")
 
 NAG_RECIEVER = confmgr.get("NAG_RECIEVER")
 
+DO_WEBCAM = confmgr.getasbool("DO_WEBCAM")
+WEBCAM_LOCAL = confmgr.getasbool("WEBCAM_LOCAL")
+SSH_TGT = confmgr.get("SSH_TGT")
 
 UNLOAD_COGS = confmgr.getaslist("UNLOAD_COGS")
 # <-------------- End --------------------->
@@ -191,7 +194,7 @@ def wrongperms(command):
 
 
 # Maybe add: https://docs.python.org/3/library/shlex.html#shlex.quote ?
-async def run_command_shell(command):
+async def run_command_shell(command, grc=False):
     """Run command in subprocess (shell)."""
 
     # Create subprocess
@@ -215,8 +218,19 @@ async def run_command_shell(command):
         # Result
         result = stderr.decode().strip()
 
-    # Return stdout
-    return result
+    if not grc:
+        # Return stdout
+        return result
+    else:
+        return (process.returncode, result)
+
+
+async def isup(host):
+    code, _ = await run_command_shell("ping -c 1 " + host)
+    if code == 0:
+        return True
+    else:
+        return False
 
 
 def paste(text):

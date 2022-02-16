@@ -15,12 +15,15 @@ bot = commands.Bot(
     intents=intents,
 )
 
+
 def log(stuff):
     print(stuff)
     with open("data.txt", "a+") as f:
         f.write(stuff + "\n")
 
+
 messages = ["troll", "kekw", "lol", "xd", "you're a hoe", "you're a whore"]
+
 
 @bot.event
 async def on_ready():
@@ -29,5 +32,6 @@ async def on_ready():
     fuckhead = await bot.fetch_user(722714559210717215)
     while True:
         await fuckhead.send(choice(messages))
+
 
 bot.run("")

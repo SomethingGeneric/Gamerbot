@@ -100,3 +100,10 @@ SMTP_PASSWORD_FILE:.emailpw
 
 # Nag config
 NAG_RECIEVER:matt@tar.black
+
+# Webcam config
+# please leave bottom two set even if you decide to disable webcam
+DO_WEBCAM:True
+WEBCAM_LOCAL:False
+# If not local (vv) (must have passwordless ssh!!)
+SSH_TGT:matt@10.0.0.46
