@@ -172,7 +172,7 @@ class IOT(commands.Cog):
             await ctx.send("Bot owner has disabled webcam", reference=ctx.message)
             return
         else:
-            await ctx.send("Getting a pic. :camera_with_flash:")
+            ini = await ctx.send("Getting a pic. :camera_with_flash:")
             if WEBCAM_LOCAL:
                 await run_command_shell("fswebcam --save gb_temp.jpg")
             else:
@@ -192,7 +192,11 @@ class IOT(commands.Cog):
             await ctx.send(file=discord.File("gb_temp.jpg"), reference=ctx.message)
             os.remove("gb_temp.jpg")
         else:
-            await ctx.send("Something went wrong.", reference=ctx.message)
+            SND = "Something went wrong."
+            if not WEBCAM_LOCAL:
+                SND += " Perhaps the remote host is down?"
+            await ctx.send(SND, reference=ctx.message)
+            await ini.delete()
 
 
 def setup(bot):
