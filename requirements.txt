@@ -1,4 +1,4 @@
-py-cord[voice]
+py-cord
 discord-pretty-help
 PyNaCl==1.4.0
 async-timeout==3.0.1

@@ -11,10 +11,6 @@ The update function from git will not work unless you properly clone the repo an
     * Debian based: `sudo apt install python3-dev git -y`
 * `pip3 install -r requirements.txt`
 * Other requirements per cog (if you're going to disable a cog, you shouldn't need it's requirements):
-    * Music:
-        * Arch: `sudo pacman -S opus libffi ffmpeg`
-        * Debian: `sudo apt install -y libopus-dev libffi-dev python-dev`
-        * Either: add path to `libopus.so` to `config.txt` 
     * Internet:
         * Arch: `sudo pacman -S curl traceroute whois nmap` 
         * Debian-based are probably the same
@@ -27,14 +23,7 @@ The update function from git will not work unless you properly clone the repo an
     * Shells:
         * Install `notop` and `nofetch` from https://github.com/jnats
 * Review things in config labeled `# NEED TO CHANGE`
-* Set the environment variable `bottoken` to your bot account token and run
-    * Example: `bottoken=<> python3 combo.py`
-    * Other example:
-        ```
-        #!/bin/bash
-        bottoken=<x>
-        python3 combo.py
-        ```
+* Put bot's token in the user's `~/.token`, and run ` python3 combo.py`
     * System-d service example:
         * Add to `/etc/systemd/system/<some_fn>.service`:
             ```
@@ -45,7 +34,6 @@ The update function from git will not work unless you properly clone the repo an
             [Service]
             User=gamerbot
             WorkingDirectory=/home/gamerbot/Gamerbot2
-            Environment="bottoken=SomeRandomComboOfStuffGoesHere"
             ExecStart=python3 combo.py
             Restart=always
 
