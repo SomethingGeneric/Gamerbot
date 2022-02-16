@@ -1,6 +1,4 @@
 import os, re, random
-from random import randint
-import asyncio
 
 import discord
 from discord.ext import commands
@@ -15,9 +13,15 @@ class Floppa(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def floppa(self, ctx):
-        files = os.listdir("floppa")
-        await ctx.send(file=discord.File("floppa/" + random.choice(files)))
+    async def floppa(self, ctx, *, emote=""):
+        if emote == "":
+            files = os.listdir("floppa")
+            await ctx.send(file=discord.File("floppa/" + random.choice(files)))
+        else:
+            if os.path.exists("floppa/" + emote + ".png"):
+                await ctx.send(file=discord.File("floppa/" + emote + ".png"))
+            else:
+                await ctx.send("No such floppa: `" + emote + "`", reference=ctx.message)
 
 
 def setup(bot):

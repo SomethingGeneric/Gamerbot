@@ -9,15 +9,21 @@ from util_functions import *
 
 
 class lahmoji(commands.Cog):
-    """Just floppa things :relieved:"""
+    """Just lah things :relieved:"""
 
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
-    async def lahmoji(self, ctx):
-        files = os.listdir("lahcollection")
-        await ctx.send(file=discord.File("lahcollection/" + random.choice(files)))
+    async def lahmoji(self, ctx, *, emote=""):
+        if emote == "":
+            files = os.listdir("lahcollection")
+            await ctx.send(file=discord.File("lahcollection/" + random.choice(files)))
+        else:
+            if os.path.exists("lahcollection/" + emote + ".png"):
+                await ctx.send(file=discord.File("lahcollection/" + emote + ".png"))
+            else:
+                await ctx.send("No such lahmoji: `" + emote + "`", reference=ctx.message)
 
 
 def setup(bot):
