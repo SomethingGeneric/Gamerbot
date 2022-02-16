@@ -20,7 +20,7 @@ class lahmoji(commands.Cog):
             files = os.listdir("lahcollection")
             await ctx.send(file=discord.File("lahcollection/" + random.choice(files)))
         else:
-            for ext in ["jpg", "png", "gif"]:
+            for ext in [".jpg", ".png", ".gif"]:
                 if os.path.exists("lahcollection/" + emote + ext):
                     await ctx.send(file=discord.File("lahcollection/" + emote + ext))
                     return
