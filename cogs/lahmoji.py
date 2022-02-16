@@ -20,10 +20,12 @@ class lahmoji(commands.Cog):
             files = os.listdir("lahcollection")
             await ctx.send(file=discord.File("lahcollection/" + random.choice(files)))
         else:
-            if os.path.exists("lahcollection/" + emote + ".png"):
-                await ctx.send(file=discord.File("lahcollection/" + emote + ".png"))
-            else:
-                await ctx.send("No such lahmoji: `" + emote + "`", reference=ctx.message)
+            for ext in ["jpg", "png", "gif"]:
+                if os.path.exists("lahcollection/" + emote + ext):
+                    await ctx.send(file=discord.File("lahcollection/" + emote + ext))
+                    return
+
+            await ctx.send("No such lahmoji: `" + emote + "`", reference=ctx.message)
 
 
 def setup(bot):
