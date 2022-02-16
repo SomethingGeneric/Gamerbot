@@ -20,10 +20,8 @@ The update function from git will not work unless you properly clone the repo an
     * Speak:
         * Arch: `sudo pacman -S espeak-ng`
         * Debian-based are probably the same
-    * Shells:
-        * Install `notop` and `nofetch` from https://github.com/jnats
 * Review things in config labeled `# NEED TO CHANGE`
-* Put bot's token in the user's `~/.token`, and run ` python3 combo.py`
+* Put bot's token in the user's `~/.token`, and run `python3 combo.py`
     * System-d service example:
         * Add to `/etc/systemd/system/<some_fn>.service`:
             ```
