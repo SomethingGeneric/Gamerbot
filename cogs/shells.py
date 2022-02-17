@@ -59,7 +59,7 @@ class Shells(commands.Cog):
         append = ""
 
         if not privileged:
-            #for bad in self.not_allowed:
+            # for bad in self.not_allowed:
             #    cmd = cmd.replace(bad, "")
             prepend = "ssh " + self.sandbox_ssh_tgt + ' "'
             append = '"'
@@ -137,10 +137,14 @@ class Shells(commands.Cog):
             append = '"'
 
             await run_command_shell(
-                prepend + "mkdir -p bin ; wget https://git.tar.black/notools/notop/-/raw/master/notop -O bin/notop && chmod +x bin/notop" + append
+                prepend
+                + "mkdir -p bin ; wget https://git.tar.black/notools/notop/-/raw/master/notop -O bin/notop && chmod +x bin/notop"
+                + append
             )
             await run_command_shell(
-                prepend + "wget https://git.tar.black/notools/nofetch/-/raw/master/nofetch -O bin/nofetch && chmod +x bin/nofetch" + append
+                prepend
+                + "wget https://git.tar.black/notools/nofetch/-/raw/master/nofetch -O bin/nofetch && chmod +x bin/nofetch"
+                + append
             )
 
     @commands.command()

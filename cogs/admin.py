@@ -228,6 +228,18 @@ class Admin(commands.Cog):
         except Exception as e:
             await ctx.send(embed=errmsg("Purge Error", "```" + str(e) + "```"))
 
+    @commands.command(hidden=True)
+    async def announce_all(self, ctx, *, message):
+        if await self.bot.is_owner(ctx.message.author):
+            await ctx.send("Announcing to all servers.")
+            for guild in self.bot.guilds:
+                for channel in guild.channels:
+                    try:
+                        await channel.send(message)
+                        break
+                    except:
+                        pass
+
 
 def setup(bot):
     bot.add_cog(Admin(bot))
