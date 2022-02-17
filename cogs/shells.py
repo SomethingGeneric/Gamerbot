@@ -49,6 +49,10 @@ class Shells(commands.Cog):
             "'",
         ]
 
+    def cog_unload(self):
+        if os.path.exists(".notools_setupdone"):
+            os.remove(".notools_setupdone")
+
     async def handle_bash(self, ctx, privileged=False, cmd=""):
 
         prepend = ""
@@ -119,12 +123,15 @@ class Shells(commands.Cog):
 
     @commands.Cog.listener("on_message")
     async def initNoTools(self, message):
-        await run_command_shell(
-            "wget https://git.tar.black/notools/notop/-/raw/master/notop -O bin/notop && chmod +x bin/notop"
-        )
-        await run_command_shell(
-            "wget https://git.tar.black/notools/nofetch/-/raw/master/nofetch -O bin/nofetch && chmod +x bin/nofetch"
-        )
+        if not os.path.exists(".notools_setupdone"):
+            await run_command_shell(
+                "wget https://git.tar.black/notools/notop/-/raw/master/notop -O bin/notop && chmod +x bin/notop"
+            )
+            await run_command_shell(
+                "wget https://git.tar.black/notools/nofetch/-/raw/master/nofetch -O bin/nofetch && chmod +x bin/nofetch"
+            )
+            with open('.notools_setupdone', 'w') as f:
+                f.write("yea")
 
     @commands.command()
     async def sysinfo(self, ctx):
