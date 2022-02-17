@@ -23,7 +23,9 @@ class TZ(commands.Cog):
         )
         obj = r.json()
         dt = obj["datetime"]
-        await ctx.send(dt)
+
+        date = dt.split("T")[0]
+        time = dt.split("T")[1]
 
 
 def setup(bot):

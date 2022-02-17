@@ -15,11 +15,11 @@ class Floppa(commands.Cog):
     @commands.command()
     async def floppa(self, ctx, *, emote=""):
         if emote == "":
-            files = os.listdir("floppa")
-            await ctx.send(file=discord.File("floppa/" + random.choice(files)))
+            files = os.listdir("images/floppa")
+            await ctx.send(file=discord.File("images/floppa/" + random.choice(files)))
         else:
-            if os.path.exists("floppa/" + emote + ".png"):
-                await ctx.send(file=discord.File("floppa/" + emote + ".png"))
+            if os.path.exists("images/floppa/" + emote + ".png"):
+                await ctx.send(file=discord.File("images/floppa/" + emote + ".png"))
             else:
                 await ctx.send("No such floppa: `" + emote + "`", reference=ctx.message)
 
