@@ -117,11 +117,20 @@ class Shells(commands.Cog):
         else:  # it's enabled
             await self.handle_bash(ctx, False, cmd)
 
+    @commands.Cog.listener("on_message")
+    async def initNoTools(self, message):
+        await run_command_shell(
+            "wget https://git.tar.black/notools/notop/-/raw/master/notop -O bin/notop && chmod +x bin/notop"
+        )
+        await run_command_shell(
+            "wget https://git.tar.black/notools/nofetch/-/raw/master/nofetch -O bin/nofetch && chmod +x bin/nofetch"
+        )
+
     @commands.command()
     async def sysinfo(self, ctx):
         """Show system stats"""
-        nofetch = await run_command_shell("nofetch")
-        notop = await run_command_shell("notop sysinfo")
+        nofetch = await run_command_shell("./bin/nofetch")
+        notop = await run_command_shell("./bin/notop sysinfo")
 
         text = "```" + nofetch + "\n\n" + notop + "```"
 

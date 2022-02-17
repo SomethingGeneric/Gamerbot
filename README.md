@@ -11,8 +11,8 @@ The update function from git will not work unless you properly clone the repo an
     * Debian based: `sudo apt install python3-dev git -y`
 * `pip3 install -r requirements.txt`
 * Other requirements per cog (if you're going to disable a cog, you shouldn't need it's requirements):
-    * Internet:
-        * Arch: `sudo pacman -S curl traceroute whois nmap` 
+    * Internet & Shells:
+        * Arch: `sudo pacman -S curl traceroute whois nmap wget` 
         * Debian-based are probably the same
     * Memes:
         * Arch: `sudo pacman -S figlet`
