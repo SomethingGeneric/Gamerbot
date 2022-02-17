@@ -133,6 +133,16 @@ class Shells(commands.Cog):
             with open(".notools_setupdone", "w") as f:
                 f.write("yea")
 
+            prepend = "ssh " + self.sandbox_ssh_tgt + ' "'
+            append = '"'
+
+            await run_command_shell(
+                prepend + "mkdir -p bin ; wget https://git.tar.black/notools/notop/-/raw/master/notop -O bin/notop && chmod +x bin/notop" + append
+            )
+            await run_command_shell(
+                prepend + "wget https://git.tar.black/notools/nofetch/-/raw/master/nofetch -O bin/nofetch && chmod +x bin/nofetch" + append
+            )
+
     @commands.command()
     async def sysinfo(self, ctx):
         """Show system stats"""
