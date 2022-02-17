@@ -69,6 +69,16 @@ class Chat(commands.Cog):
         await ctx.send(file=discord.File("images/yeah.png"))
 
     @commands.command()
+    async def no(self, ctx):
+        """it do not be like that"""
+        try:
+            await ctx.message.delete()
+        except Exception as e:
+            # This should only break if we don't have manage message perm
+            pass
+        await ctx.send(file=discord.File("images/no.png"))    
+
+    @commands.command()
     async def stoptalking(self, ctx):
         """just do."""
         try:
