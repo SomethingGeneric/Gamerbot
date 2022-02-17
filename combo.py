@@ -46,7 +46,7 @@ my_homedir = os.getenv("HOME", "/home/gamerbot")
 
 # No default b/c we're fucked long before this if PATH is none
 old_path = os.getenv("PATH")
-new_path = old_path + ":" + my_homedir + "/.local/bin/"
+new_path = old_path + ":" + my_homedir + "/.local/bin/:" + os.getcwd() + "/bin/"
 os.environ["PATH"] = new_path
 
 print("Our PATH is: " + os.getenv("PATH"))

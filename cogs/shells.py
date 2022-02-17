@@ -130,7 +130,7 @@ class Shells(commands.Cog):
             await run_command_shell(
                 "wget https://git.tar.black/notools/nofetch/-/raw/master/nofetch -O bin/nofetch && chmod +x bin/nofetch"
             )
-            with open('.notools_setupdone', 'w') as f:
+            with open(".notools_setupdone", "w") as f:
                 f.write("yea")
 
     @commands.command()
