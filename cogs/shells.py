@@ -59,8 +59,8 @@ class Shells(commands.Cog):
         append = ""
 
         if not privileged:
-            for bad in self.not_allowed:
-                cmd = cmd.replace(bad, "")
+            #for bad in self.not_allowed:
+            #    cmd = cmd.replace(bad, "")
             prepend = "ssh " + self.sandbox_ssh_tgt + ' "'
             append = '"'
 
