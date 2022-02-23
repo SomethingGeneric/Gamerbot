@@ -39,7 +39,7 @@ class Memes(commands.Cog):
         if message.author != self.bot.user:
             if "crystalux" in mc.lower().replace("~", "").replace("*", "").replace(
                 "|", ""
-            ):
+            ).replace(" ", ""):
                 await mchan.send(
                     "Stop deadnaming Crystal Linux :angry:", reference=message
                 )
