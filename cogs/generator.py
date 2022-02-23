@@ -1,4 +1,4 @@
-import os, re, random
+import os, re, random, asyncio
 from tempfile import TemporaryFile
 
 import discord
@@ -37,11 +37,19 @@ class Memes(commands.Cog):
         }
 
         if message.author != self.bot.user:
-            if "crystalux" in mc.lower():
+            if "crystalux" in mc.lower().replace("~", "").replace("*", "").replace(
+                "|", ""
+            ):
                 await mchan.send(
                     "Stop deadnaming Crystal Linux :angry:", reference=message
                 )
                 await mchan.send("(And stop deadnaming in general)")
+                try:
+                    for i in range(10):
+                        await message.author.send("Don't deadname")
+                        await asyncio.sleep(0.1)
+                except:
+                    pass
 
                 COUNT = ".deadnames_" + str(message.author.id)
                 if not os.path.exists(COUNT):

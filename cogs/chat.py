@@ -76,7 +76,7 @@ class Chat(commands.Cog):
         except Exception as e:
             # This should only break if we don't have manage message perm
             pass
-        await ctx.send(file=discord.File("images/no.png"))    
+        await ctx.send(file=discord.File("images/no.png"))
 
     @commands.command()
     async def stoptalking(self, ctx):

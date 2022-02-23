@@ -18,11 +18,15 @@ class lahmoji(commands.Cog):
     async def lahmoji(self, ctx, *, emote=""):
         if emote == "":
             files = os.listdir("images/lahcollection")
-            await ctx.send(file=discord.File("images/lahcollection/" + random.choice(files)))
+            await ctx.send(
+                file=discord.File("images/lahcollection/" + random.choice(files))
+            )
         else:
             for ext in [".jpg", ".png", ".gif"]:
                 if os.path.exists("images/lahcollection/" + emote + ext):
-                    await ctx.send(file=discord.File("images/lahcollection/" + emote + ext))
+                    await ctx.send(
+                        file=discord.File("images/lahcollection/" + emote + ext)
+                    )
                     return
 
             await ctx.send("No such lahmoji: `" + emote + "`", reference=ctx.message)
