@@ -148,15 +148,35 @@ class Speak(commands.Cog):
         for guild in self.bot.guilds:
             for vc in guild.voice_channels:
                 if len(vc.members) != 0:
+                    fail = False
+                    for member in vc.members:
+                        if member.id in DONT_SCARE:
+                            fail = True
                     if random.randint(1, 10) == 5:
-                        await self.speakInChannel(
-                            None,
-                            "Hi folks of "
-                            + str(guild.name)
-                            + random.choice(IMAGE_RESPONSES),
-                            chan=vc,
-                            stealth=True,
-                        )
+                        if not fail:
+                            await self.speakInChannel(
+                                None,
+                                "Hi folks of "
+                                + str(guild.name)
+                                + random.choice(IMAGE_RESPONSES),
+                                chan=vc,
+                                stealth=True,
+                            )
+                        else:
+                            syslog.log(
+                                "Speak-Client",
+                                "Not speaking in "
+                                + str(guild.name)
+                                + " because of "
+                                + str(member.display_name),
+                            )
+                            ownerman = await self.bot.fetch_user(self.bot.owner_id)
+                            await ownerman.send(
+                                "I'm not speaking in "
+                                + str(guild.name)
+                                + " because of "
+                                + str(member.display_name)
+                            )
             for chan in guild.text_channels:
                 try:
                     if random.randint(1, 1000) == 500:

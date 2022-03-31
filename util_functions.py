@@ -32,6 +32,8 @@ INTRO_CHANNEL = confmgr.get("INTRO_CHANNEL")
 # and a list (vv)
 IMAGE_RESPONSES = confmgr.getaslist("IMAGE_RESPONSES")
 
+DONT_SCARE = confmgr.getaslist("NO_SCARY")
+
 # and a boolean (vv)
 DO_IMAGE_RESPONSE = confmgr.getasbool("DO_IMAGE_RESPONSES")
 IMAGE_RESPONSE_PROB = confmgr.getasint("IMAGE_RESPONSE_PROB")
