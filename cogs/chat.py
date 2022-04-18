@@ -108,6 +108,13 @@ class Chat(commands.Cog):
             pass
         await ctx.send(file=discord.File("images/permit_crab.jpg"))
 
+    @commands.command()
+    async def whenthe(self, ctx):
+        """use this when the"""
+        await ctx.send(
+            "https://cdn.discordapp.com/attachments/732599669867413505/921838252275695686/7Vcj8V5vrrN7G71g.mp4"
+        )
+
 
 def setup(bot):
     bot.add_cog(Chat(bot))

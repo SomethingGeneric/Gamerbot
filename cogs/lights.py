@@ -104,11 +104,14 @@ class IOT(commands.Cog):
                         elif cmd == "on":
                             self.light.set_power(True)
                         elif cmd in colors:
+                            self.light.set_power(True)
                             self.light.set_color(colors[cmd])
                         elif cmd == "pick":
+                            self.light.set_power(True)
                             c = random.choice(list(colors.values()))
                             self.light.set_color(c)
                         elif cmd == "random":
+                            self.light.set_power(True)
                             c = [
                                 randint(0, 65535),
                                 randint(0, 65535),
@@ -118,6 +121,7 @@ class IOT(commands.Cog):
                             self.light.set_color(c)
                             await ctx.send("Color code: `" + str(c) + "`")
                         else:
+                            self.light.set_power(True)
                             self.light.set_color(cmd)
                     await ctx.send(
                         "Set light to `" + str(cmd) + "`", reference=ctx.message
