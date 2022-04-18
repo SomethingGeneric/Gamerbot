@@ -128,12 +128,6 @@ class IOT(commands.Cog):
                     )
                 except Exception as e:
                     syslog.log("IOT", "LIFX error `" + str(e) + "`")
-                    emsg = await ctx.send("LIFX Error: ```" + str(e) + "```")
-                    if isinstance(e, WorkflowException):
-                        await ctx.send(
-                            "Since this is a case of the light being non-responsive, it's safe to try again.",
-                            reference=emsg,
-                        )
             else:
                 await ctx.send(
                     "Light control is currently disabled.", reference=ctx.message
