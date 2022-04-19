@@ -144,10 +144,84 @@ class Chat(commands.Cog):
 
             await ctx.send("No such lahmoji: `" + emote + "`", reference=ctx.message)
 
+    def save_cat(self, fn):
+        shutil.move(fn, PASTE_BASE + "/" + fn)
+
+    @commands.command()
+    async def catpic(self, ctx):
+        r = requests.get("https://cataas.com/cat", allow_redirects=True)
+        name = (
+            "".join(random.sample(string.ascii_lowercase + string.digits, 5)) + ".jpeg"
+        )
+        open(name, "wb").write(r.content)
+        await ctx.send(file=discord.File(name))
+        self.save_cat(name)
+
+    @commands.command()
+    async def catgif(self, ctx):
+        r = requests.get("https://cataas.com/cat/gif", allow_redirects=True)
+        name = (
+            "".join(random.sample(string.ascii_lowercase + string.digits, 5)) + ".gif"
+        )
+        open(name, "wb").write(r.content)
+        await ctx.send(file=discord.File(name))
+        self.save_cat(name)
+
+    @commands.command()
+    async def catsays(self, ctx, *, msg):
+        r = requests.get(
+            "https://cataas.com/cat/says/" + urllib.parse.quote(msg.encode("utf-8")),
+            allow_redirects=True,
+        )
+        name = (
+            "".join(random.sample(string.ascii_lowercase + string.digits, 5)) + ".jpeg"
+        )
+        open(name, "wb").write(r.content)
+        await ctx.send(file=discord.File(name))
+        self.save_cat(name)
+
+    @commands.command()
+    async def poll(self, ctx, *, info=None):
+        """Make a poll with numeric options"""
+        EMOJIS = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"]
+        if not info:
+            await ctx.send(
+                "Please format your poll like: `-poll question,option1,option2, ... `"
+            )
+        else:
+            if not "," in info:
+                await ctx.send(
+                    "Please format your poll like: `-poll question,option1,option2, ... `"
+                )
+            else:
+                things = info.split(",")
+                embed = discord.Embed(
+                    color=discord.Colour.blurple(),
+                    title=f"Poll: {things[0]}",
+                )
+                await ctx.message.delete()
+                things.pop(0)
+                if len(things) < 10:
+                    eid = 0
+                    for choice in things:
+                        embed.add_field(
+                            name=f"{choice}", value=f"{EMOJIS[eid]}", inline=False
+                        )
+                        eid += 1
+                    embed.set_footer(text="Remember, count reactions-1 as total votes.")
+                    msg = await ctx.send(embed=embed)
+                    eid = 0
+                    for choice in things:
+                        await msg.add_reaction(EMOJIS[eid])
+                        eid += 1
+                else:
+                    await ctx.send("Too many choices :(")
+
     @commands.Cog.listener()
     async def on_message(self, message):
         if "lost" in message.content:
             await message.add_reaction("🗺️")
+
 
 def setup(bot):
     bot.add_cog(Chat(bot))
