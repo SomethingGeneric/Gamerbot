@@ -18,22 +18,12 @@ class Chat(commands.Cog):
     @commands.command()
     async def crab(self, ctx):
         """🦀🦀🦀🦀🦀"""
-        try:
-            await ctx.message.delete()
-        except Exception as e:
-            # This should only break if we don't have manage message perm
-            pass
         await ctx.send(
             "https://media.tenor.com/images/a16246936101a550918944740789de8a/tenor.gif",
         )
 
     @commands.command()
     async def deadchat(self, ctx):
-        try:
-            await ctx.message.delete()
-        except Exception as e:
-            # This should only break if we don't have manage message perm
-            pass
         await ctx.send(
             "https://media.tenor.com/images/f799b7d7993b74a7852e1eaf2695d9d7/tenor.gif",
         )
@@ -41,71 +31,36 @@ class Chat(commands.Cog):
     @commands.command()
     async def xd(self, ctx):
         """😂😂😂😂😂"""
-        try:
-            await ctx.message.delete()
-        except Exception as e:
-            # This should only break if we don't have manage message perm
-            pass
         await ctx.send(file=discord.File("images/LMAO.jpg"))
 
     @commands.command()
     async def kat(self, ctx):
         """*sad cat noises*"""
-        try:
-            await ctx.message.delete()
-        except Exception as e:
-            # This should only break if we don't have manage message perm
-            pass
         await ctx.send(file=discord.File("images/krying_kat.png"))
 
     @commands.command()
     async def yea(self, ctx):
         """it do be like that"""
-        try:
-            await ctx.message.delete()
-        except Exception as e:
-            # This should only break if we don't have manage message perm
-            pass
         await ctx.send(file=discord.File("images/yeah.png"))
 
     @commands.command()
     async def no(self, ctx):
         """it do not be like that"""
-        try:
-            await ctx.message.delete()
-        except Exception as e:
-            # This should only break if we don't have manage message perm
-            pass
         await ctx.send(file=discord.File("images/no.png"))
 
     @commands.command()
     async def stoptalking(self, ctx):
         """just do."""
-        try:
-            await ctx.message.delete()
-        except Exception as e:
-            # This should only break if we don't have manage message perm
-            pass
         await ctx.send(file=discord.File("images/stop_talking.png"))
 
     @commands.command()
     async def forkbomb(self, ctx):
         """rip to myself"""
-        try:
-            await ctx.message.delete()
-        except Exception as e:
-            # This should only break if we don't have manage message perm
-            pass
         await ctx.send(file=discord.File("images/forkbomb.jpg"))
 
     @commands.command()
     async def permit(self, ctx):
         """go right ahead."""
-        try:
-            await ctx.message.delete()
-        except Exception as e:
-            # This should only break if we don't have manage message perm
-            pass
         await ctx.send(file=discord.File("images/permit_crab.jpg"))
 
     @commands.command()
@@ -199,7 +154,6 @@ class Chat(commands.Cog):
                     color=discord.Colour.blurple(),
                     title=f"Poll: {things[0]}",
                 )
-                await ctx.message.delete()
                 things.pop(0)
                 if len(things) < 10:
                     eid = 0
