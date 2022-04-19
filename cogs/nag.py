@@ -8,8 +8,6 @@ import asyncio
 
 from util_functions import *
 
-from memail import MEmail
-
 
 class NAG(commands.Cog):
     """When the owner doesn't respond"""

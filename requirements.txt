@@ -9,4 +9,4 @@ youtube_dl
 gmplot
 lifxlan
 black
-duckduckgo2
+duckduckgo3
