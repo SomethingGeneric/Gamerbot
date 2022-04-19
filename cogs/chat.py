@@ -147,12 +147,7 @@ class Chat(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         if "lost" in message.content:
-            await message.channel.send("Sorry pal")
-            try:
-                await message.add_reaction("🗺️")
-            except Exception as e:
-                await message.channel.send(str(e))
-
+            await message.add_reaction("🗺️")
 
 def setup(bot):
     bot.add_cog(Chat(bot))
