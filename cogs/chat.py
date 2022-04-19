@@ -144,6 +144,10 @@ class Chat(commands.Cog):
 
             await ctx.send("No such lahmoji: `" + emote + "`", reference=ctx.message)
 
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if "lost" in message.content:
+            await message.add_reaction("map")
 
 def setup(bot):
     bot.add_cog(Chat(bot))
