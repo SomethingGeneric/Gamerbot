@@ -360,13 +360,14 @@ class Internet(commands.Cog):
 
     @commands.command()
     async def ddg(self, ctx, *, query):
-        await ctx.send(duckduckgo.get_zci(query))
+        await ctx.send(duckduckgo.get_zci(query), reference=ctx.message)
 
     @commands.Cog.listener()
     async def on_message(self, message):
         if "hey gamerbot" in message.content:
             await message.channel.send(
-                duckduckgo.get_zci(message.content.replace("hey gamerbot", ""))
+                duckduckgo.get_zci(message.content.replace("hey gamerbot", "")),
+                reference=message,
             )
 
 
