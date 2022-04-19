@@ -150,7 +150,7 @@ class Speak(commands.Cog):
                 if len(vc.members) != 0:
                     fail = False
                     for member in vc.members:
-                        if member.id in DONT_SCARE:
+                        if str(member.id) in DONT_SCARE:
                             fail = True
                     if random.randint(1, 10) == 5:
                         if not fail:
