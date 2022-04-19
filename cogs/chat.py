@@ -149,7 +149,7 @@ class Chat(commands.Cog):
         if "lost" in message.content:
             await message.channel.send("Sorry pal")
             try:
-                await message.add_reaction(":map:")
+                await message.add_reaction("🗺️")
             except Exception as e:
                 await message.channel.send(str(e))
 
