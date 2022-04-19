@@ -147,7 +147,12 @@ class Chat(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         if "lost" in message.content:
-            await message.add_reaction(":map:")
+            await message.channel.send("Sorry pal")
+            try:
+                await message.add_reaction(":map:")
+            except Exception as e:
+                await message.channel.send(str(e))
+
 
 def setup(bot):
     bot.add_cog(Chat(bot))
