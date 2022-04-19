@@ -21,12 +21,6 @@ class About(commands.Cog):
                 "My source code lives here: https://git.tar.black/matt/gamerbot2",
             )
         )
-        await ctx.send(
-            embed=infmsg(
-                "Other Sources",
-                "This bot uses other programs, some of which are at https://github.com/jnats\nAlso, googler is an external program from GitHub.",
-            )
-        )
 
     @commands.command()
     async def license(self, ctx):

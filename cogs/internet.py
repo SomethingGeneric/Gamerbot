@@ -6,6 +6,7 @@ import discord
 from discord.ext import commands
 import asyncio
 import gmplot
+import requests
 
 from util_functions import *
 from global_config import configboi
@@ -82,7 +83,7 @@ class Internet(commands.Cog):
     async def kernel(self, ctx):
         """Get Linux kernel info for host and latest"""
         try:
-            await ctx.send(embed=infmsg("Kernel", "Getting kernel info."))
+            m = await ctx.send(embed=infmsg("Kernel", "Getting kernel info."))
             data = await self.getasjson("https://www.kernel.org/releases.json")
             new_ver = data["latest_stable"]["version"]
             mine = await run_command_shell("uname -r")
@@ -93,6 +94,7 @@ class Internet(commands.Cog):
                 + new_ver
                 + "`"
             )
+            await m.delete()
             await ctx.send(embed=infmsg("Kernel", msg))
         except Exception as e:
             await ctx.send(
@@ -264,6 +266,18 @@ class Internet(commands.Cog):
                 "Internet-Important",
                 "Had an issue getting GeoIP data: `" + str(e) + "`",
             )
+
+    @commands.command()
+    async def timein(self, ctx, first, second):
+        """Get current time in a place"""
+        r = requests.get(
+            "https://worldtimeapi.org/api/timezone/" + first + "/" + second
+        )
+        obj = r.json()
+        dt = obj["datetime"]
+
+        date = dt.split("T")[0]
+        time = dt.split("T")[1]
 
     @commands.command(aliases=["tr-map"])
     async def trmap(self, ctx, *, ip):

@@ -115,6 +115,35 @@ class Chat(commands.Cog):
             "https://cdn.discordapp.com/attachments/732599669867413505/921838252275695686/7Vcj8V5vrrN7G71g.mp4"
         )
 
+    @commands.command()
+    async def floppa(self, ctx, *, emote=""):
+        """floppa things"""
+        if emote == "":
+            files = os.listdir("images/floppa")
+            await ctx.send(file=discord.File("images/floppa/" + random.choice(files)))
+        else:
+            if os.path.exists("images/floppa/" + emote + ".png"):
+                await ctx.send(file=discord.File("images/floppa/" + emote + ".png"))
+            else:
+                await ctx.send("No such floppa: `" + emote + "`", reference=ctx.message)
+
+    @commands.command()
+    async def lahmoji(self, ctx, *, emote=""):
+        if emote == "":
+            files = os.listdir("images/lahcollection")
+            await ctx.send(
+                file=discord.File("images/lahcollection/" + random.choice(files))
+            )
+        else:
+            for ext in [".jpg", ".png", ".gif"]:
+                if os.path.exists("images/lahcollection/" + emote + ext):
+                    await ctx.send(
+                        file=discord.File("images/lahcollection/" + emote + ext)
+                    )
+                    return
+
+            await ctx.send("No such lahmoji: `" + emote + "`", reference=ctx.message)
+
 
 def setup(bot):
     bot.add_cog(Chat(bot))
