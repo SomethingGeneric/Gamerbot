@@ -7,6 +7,7 @@ from discord.ext import commands
 import asyncio
 import gmplot
 import requests
+import duckduckgo
 
 from util_functions import *
 from global_config import configboi
@@ -355,6 +356,17 @@ class Internet(commands.Cog):
             )
             syslog.log(
                 "Internet-Important", "Had an issue making trmap: `" + str(e) + "`"
+            )
+
+    @commands.command()
+    async def ddg(self, ctx, *, query):
+        await ctx.send(duckduckgo.get_zci(query))
+
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if "hey gamerbot" in message.content:
+            await message.channel.send(
+                duckduckgo.get_zci(message.content.replace("hey gamerbot", ""))
             )
 
 
