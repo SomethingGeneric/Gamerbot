@@ -96,6 +96,9 @@ async def on_ready():
 @bot.event
 async def on_message(message):
 
+    if message.author.id == 839586494784340049:
+        await message.channel.send("Fuck off discord", reference=message)
+
     if message.author != bot.user:
 
         mc = message.content.lower()
