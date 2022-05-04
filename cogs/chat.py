@@ -184,8 +184,10 @@ class Chat(commands.Cog):
             "beastie": "✅",
             "daemon": "✅",
             "tux": "✅",
-            "kekw": "🤣",
+            "kek": "🤣",
             "grr": "🦁",
+            "wave": "🌊",
+            "surfing": "🏄",
         }
         for reaction in reactions.keys():
             if reaction in message.content:
