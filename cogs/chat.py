@@ -185,13 +185,15 @@ class Chat(commands.Cog):
             "daemon": "✅",
             "tux": "✅",
             "kek": "🤣",
+            "kekw": "🤣",
             "grr": "🦁",
             "wave": "🌊",
             "surfing": "🏄",
         }
         for reaction in reactions.keys():
-            if reaction in message.content:
-                await message.add_reaction(reactions[reaction])
+            for word in message.content.split(" "):
+                if word == reaction:
+                    await message.add_reaction(reactions[reaction])
 
 
 def setup(bot):
