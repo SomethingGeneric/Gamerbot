@@ -173,7 +173,20 @@ class Chat(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        reactions = {"cat":"🐱", "lost":"🗺️", "frog":"🐸", "dog":"🐶","gnome":"❌", "gnu":"❌", "bsd":"✅", "beastie":"✅", "daemon":"✅", "tux":"✅"}
+        reactions = {
+            "cat": "🐱",
+            "lost": "🗺️",
+            "frog": "🐸",
+            "dog": "🐶",
+            "gnome": "❌",
+            "gnu": "❌",
+            "bsd": "✅",
+            "beastie": "✅",
+            "daemon": "✅",
+            "tux": "✅",
+            "kekw": "🤣",
+            "grr": "🦁",
+        }
         for reaction in reactions.keys():
             if reaction in message.content:
                 await message.add_reaction(reactions[reaction])
