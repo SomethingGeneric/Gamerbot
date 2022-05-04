@@ -173,8 +173,10 @@ class Chat(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if "lost" in message.content:
-            await message.add_reaction("🗺️")
+        reactions = {"cat":"🐱", "lost":"🗺️", "frog":"🐸"}
+        for reaction in reactions.keys():
+            if reaction in message.content:
+                await message.add_reaction(reactions[reaction])
 
 
 def setup(bot):
