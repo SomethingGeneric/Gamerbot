@@ -84,7 +84,7 @@ OWNER_DM_RESTART:True
 BASH_PRIV:True
 # Can anyone use the (safer (but not fully secure)) shell command
 BASH_SANDBOXED:True
-SANDBOX_SSH_TGT:foo@192.168.122.205
+SANDBOX_SSH_TGT:matt@192.168.122.23
 
 # For LIFX/IOT Cog:
 LIFX_IP:10.0.0.32
