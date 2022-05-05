@@ -193,7 +193,7 @@ class Chat(commands.Cog):
         }
         for reaction in reactions.keys():
             for word in message.content.split(" "):
-                if word == reaction:
+                if re.sub(r'[^\w\s]', '', word.lower()) == reaction:
                     await message.add_reaction(reactions[reaction])
 
 
