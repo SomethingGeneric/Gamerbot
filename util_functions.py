@@ -1,5 +1,5 @@
 # System
-import os, sys, random, string
+import os, sys, random, string, threading
 
 # Pip
 import asyncio, requests, youtube_dl, discord
@@ -199,6 +199,7 @@ def wrongperms(command):
 async def run_command_shell(command, grc=False):
     """Run command in subprocess (shell)."""
 
+    kill = lambda proc: proc.kill()
     # Create subprocess
     process = await asyncio.create_subprocess_shell(
         command, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE
@@ -207,8 +208,14 @@ async def run_command_shell(command, grc=False):
     # Status
     print("Started:", command, "(pid = " + str(process.pid) + ")", flush=True)
 
-    # Wait for the subprocess to finish
-    stdout, stderr = await process.communicate()
+    kill_timer = threading.Timer(60, kill, [process])
+
+    try:
+        # Wait for the subprocess to finish
+        kill_timer.start()
+        stdout, stderr = await process.communicate()
+    except:
+        kill_timer.cancel()
 
     # Progress
     if process.returncode == 0:

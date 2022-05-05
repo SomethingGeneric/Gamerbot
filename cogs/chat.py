@@ -189,6 +189,7 @@ class Chat(commands.Cog):
             "grr": "🦁",
             "wave": "🌊",
             "surfing": "🏄",
+            "boo": "👻",
         }
         for reaction in reactions.keys():
             for word in message.content.split(" "):
