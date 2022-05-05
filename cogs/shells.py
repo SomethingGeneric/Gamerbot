@@ -133,6 +133,9 @@ class Shells(commands.Cog):
 
         await ctx.send(embed=embed)
 
+        prepend = "ssh " + self.sandbox_ssh_tgt + ' "'
+        append = '"'
+
         nofetch = await run_command_shell(prepend + "./bin/nofetch" + append)
         notop = await run_command_shell(prepend + "./bin/notop sysinfo" + append)
 
