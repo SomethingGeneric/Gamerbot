@@ -19,36 +19,6 @@ class Shells(commands.Cog):
         self.bash_sandboxed = self.confmgr.getasbool("BASH_SANDBOXED")
         self.sandbox_ssh_tgt = self.confmgr.get("SANDBOX_SSH_TGT")
 
-        self.not_allowed = [
-            "/",
-            "../",
-            "sudo",
-            "rm",
-            "mv",
-            "cp",
-            "sed",
-            "cd",
-            "shutdown",
-            "poweroff",
-            "reboot",
-            "{",
-            "}",
-            "()",
-            ":(){ :|:& };:",
-            ":(){",
-            "/dev/urandom",
-            "/dev",
-            "/etc",
-            "gamerbot",
-            "gamerbot2",
-            "token",
-            "~/token",
-            "~",
-            "/proc",
-            '"',
-            "'",
-        ]
-
     def cog_unload(self):
         if os.path.exists(".notools_setupdone"):
             os.remove(".notools_setupdone")
@@ -59,8 +29,6 @@ class Shells(commands.Cog):
         append = ""
 
         if not privileged:
-            # for bad in self.not_allowed:
-            #    cmd = cmd.replace(bad, "")
             prepend = "ssh " + self.sandbox_ssh_tgt + ' "'
             append = '"'
 
@@ -121,8 +89,7 @@ class Shells(commands.Cog):
         else:  # it's enabled
             await self.handle_bash(ctx, False, cmd)
 
-    @commands.Cog.listener("on_message")
-    async def initNoTools(self, message):
+    async def ensure_notools(self):
         if not os.path.exists(".notools_setupdone"):
             await run_command_shell(
                 "wget https://git.tar.black/notools/notop/-/raw/master/notop -O bin/notop && chmod +x bin/notop"
@@ -130,8 +97,6 @@ class Shells(commands.Cog):
             await run_command_shell(
                 "wget https://git.tar.black/notools/nofetch/-/raw/master/nofetch -O bin/nofetch && chmod +x bin/nofetch"
             )
-            with open(".notools_setupdone", "w") as f:
-                f.write("yea")
 
             prepend = "ssh " + self.sandbox_ssh_tgt + ' "'
             append = '"'
@@ -147,6 +112,13 @@ class Shells(commands.Cog):
                 + append
             )
 
+            with open(".notools_setupdone", "w") as f:
+                f.write("yea")
+
+    @commands.Cog.listener("on_message")
+    async def initNoTools(self, message):
+        await self.ensure_notools()
+
     @commands.command()
     async def sysinfo(self, ctx):
         """Show system stats"""
@@ -156,7 +128,18 @@ class Shells(commands.Cog):
         text = "```" + nofetch + "\n\n" + notop + "```"
 
         embed = infmsg(
-            "System Stats", text, footnote="Thanks to jnats for notop and nofetch"
+            "Host system Stats", text, footnote="Thanks to jnats for notop and nofetch"
+        )
+
+        await ctx.send(embed=embed)
+
+        nofetch = await run_command_shell(prepend + "./bin/nofetch" + append)
+        notop = await run_command_shell(prepend + "./bin/notop sysinfo" + append)
+
+        text = "```" + nofetch + "\n\n" + notop + "```"
+
+        embed = infmsg(
+            "Bash system Stats", text, footnote="Thanks to jnats for notop and nofetch"
         )
 
         await ctx.send(embed=embed)
