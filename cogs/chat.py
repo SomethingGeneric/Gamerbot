@@ -191,8 +191,8 @@ class Chat(commands.Cog):
             "surfing": "🏄",
             "boo": "👻",
         }
-        for reaction in reactions.keys():
-            for word in message.content.split(" "):
+        for word in message.content.split(" "):
+            for reaction in reactions.keys():
                 if re.sub(r'[^\w\s]', '', word.lower()) == reaction:
                     await message.add_reaction(reactions[reaction])
 
