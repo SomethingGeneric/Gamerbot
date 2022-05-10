@@ -63,15 +63,16 @@ class Meows(commands.Cog):
                 auth = True
 
         if auth:
+            owhere = where
             if where == "channel":
                 where = str(ctx.message.channel.id)
             else:
                 where = str(ctx.message.guild.id)
             res = self.mm.toggle_disabled(key, where)
             if res:
-                await ctx.send("`" + key + "` is now enabled in this " + where)
+                await ctx.send("`" + key + "` is now enabled in this " + owhere + " : " + where)
             else:
-                await ctx.send("`" + key + "` is now disabled in this " + where)
+                await ctx.send("`" + key + "` is now disabled in this " + owhere + " : " + where)
         else:
             await ctx.send("You're not a moderator")
 
