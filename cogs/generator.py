@@ -112,7 +112,10 @@ class Memes(commands.Cog):
                 if random.randint(
                     1, IMAGE_RESPONSE_PROB
                 ) == IMAGE_RESPONSE_PROB and "filename" in str(message.attachments):
-                    await mchan.send(random.choice(IMAGE_RESPONSES), reference=message)
+                    if not os.path.exists(".nomeow_" + str(message.guild.id)):
+                        await mchan.send(
+                            random.choice(IMAGE_RESPONSES), reference=message
+                        )
 
     @commands.command()
     async def figlet(self, ctx, *, text):

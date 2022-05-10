@@ -23,7 +23,7 @@ class Shells(commands.Cog):
         if os.path.exists(".notools_setupdone"):
             os.remove(".notools_setupdone")
 
-    async def handle_bash(self, ctx, privileged=False, cmd=""):
+    async def handle_bash(self, ctx=None, msg=None, privileged=False, cmd=""):
 
         prepend = ""
         append = ""
@@ -38,21 +38,49 @@ class Shells(commands.Cog):
         out = await run_command_shell(prepend + cmd + append)
 
         if len(out) == 0:
-            await ctx.send(
-                embed=infmsg("Shells: `" + cmd + "`", "Returned nothing"),
-                reference=ctx.message,
-            )
+            if ctx != None:
+                await ctx.send(
+                    embed=infmsg("Shells: `" + cmd + "`", "Returned nothing"),
+                    reference=ctx.message,
+                )
+            elif msg != None:
+                await msg.channel.send(
+                    embed=infmsg("Shells: `" + cmd + "`", "Returned nothing"),
+                    reference=msg,
+                )
+            else:
+                print("Neither response option was valid")
         elif len(out) > 1000:
             url = paste(out)
-            await ctx.send(
-                embed=infmsg("Shells: Paste URL", "Output was too long. See: " + url),
-                reference=ctx.message,
-            )
+            if ctx != None:
+                await ctx.send(
+                    embed=infmsg(
+                        "Shells: Paste URL", "Output was too long. See: " + url
+                    ),
+                    reference=ctx.message,
+                )
+            elif msg != None:
+                await msg.channel.send(
+                    embed=infmsg(
+                        "Shells: Paste URL", "Output was too long. See: " + url
+                    ),
+                    reference=msg,
+                )
+            else:
+                print("Neither response option was valid")
         else:
-            await ctx.send(
-                embed=infmsg("Shells: `" + cmd + "`", "```" + out + "```"),
-                reference=ctx.message,
-            )
+            if ctx != None:
+                await ctx.send(
+                    embed=infmsg("Shells: `" + cmd + "`", "```" + out + "```"),
+                    reference=ctx.message,
+                )
+            elif msg != None:
+                await msg.channel.send(
+                    embed=infmsg("Shells: `" + cmd + "`", "```" + out + "```"),
+                    reference=msg,
+                )
+            else:
+                print("Neither response option was valid")
 
     @commands.command()
     async def priv_bash(self, ctx, *, cmd: str):
@@ -116,7 +144,7 @@ class Shells(commands.Cog):
                 f.write("yea")
 
     @commands.Cog.listener("on_message")
-    async def initNoTools(self, message):
+    async def msg_func(self, message):
         await self.ensure_notools()
 
     @commands.command()

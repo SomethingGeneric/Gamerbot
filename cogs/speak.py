@@ -180,8 +180,9 @@ class Speak(commands.Cog):
             for chan in guild.text_channels:
                 try:
                     if random.randint(1, 1000) == 500:
-                        await chan.send(random.choice(IMAGE_RESPONSES))
-                        break
+                        if not os.path.exists(".nomeow_" + str(message.guild.id)):
+                            await chan.send(random.choice(IMAGE_RESPONSES))
+                            break
                 except:
                     pass
 
