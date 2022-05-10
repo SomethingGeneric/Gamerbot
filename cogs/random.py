@@ -20,28 +20,6 @@ class Random(commands.Cog):
         )
 
     @commands.command()
-    async def prime(self, ctx, num: int):
-        """Check if <num> is prime"""
-        if num > 1:
-            # Iterate from 2 to n / 2
-            for i in range(2, num):
-                # If num is divisible by any number between
-                # 2 and n / 2, it is not prime
-                if (num % i) == 0:
-                    await ctx.send(
-                        embed=infmsg("Quick mafs", str(num) + " is not a prime number")
-                    )
-                    break
-                else:
-                    await ctx.send(
-                        embed=infmsg("Quick mafs", str(num) + " is a prime number")
-                    )
-        else:
-            await ctx.send(
-                embed=infmsg("Quick mafs", str(num) + " is not a prime number")
-            )
-
-    @commands.command()
     async def math(self, ctx, *, exp):
         """Do simple math on an expression (uses BC)"""
         res = await run_command_shell('echo "' + exp + '" | bc')

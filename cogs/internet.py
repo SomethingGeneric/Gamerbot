@@ -109,7 +109,7 @@ class Internet(commands.Cog):
         url = "https://www.google.com/search?q="
         async with ctx.typing():
             await asyncio.sleep(1)
-        await ctx.send(embed=infmsg("Go to", url + urllib.parse.quote(query)))
+        await ctx.send(embed=infmsg("Go to: ", url + urllib.parse.quote(query)))
 
     @commands.command()
     async def traceroute(self, ctx, *, url):
@@ -267,18 +267,6 @@ class Internet(commands.Cog):
                 "Internet-Important",
                 "Had an issue getting GeoIP data: `" + str(e) + "`",
             )
-
-    @commands.command()
-    async def timein(self, ctx, first, second):
-        """Get current time in a place"""
-        r = requests.get(
-            "https://worldtimeapi.org/api/timezone/" + first + "/" + second
-        )
-        obj = r.json()
-        dt = obj["datetime"]
-
-        date = dt.split("T")[0]
-        time = dt.split("T")[1]
 
     @commands.command(aliases=["tr-map"])
     async def trmap(self, ctx, *, ip):
