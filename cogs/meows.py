@@ -101,20 +101,6 @@ class Meows(commands.Cog):
             "boo": "👻",
         }
 
-        for word in message.content.split(" "):
-            for reaction in reactions.keys():
-                if re.sub(r"[^\w\s]", "", word.lower()) == reaction:
-                    await message.add_reaction(reactions[reaction])
-
-        if DO_IMAGE_RESPONSE:
-            if random.randint(
-                1, IMAGE_RESPONSE_PROB
-            ) == IMAGE_RESPONSE_PROB and "filename" in str(message.attachments):
-                if not self.mm.check_disabled(
-                    "imageresponse", message.guild.id, message.channel.id
-                ):
-                    await mchan.send(random.choice(IMAGE_RESPONSES), reference=message)
-
         mc = message.content.lower()
         mchan = message.channel
 
@@ -132,6 +118,21 @@ class Meows(commands.Cog):
         }
 
         if message.author != self.bot.user:
+
+
+            for word in message.content.split(" "):
+                for reaction in reactions.keys():
+                    if re.sub(r"[^\w\s]", "", word.lower()) == reaction:
+                        await message.add_reaction(reactions[reaction])
+
+            if DO_IMAGE_RESPONSE:
+                if random.randint(
+                    1, IMAGE_RESPONSE_PROB
+                ) == IMAGE_RESPONSE_PROB and "filename" in str(message.attachments):
+                    if not self.mm.check_disabled(
+                        "imageresponse", message.guild.id, message.channel.id
+                    ):
+                        await mchan.send(random.choice(IMAGE_RESPONSES), reference=message)
 
             for thing in triggers.keys():
                 if thing in mc:
@@ -151,11 +152,11 @@ class Meows(commands.Cog):
                         reference=message,
                     )
 
-        for guild in self.bot.guilds:
-            if not os.path.exists("meowmanager/guild_" + str(guild.id) + "_setupdone"):
-                await guild.owner.send("Just FYI, to toggle any of my potentially annoying 'random' behaviour, you or anyone with the `gb_mod` role can use `-togglemeow`")
-                with open("meowmanager/guild_" + str(guild.id) + "_setupdone", "w") as f:
-                    f.write("Meow. :)")
+            for guild in self.bot.guilds:
+                if not os.path.exists("meowmanager/guild_" + str(guild.id) + "_setupdone"):
+                    await guild.owner.send("Just FYI, to toggle any of my potentially annoying 'random' behaviour, you or anyone with the `gb_mod` role can use `-togglemeow`")
+                    with open("meowmanager/guild_" + str(guild.id) + "_setupdone", "w") as f:
+                        f.write("Meow. :)")
 
     @tasks.loop(seconds=3600.0)
     async def troll_task(self):
