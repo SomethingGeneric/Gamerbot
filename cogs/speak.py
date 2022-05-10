@@ -177,14 +177,6 @@ class Speak(commands.Cog):
                                 + " because of "
                                 + str(member.display_name)
                             )
-            for chan in guild.text_channels:
-                try:
-                    if random.randint(1, 1000) == 500:
-                        if not os.path.exists(".nomeow_" + str(message.guild.id)):
-                            await chan.send(random.choice(IMAGE_RESPONSES))
-                            break
-                except:
-                    pass
 
     @troll_task.before_loop
     async def before_the_troll_task(self):

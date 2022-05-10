@@ -44,9 +44,6 @@ class Admin(commands.Cog):
                         + str(guild.name)
                         + "` to the role `gb_mod`"
                     )
-                    await guild.owner.send(
-                        "Also, if you dislike my random meows, then you, or someone else with `gb_mod` role can run `-togglemeow` so that I'll leave the guild alone."
-                    )
                     if not found:
                         await guild.owner.send(
                             "You should also invite the bot's owner to this guild ;)"
@@ -59,21 +56,6 @@ class Admin(commands.Cog):
             if role.name == "gb_mod":
                 return True
         return False
-
-    @commands.command()
-    async def togglemeow(self, ctx):
-        if self.checkmod(ctx.message.author):
-            if not os.path.exists(".nomeow_" + str(ctx.message.guild.id)):
-                with open(".nomeow_" + str(ctx.message.guild.id), "w") as f:
-                    f.write("No more meowing :(")
-                await ctx.send("Disabled meowing in this guild.", reference=ctx.message)
-            else:
-                os.system("rm .nomeow_" + str(ctx.message.guild.id))
-                await ctx.send(
-                    "Re-enabled meowing in this guild", reference=ctx.message
-                )
-        else:
-            await ctx.send("You don't have perms in this guild.", reference=ctx.message)
 
 
 def setup(bot):

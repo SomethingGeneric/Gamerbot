@@ -171,31 +171,6 @@ class Chat(commands.Cog):
                 else:
                     await ctx.send("Too many choices :(")
 
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        reactions = {
-            "cat": "🐱",
-            "lost": "🗺️",
-            "frog": "🐸",
-            "dog": "🐶",
-            "gnome": "❌",
-            "gnu": "❌",
-            "bsd": "✅",
-            "beastie": "✅",
-            "daemon": "✅",
-            "tux": "✅",
-            "kek": "🤣",
-            "kekw": "🤣",
-            "grr": "🦁",
-            "wave": "🌊",
-            "surfing": "🏄",
-            "boo": "👻",
-        }
-        for word in message.content.split(" "):
-            for reaction in reactions.keys():
-                if re.sub(r"[^\w\s]", "", word.lower()) == reaction:
-                    await message.add_reaction(reactions[reaction])
-
 
 def setup(bot):
     bot.add_cog(Chat(bot))

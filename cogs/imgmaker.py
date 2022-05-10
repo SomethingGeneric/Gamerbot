@@ -14,108 +14,11 @@ from util_functions import *
 # (but who knows)
 
 # Start memes
-class Memes(commands.Cog):
+class ImageMaker(commands.Cog):
     """Haha image manipulation go brr"""
 
     def __init__(self, bot):
         self.bot = bot
-
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        mc = message.content.lower()
-        mchan = message.channel
-
-        triggers = {
-            "scratch": "all my homies hate scratch",
-            "tesla": "elon more like pee-lon",
-            "elon": "elon more like pee-lon",
-            "rms": "RMS is a pedo",
-            "stallman": "RMS is a pedo",
-            "epstein": "didn't kill himself",
-            "forgor": "💀 they forgor",
-            "rember": "👼 they rember",
-        }
-
-        if message.author != self.bot.user:
-            if "crystalux" in mc.lower().replace("~", "").replace("*", "").replace(
-                "|", ""
-            ).replace(" ", ""):
-                await mchan.send(
-                    "Stop deadnaming Crystal Linux :angry:", reference=message
-                )
-                await mchan.send("(And stop deadnaming in general)")
-                try:
-                    for i in range(10):
-                        await message.author.send("Don't deadname")
-                        await asyncio.sleep(0.1)
-                except:
-                    pass
-
-                COUNT = ".deadnames_" + str(message.author.id)
-                if not os.path.exists(COUNT):
-                    with open(COUNT, "w") as f:
-                        f.write("1")
-                    tc = 1
-                else:
-                    tc = int(open(COUNT).read()) + 1
-                    os.remove(COUNT)
-                    with open(COUNT, "w") as f:
-                        f.write(str(tc))
-
-                if tc == 10:
-                    try:
-                        await message.guild.kick(message.author)
-                        await message.author.send(
-                            "You were kicked for deadnaming too much."
-                        )
-                    except:
-                        await message.guild.owner.send(
-                            "You should kick/ban " + str(message.author.name)
-                        )
-
-            elif "hello there" in mc:
-                await mchan.send(
-                    "General Kenobi\nhttps://media1.giphy.com/media/UIeLsVh8P64G4/giphy.gif",
-                    reference=message,
-                )
-            else:
-                try:
-                    if " " in mc:
-                        tw = 0
-                        act = ""
-                        for word in mc.split(" "):
-                            if word in triggers:
-                                tw += 1
-                                act = word
-                        if tw == 1:
-                            await mchan.send(triggers[act], reference=message)
-                        elif tw > 1:
-                            await mchan.send(
-                                message.author.mention + " don't be an asshat. :angry:",
-                                reference=message,
-                            )
-                    else:
-                        if mc in triggers:
-                            await mchan.send(triggers[mc], reference=message)
-                except Exception as e:
-                    await mchan.send(embed=errmsg("Error", "```" + str(e) + "```"))
-
-            if "comrade sharkfact" in mc:
-                with open("data/sharkfacts.txt", encoding="cp1252") as f:
-                    sharkList = f.read().split("\n")
-                await mchan.send(
-                    embed=infmsg("Sharkfact", random.choice(sharkList)),
-                    reference=message,
-                )
-
-            if DO_IMAGE_RESPONSE:
-                if random.randint(
-                    1, IMAGE_RESPONSE_PROB
-                ) == IMAGE_RESPONSE_PROB and "filename" in str(message.attachments):
-                    if not os.path.exists(".nomeow_" + str(message.guild.id)):
-                        await mchan.send(
-                            random.choice(IMAGE_RESPONSES), reference=message
-                        )
 
     @commands.command()
     async def figlet(self, ctx, *, text):
@@ -233,4 +136,4 @@ class Memes(commands.Cog):
 
 # End memes
 def setup(bot):
-    bot.add_cog(Memes(bot))
+    bot.add_cog(ImageMaker(bot))
