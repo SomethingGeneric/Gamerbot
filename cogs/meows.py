@@ -45,7 +45,7 @@ class Meows(commands.Cog):
         self.troll_task.cancel()
 
     @commands.command()
-    async def togglemeow(self, ctx, key, where):
+    async def togglemeow(self, ctx, key="", where=""):
         """Disable or enable a given type of meow"""
         if key is None or key == "" or key not in self.keys:
             await ctx.send("Accepted keys are: ```\n" + "- ".join(self.keys) + "```")
