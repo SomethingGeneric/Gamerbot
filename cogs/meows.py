@@ -9,15 +9,71 @@ import asyncio
 from util_functions import *
 
 
+class MeowManager:
+    def __init__(self):
+        if not os.path.exists("meowmanager"):
+            os.makedirs("meowmanager")
+
+    def check_disabled(self, action, guild, channel):
+        respond = True
+        if os.path.exists("meowmanager/" + str(guild) + "_" + action):
+            respond = False
+        elif os.path.exists("meowmanager/" + str(channel) + "_" + action):
+            respond = False
+        return respond
+
+    def toggle_disabled(self, action, where):
+        if os.path.exists("meowmanager/" + str(where) + "_" + action):
+            os.remove("meowmanager/" + str(where) + "_" + action)
+            return True
+        else:
+            with open("meowmanager/" + str(where) + "_" + action, "w") as f:
+                f.write("Meow.")
+            return False
+
+
 class Meows(commands.Cog):
     """I'm a cat, after all."""
 
     def __init__(self, bot):
         self.bot = bot
         self.troll_task.start()
+        self.mm = MeowManager()
+        self.keys = ["imageresponse", "snarkycomment", "sharkfact", "randommeow"]
 
     def cog_unload(self):
         self.troll_task.cancel()
+
+    @commands.command()
+    async def togglemeow(self, ctx, key, where):
+        """Disable or enable a given type of meow"""
+        if key is None or key == "" or key not in self.keys:
+            await ctx.send("Accepted keys are: ```\n" + "- ".join(self.keys) + "```")
+            return
+
+        if where != "channel" and where != "guild":
+            await ctx.send(
+                "For the `where` argument, you must use either `channel` or `guild`."
+            )
+            return
+
+        auth = False
+        for role in ctx.message.author.roles:
+            if role.name == "gb_mod":
+                auth = True
+
+        if auth:
+            if where == "channel":
+                where = str(ctx.message.channel.id)
+            else:
+                where = str(ctx.message.guild.id)
+            res = self.mm.toggle_disabled(key, where)
+            if res:
+                await ctx.send("`" + key + "` is now enabled in this " + where)
+            else:
+                await ctx.send("`" + key + "` is now disabled in this " + where)
+        else:
+            await ctx.send("You're not a moderator")
 
     @commands.Cog.listener()
     async def on_message(self, message):
@@ -49,7 +105,9 @@ class Meows(commands.Cog):
             if random.randint(
                 1, IMAGE_RESPONSE_PROB
             ) == IMAGE_RESPONSE_PROB and "filename" in str(message.attachments):
-                if not os.path.exists(".nomeow_" + str(message.guild.id)):
+                if not self.mm.check_disabled(
+                    "imageresponse", message.guild.id, message.channel.id
+                ):
                     await mchan.send(random.choice(IMAGE_RESPONSES), reference=message)
 
         mc = message.content.lower()
@@ -72,9 +130,14 @@ class Meows(commands.Cog):
 
             for thing in triggers.keys():
                 if thing in mc:
-                    await message.channel.send(triggers[thing])
+                    if not self.mm.check_disabled(
+                        "snarkycomment", message.guild.id, message.channel.id
+                    ):
+                        await message.channel.send(triggers[thing])
 
-            if "comrade sharkfact" in mc:
+            if "comrade sharkfact" in mc and not self.mm.check_disabled(
+                "sharkfact", message.guild.id, message.channel.id
+            ):
                 with open("data/sharkfacts.txt", encoding="cp1252") as f:
                     sharkList = f.read().split("\n")
                 await mchan.send(
@@ -88,7 +151,9 @@ class Meows(commands.Cog):
             for chan in guild.text_channels:
                 try:
                     if random.randint(1, 1000) == 500:
-                        if not os.path.exists(".nomeow_" + str(message.guild.id)):
+                        if not self.mm.check_disabled(
+                            "randommeow", message.guild.id, message.channel.id
+                        ):
                             await chan.send(random.choice(IMAGE_RESPONSES))
                             break
                 except:
