@@ -48,7 +48,7 @@ class Meows(commands.Cog):
     async def togglemeow(self, ctx, key="", where=""):
         """Disable or enable a given type of meow"""
         if key is None or key == "" or key not in self.keys:
-            await ctx.send("Accepted keys are: ```\n" + "- ".join(self.keys) + "```")
+            await ctx.send("Accepted keys are: ```\n" + "\n".join(self.keys) + "```")
             return
 
         if where != "channel" and where != "guild":
