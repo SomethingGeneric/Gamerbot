@@ -70,9 +70,13 @@ class Meows(commands.Cog):
                 where = str(ctx.message.guild.id)
             res = self.mm.toggle_disabled(key, where)
             if res:
-                await ctx.send("`" + key + "` is now enabled in this " + owhere + " : " + where)
+                await ctx.send(
+                    "`" + key + "` is now enabled in this " + owhere + " : `" + where + "`"
+                )
             else:
-                await ctx.send("`" + key + "` is now disabled in this " + owhere + " : " + where)
+                await ctx.send(
+                    "`" + key + "` is now disabled in this " + owhere + " : `" + where + "`"
+                )
         else:
             await ctx.send("You're not a moderator")
 
@@ -136,15 +140,16 @@ class Meows(commands.Cog):
                     ):
                         await message.channel.send(triggers[thing])
 
-            if "comrade sharkfact" in mc and not self.mm.check_disabled(
-                "sharkfact", message.guild.id, message.channel.id
-            ):
-                with open("data/sharkfacts.txt", encoding="cp1252") as f:
-                    sharkList = f.read().split("\n")
-                await mchan.send(
-                    embed=infmsg("Sharkfact", random.choice(sharkList)),
-                    reference=message,
-                )
+            if "comrade sharkfact" in mc:
+                if not self.mm.check_disabled(
+                    "sharkfact", message.guild.id, message.channel.id
+                ):
+                    with open("data/sharkfacts.txt", encoding="cp1252") as f:
+                        sharkList = f.read().split("\n")
+                    await mchan.send(
+                        embed=infmsg("Sharkfact", random.choice(sharkList)),
+                        reference=message,
+                    )
 
     @tasks.loop(seconds=3600.0)
     async def troll_task(self):
