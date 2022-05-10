@@ -15,11 +15,11 @@ class MeowManager:
             os.makedirs("meowmanager")
 
     def check_disabled(self, action, guild, channel):
-        respond = True
+        respond = False
         if os.path.exists("meowmanager/" + str(guild) + "_" + action):
-            respond = False
+            respond = True
         elif os.path.exists("meowmanager/" + str(channel) + "_" + action):
-            respond = False
+            respond = True
         return respond
 
     def toggle_disabled(self, action, where):
