@@ -2,7 +2,7 @@ import os, re, random
 from random import randint
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 import asyncio
 
