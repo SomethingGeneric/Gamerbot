@@ -309,6 +309,8 @@ class Internet(commands.Cog):
                 if not "message" in dat.keys():
                     lat_list.append(float(dat["latitude"]))
                     long_list.append(float(dat["longitude"]))
+                else:
+                    await ctx.send(embed=errmsg("Trace-map", "No location data for `" + line + "`"))
 
             gmap3 = gmplot.GoogleMapPlotter(
                 0.0, 0.0, 0, apikey=self.confmgr.get("MAPS_KEY")
