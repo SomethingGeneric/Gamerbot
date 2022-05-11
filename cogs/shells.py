@@ -7,6 +7,8 @@ import asyncio
 
 from util_functions import *
 
+# Use isup in here perhaps?
+
 
 class Shells(commands.Cog):
     """Bash, Python, and others"""

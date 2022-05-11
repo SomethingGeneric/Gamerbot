@@ -306,8 +306,9 @@ class Internet(commands.Cog):
             for line in cleanup:
                 print("Getting data for: " + line)
                 dat = getgeoip(line)
-                lat_list.append(float(dat["latitude"]))
-                long_list.append(float(dat["longitude"]))
+                if not "message" in dat.keys():
+                    lat_list.append(float(dat["latitude"]))
+                    long_list.append(float(dat["longitude"]))
 
             gmap3 = gmplot.GoogleMapPlotter(
                 0.0, 0.0, 0, apikey=self.confmgr.get("MAPS_KEY")

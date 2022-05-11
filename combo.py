@@ -1,6 +1,3 @@
-# Token is BOTTOKEN in env-vars
-# E.G. "BOTTOKEN=<something> python3 combo.py"
-
 # Standard python imports
 import os, string, unicodedata, sys, re, random, time, datetime, subprocess, json, traceback, signal
 import urllib.parse
@@ -95,18 +92,7 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-
-    if message.author.id == 839586494784340049:
-        await message.channel.send("Fuck off discord", reference=message)
-
     if message.author != bot.user:
-
-        mc = message.content.lower()
-        if "bot" in mc:
-            # we're being talked to
-            if "bad" in mc and "sucks" in mc and "bot" in mc:
-                await message.channel.send(":(")
-
         await bot.process_commands(message)
 
 
@@ -148,8 +134,6 @@ async def getsyslog(ctx):
     else:
         await ctx.send(embed=errmsg("Oops", wrongperms("getsyslog")))
 
-
-token = ""
 
 if UNLOAD_COGS is not None:
     # Remove any cogs as per config

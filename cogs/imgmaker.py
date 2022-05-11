@@ -24,7 +24,7 @@ class ImageMaker(commands.Cog):
     async def figlet(self, ctx, *, text):
         """Fun text art :)"""
         try:
-            out = await run_command_shell("figlet " + strip_dangerous(text.strip()))
+            out = await run_command_shell("figlet " + text.strip())
             if len(out) < 1994:
                 await ctx.send("```\n " + str(out) + "```")
             else:

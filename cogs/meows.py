@@ -129,7 +129,15 @@ class Meows(commands.Cog):
             "hello there": "General Kenobi.\nhttps://media1.giphy.com/media/UIeLsVh8P64G4/giphy.gif",
         }
 
+        if message.author.id == 839586494784340049:
+            await message.channel.send("Fuck off discord", reference=message)
+
         if message.author != self.bot.user:
+
+            if "bot" in mc:
+                # we're being talked to
+                if "bad" in mc and "sucks" in mc and "bot" in mc:
+                    await message.channel.send(":(")
 
             for word in message.content.split(" "):
                 for reaction in reactions.keys():

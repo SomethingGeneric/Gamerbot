@@ -17,6 +17,7 @@ bin/notop
 .setupdone*
 .chatchannels
 .shellchannels
+stuff/
 
 # End gamerbot stuff
 

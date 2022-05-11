@@ -174,7 +174,7 @@ class Speak(commands.Cog):
                             fail = True
                     if random.randint(1, 10) == 5:
                         if not fail:
-                            if random.randint(1,3) == 2:
+                            if random.randint(1, 3) == 2:
                                 await self.speakInChannel(
                                     None,
                                     text="Hi folks of "

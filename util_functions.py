@@ -2,7 +2,7 @@
 import os, sys, random, string, threading
 
 # Pip
-import asyncio, requests, youtube_dl, discord
+import asyncio, requests, discord
 
 # Me
 from global_config import configboi
@@ -17,7 +17,6 @@ syslog = BotLogger("system_log.txt")
 # global_config.py to see the supported data types, and add your
 # own if needed.
 # .get is string
-VER = confmgr.get("VER")
 
 PASTE_BASE = confmgr.get("PASTE_BASE")
 PASTE_URL_BASE = confmgr.get("PASTE_URL_BASE")
@@ -60,39 +59,7 @@ SSH_TGT = confmgr.get("SSH_TGT")
 UNLOAD_COGS = confmgr.getaslist("UNLOAD_COGS")
 # <-------------- End --------------------->
 
-# <--------------Colors Start-------------->
-# For embed msgs (you can override these if you want)
-# But changing the commands which use embed would be better
-purple_dark = 0x6A006A
-purple_medium = 0xA958A5
-purple_light = 0xC481FB
-orange = 0xFFA500
-gold = 0xDAA520
-red_dark = 8e2430
-red_light = 0xF94343
-blue_dark = 0x3B5998
-cyan = 0x5780CD
-blue_light = 0xACE9E7
-aqua = 0x33A1EE
-pink = 0xFF9DBB
-green_dark = 0x2AC075
-green_light = 0xA1EE33
-white = 0xF9F9F6
-cream = 0xFFDAB9
-# <--------------Colors End-------------->
-
 WHITELIST = []
-
-
-def strip_dangerous(text):
-    remove = [";", "&&", "&", '"']
-    for thing in remove:
-        text = text.replace(thing, "")
-
-    if "\n" in text:
-        text = text.split("\n")[0]
-
-    return text
 
 
 def fancymsg(title, text, color, footnote=None):
@@ -166,14 +133,11 @@ def ensure(fn):
 
 
 def getstamp():
-    if sys.platform != "win32":
-        os.system("date >> stamp")
-        with open("stamp") as f:
-            s = f.read()
-        os.remove("stamp")
-        return s
-    else:
-        return ""
+    os.system("date >> stamp")
+    with open("stamp") as f:
+        s = f.read()
+    os.remove("stamp")
+    return s
 
 
 def iswhitelisted(word):
@@ -181,13 +145,6 @@ def iswhitelisted(word):
         return True
     else:
         return False
-
-
-# WTF IS THIS?
-def purifylink(content):
-    sp1 = content.split("http")[1]
-    sp2 = sp1.split(" ")[0]
-    return "http" + sp2
 
 
 def wrongperms(command):
