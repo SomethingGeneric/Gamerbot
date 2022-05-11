@@ -51,9 +51,6 @@ DO_IMAGE_RESPONSES:True
 # 1/x times the bot will respond to image
 IMAGE_RESPONSE_PROB:15
 
-# Stock API
-FINNHUB_KEY:c0c573v48v6u6kubce80
-
 # Weather API
 WS_KEY:f35006ff9cb12a5d660572cb4791508f
 
@@ -64,7 +61,7 @@ OPUS_FN:/usr/lib/libopus.so
 
 # Google Maps
 # (for tracemap)
-MAPS_KEY:AIzaSyD4VzGxnlYLa0OTOxcHefmzjvDU0e-Kacg
+MAPS_KEY:AIzaSyBSWiIpI_pzm3aRMoC5H-RWQ5WPt-tGP50
 
 # ---------------------
 # How to change these settings:
