@@ -21,6 +21,12 @@ class Shells(commands.Cog):
 
         self.shell_channels = []
 
+        if os.path.exists(".shellchannels"):
+            with open(".shellchannels") as f:
+                channels = f.read().split("\n")
+            for chan in channels:
+                self.shell_channels.append(int(chan))
+
     def cog_unload(self):
         if os.path.exists(".notools_setupdone"):
             os.remove(".notools_setupdone")
@@ -45,13 +51,6 @@ class Shells(commands.Cog):
                     embed=infmsg("Shells: `" + cmd + "`", "Returned nothing"),
                     reference=ctx.message,
                 )
-            elif msg != None:
-                await msg.channel.send(
-                    embed=infmsg("Shells: `" + cmd + "`", "Returned nothing"),
-                    reference=msg,
-                )
-            else:
-                print("Neither response option was valid")
         elif len(out) > 1000:
             url = paste(out)
             if ctx != None:
@@ -77,10 +76,7 @@ class Shells(commands.Cog):
                     reference=ctx.message,
                 )
             elif msg != None:
-                await msg.channel.send(
-                    embed=infmsg("Shells: `" + cmd + "`", "```" + out + "```"),
-                    reference=msg,
-                )
+                await msg.channel.send(out)
             else:
                 print("Neither response option was valid")
 
@@ -179,7 +175,11 @@ class Shells(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.channel.id in self.shell_channels and message.author != self.bot.user:
+        if (
+            message.channel.id in self.shell_channels
+            and message.author != self.bot.user
+            and message.content != "-makeshellchannel"
+        ):
             await self.handle_bash(msg=message, privileged=False, cmd=message.content)
 
     @commands.command()
@@ -191,6 +191,8 @@ class Shells(commands.Cog):
 
         if adm:
             self.shell_channels.append(ctx.message.channel.id)
+            with open(".shellchannels", "a+") as f:
+                f.write(str(ctx.message.channel.id) + "\n")
             await ctx.send("Done!")
         else:
             await ctx.send("You're not a mod")
