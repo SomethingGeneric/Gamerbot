@@ -71,11 +71,23 @@ class Meows(commands.Cog):
             res = self.mm.toggle_disabled(key, where)
             if res:
                 await ctx.send(
-                    "`" + key + "` is now enabled in this " + owhere + " : `" + where + "`"
+                    "`"
+                    + key
+                    + "` is now enabled in this "
+                    + owhere
+                    + " : `"
+                    + where
+                    + "`"
                 )
             else:
                 await ctx.send(
-                    "`" + key + "` is now disabled in this " + owhere + " : `" + where + "`"
+                    "`"
+                    + key
+                    + "` is now disabled in this "
+                    + owhere
+                    + " : `"
+                    + where
+                    + "`"
                 )
         else:
             await ctx.send("You're not a moderator")
@@ -119,7 +131,6 @@ class Meows(commands.Cog):
 
         if message.author != self.bot.user:
 
-
             for word in message.content.split(" "):
                 for reaction in reactions.keys():
                     if re.sub(r"[^\w\s]", "", word.lower()) == reaction:
@@ -132,7 +143,9 @@ class Meows(commands.Cog):
                     if not self.mm.check_disabled(
                         "imageresponse", message.guild.id, message.channel.id
                     ):
-                        await mchan.send(random.choice(IMAGE_RESPONSES), reference=message)
+                        await mchan.send(
+                            random.choice(IMAGE_RESPONSES), reference=message
+                        )
 
             for thing in triggers.keys():
                 if thing in mc:

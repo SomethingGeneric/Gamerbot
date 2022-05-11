@@ -19,6 +19,8 @@ class Shells(commands.Cog):
         self.bash_sandboxed = self.confmgr.getasbool("BASH_SANDBOXED")
         self.sandbox_ssh_tgt = self.confmgr.get("SANDBOX_SSH_TGT")
 
+        self.shell_channels = []
+
     def cog_unload(self):
         if os.path.exists(".notools_setupdone"):
             os.remove(".notools_setupdone")
@@ -94,7 +96,7 @@ class Shells(commands.Cog):
             )
         else:  # it's enabled, but is this user allowed?
             if await self.bot.is_owner(ctx.message.author):  # yes they are
-                await self.handle_bash(ctx, True, cmd)
+                await self.handle_bash(ctx=ctx, privileged=True, cmd=cmd)
             else:
                 await ctx.send(
                     embed=errmsg(
@@ -115,7 +117,7 @@ class Shells(commands.Cog):
                 )
             )
         else:  # it's enabled
-            await self.handle_bash(ctx, False, cmd)
+            await self.handle_bash(ctx=ctx, privileged=False, cmd=cmd)
 
     async def ensure_notools(self):
         if not os.path.exists(".notools_setupdone"):
@@ -174,6 +176,24 @@ class Shells(commands.Cog):
         )
 
         await ctx.send(embed=embed)
+
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if message.channel.id in self.shell_channels:
+            await self.handle_bash(msg=message, privileged=False, cmd=message.content)
+
+    @commands.command()
+    async def makeshellchannel(self, ctx):
+        adm = False
+        for role in ctx.message.author.roles:
+            if role.name == "gb_mod":
+                adm = True
+
+        if adm:
+            self.shell_channels.append(ctx.message.channel.id)
+            await ctx.send("Done!")
+        else:
+            await ctx.send("You're not a mod")
 
 
 def setup(bot):
