@@ -78,7 +78,7 @@ class Shells(commands.Cog):
                     reference=ctx.message,
                 )
             elif msg != None:
-                await msg.channel.send(out)
+                await msg.channel.send("```\n" + out + "```")
             else:
                 print("Neither response option was valid")
 
