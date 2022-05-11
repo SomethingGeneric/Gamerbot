@@ -12,3 +12,4 @@ black
 duckduckgo3
 chatbotAI
 wikipedia
+geoip2

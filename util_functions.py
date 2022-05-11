@@ -2,7 +2,7 @@
 import os, sys, random, string, threading
 
 # Pip
-import asyncio, requests, discord
+import asyncio, requests, discord, geoip2.database
 
 # Me
 from global_config import configboi
@@ -218,9 +218,12 @@ def paste(text):
 
 
 def getgeoip(ip):
-    url = "https://freegeoip.app/json/" + ip
-    headers = {"accept": "application/json", "content-type": "application/json"}
-
-    response = requests.request("GET", url, headers=headers)
-    dat = response.json()
-    return dat
+    with geoip2.database.Reader("GeoLite2-City.mmdb") as reader:
+        try:
+            response = reader.city(ip)
+            return {
+                "latitude": response.location.latitude,
+                "longitude": response.location.longitude,
+            }
+        except Exception as e:
+            return {"message": str(e)}
