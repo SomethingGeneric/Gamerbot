@@ -32,7 +32,7 @@ class Speak(commands.Cog):
     def setDone(self):
         self.isDone = True
 
-    async def speakInChannel(self, ctx, text, chan=None, stealth=False):
+    async def speakInChannel(self, ctx, text="", chan=None, stealth=False, file=None):
         if self.voice_client is None and not self.vs.check_state():
             syslog.log(
                 "Speak-Client",
@@ -51,14 +51,23 @@ class Speak(commands.Cog):
                         "Speak-Client",
                         "The author is in a channel, so we're attempting to join them.",
                     )
-                    await run_command_shell('espeak-ng -w espeak.wav "' + text + '"')
-                    syslog.log(
-                        "Speak-Client", "We have the TTS audio file ready. Playing it."
-                    )
+                    if file == None:
+                        await run_command_shell(
+                            'espeak-ng -w espeak.wav "' + text + '"'
+                        )
+                        syslog.log(
+                            "Speak-Client",
+                            "We have the TTS audio file ready. Playing it.",
+                        )
+                    else:
+                        syslog.log("Speak-Client", "We're using a file")
                     self.voice_client = await channel.connect()
                     self.vs.set_state("1")
                     syslog.log("Speak-Client", "We're in voice now.")
-                    self.audiosrc = discord.FFmpegPCMAudio("espeak.wav")
+                    fn = "espeak.wav"
+                    if file != None:
+                        fn = file
+                    self.audiosrc = discord.FFmpegPCMAudio(fn)
                     self.isDone = False
                     self.voice_client.play(
                         self.audiosrc,
@@ -114,6 +123,17 @@ class Speak(commands.Cog):
             ctx, ctx.author.display_name + " says " + thing, None, False
         )
 
+    async def do_meow(self, ctx):
+        files = os.listdir("sounds")
+        fn = "sounds/" + random.choice(files)
+        syslog.log("Meow-Client", "Playing: " + fn)
+        await self.speakInChannel(ctx, "", file=fn)
+
+    @commands.command()
+    async def meow(self, ctx):
+        """I am a cat :)"""
+        await self.do_meow(ctx)
+
     @commands.Cog.listener()
     async def on_message(self, message):
         if " bee " in message.content.lower() or " bees " in message.content.lower():
@@ -143,7 +163,7 @@ class Speak(commands.Cog):
                     await message.channel.send("`" + quote + "`")
                     syslog.log("Speak-Memes", "SENT BEE MOVIE QUOTE IN TEXT CHAT")
 
-    @tasks.loop(seconds=3600.0)
+    @tasks.loop(seconds=120)
     async def troll_task(self):
         for guild in self.bot.guilds:
             for vc in guild.voice_channels:
@@ -161,21 +181,6 @@ class Speak(commands.Cog):
                                 + random.choice(IMAGE_RESPONSES),
                                 chan=vc,
                                 stealth=True,
-                            )
-                        else:
-                            syslog.log(
-                                "Speak-Client",
-                                "Not speaking in "
-                                + str(guild.name)
-                                + " because of "
-                                + str(member.display_name),
-                            )
-                            ownerman = await self.bot.fetch_user(self.bot.owner_id)
-                            await ownerman.send(
-                                "I'm not speaking in "
-                                + str(guild.name)
-                                + " because of "
-                                + str(member.display_name)
                             )
 
     @troll_task.before_loop
