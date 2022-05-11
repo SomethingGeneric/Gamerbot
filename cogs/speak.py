@@ -123,11 +123,11 @@ class Speak(commands.Cog):
             ctx, ctx.author.display_name + " says " + thing, None, False
         )
 
-    async def do_meow(self, ctx):
+    async def do_meow(self, ctx=None, chan=None):
         files = os.listdir("sounds")
         fn = "sounds/" + random.choice(files)
         syslog.log("Meow-Client", "Playing: " + fn)
-        await self.speakInChannel(ctx, "", file=fn)
+        await self.speakInChannel(ctx=ctx, chan=chan, file=fn)
 
     @commands.command()
     async def meow(self, ctx):
@@ -174,14 +174,17 @@ class Speak(commands.Cog):
                             fail = True
                     if random.randint(1, 10) == 5:
                         if not fail:
-                            await self.speakInChannel(
-                                None,
-                                "Hi folks of "
-                                + str(guild.name)
-                                + random.choice(IMAGE_RESPONSES),
-                                chan=vc,
-                                stealth=True,
-                            )
+                            if random.randint(1,3) == 2:
+                                await self.speakInChannel(
+                                    None,
+                                    text="Hi folks of "
+                                    + str(guild.name)
+                                    + random.choice(IMAGE_RESPONSES),
+                                    chan=vc,
+                                    stealth=True,
+                                )
+                            else:
+                                await self.do_meow(chan=vc)
 
     @troll_task.before_loop
     async def before_the_troll_task(self):
