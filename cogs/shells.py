@@ -179,7 +179,7 @@ class Shells(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.channel.id in self.shell_channels:
+        if message.channel.id in self.shell_channels and message.author != self.bot.user:
             await self.handle_bash(msg=message, privileged=False, cmd=message.content)
 
     @commands.command()
