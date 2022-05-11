@@ -253,7 +253,7 @@ def paste(text):
             )
             for _ in range(N)
         )
-        + ".txt"
+        + ".html"
     )
     with open(PASTE_BASE + fn, "w") as f:
         f.write(text)

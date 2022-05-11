@@ -46,12 +46,14 @@ class ChatMachine(commands.Cog):
             or "hey chatterbot" in message.content
         ):
             resp = await run_command_shell(
-                'python3 bin/thechatbot.py "' + message.content.replace("'", '"').replace("hey chatterbot","") + '"'
+                'python3 bin/thechatbot.py "'
+                + message.content.replace("'", '"').replace("hey chatterbot", "")
+                + '"'
             )
             if len(resp) < 1024:
                 await message.channel.send(resp)
             else:
-                url = paste(resp)
+                url = paste("<h1><code>" + resp + "</code></h1>")
                 await message.channel.send(url)
 
 
