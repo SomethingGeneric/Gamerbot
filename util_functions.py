@@ -227,6 +227,8 @@ async def run_command_shell(command, grc=False):
         # Result
         result = stderr.decode().strip()
 
+    kill_timer.cancel()
+
     if not grc:
         # Return stdout
         return result

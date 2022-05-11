@@ -10,3 +10,5 @@ gmplot
 lifxlan
 black
 duckduckgo3
+chatbotAI
+wikipedia

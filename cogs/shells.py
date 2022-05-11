@@ -23,7 +23,7 @@ class Shells(commands.Cog):
 
         if os.path.exists(".shellchannels"):
             with open(".shellchannels") as f:
-                channels = f.read().split("\n")
+                channels = f.read().strip().split("\n")
             for chan in channels:
                 self.shell_channels.append(int(chan))
 

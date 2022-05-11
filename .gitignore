@@ -11,6 +11,12 @@ system_log*
 gs/*
 .sent_*
 meowmanager/
+bin/nofetch
+bin/notop
+.notools_setupdone
+.setupdone*
+.chatchannels
+.shellchannels
 
 # End gamerbot stuff
 
