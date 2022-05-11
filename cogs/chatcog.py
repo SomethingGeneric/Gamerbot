@@ -45,7 +45,7 @@ class ChatMachine(commands.Cog):
             and message.content != "-makechatchannel"
         ):
             resp = await run_command_shell(
-                "python3 bin/thechatbot.py '" + message.content + "'"
+                'python3 bin/thechatbot.py "' + message.content.replace("'", '"') + '"'
             )
             if len(resp) < 1024:
                 await message.channel.send(resp)
