@@ -169,11 +169,6 @@ class Meows(commands.Cog):
     @troll_task.before_loop
     async def before_the_troll_task(self):
         await self.bot.wait_until_ready()
-        for guild in self.bot.guilds:
-            if not os.path.exists("meowmanager/guild_" + str(guild.id) + "_setupdone"):
-                await guild.owner.send("Just FYI, to toggle any of my potentially annoying 'random' behaviour, you or anyone with the `gb_mod` role can use `-togglemeow`")
-                with open("meowmanager/guild_" + str(guild.id) + "_setupdone", "w") as f:
-                    f.write("Meow. :)")
 
 
 def setup(bot):
