@@ -24,6 +24,14 @@ class Speak(commands.Cog):
 
         self.troll_task.start()
 
+        self.chat_channels = []
+
+        if os.path.exists(".chatchannels"):
+            with open(".chatchannels") as f:
+                channels = f.read().strip().split("\n")
+            for chan in channels:
+                self.chat_channels.append(int(chan))
+
         syslog.log("Speak-Client", "Instance created and setup")
 
     def cog_unload(self):
@@ -31,6 +39,21 @@ class Speak(commands.Cog):
 
     def setDone(self):
         self.isDone = True
+
+    @commands.command()
+    async def makechatchannel(self, ctx):
+        adm = False
+        for role in ctx.message.author.roles:
+            if role.name == "gb_mod":
+                adm = True
+
+        if adm:
+            self.chat_channels.append(ctx.message.channel.id)
+            with open(".chatchannels", "a+") as f:
+                f.write(str(ctx.message.channel.id) + "\n")
+            await ctx.send("Done!")
+        else:
+            await ctx.send("You're not a mod")
 
     async def speakInChannel(self, ctx, text="", chan=None, stealth=False, file=None):
         if self.voice_client is None and not self.vs.check_state():
@@ -162,6 +185,28 @@ class Speak(commands.Cog):
                     )
                     await message.channel.send("`" + quote + "`")
                     syslog.log("Speak-Memes", "SENT BEE MOVIE QUOTE IN TEXT CHAT")
+
+        if (
+            message.channel.id in self.chat_channels
+            and message.author != self.bot.user
+            and message.content != "-makechatchannel"
+            or "hey chatterbot" in message.content
+        ):
+            resp = await run_command_shell(
+                'python3 bin/thechatbot.py "'
+                + message.content.replace("'", '"').replace("hey chatterbot", "")
+                + '"'
+            )
+
+            if len(resp) < 1024:
+                await message.channel.send(resp)
+            else:
+                url = paste("<h1><code>" + resp + "</code></h1>")
+                await message.channel.send(url)
+            if message.author.voice is not None:
+                ctx = await self.bot.get_context(message)
+                syslog.log("Speak-Client", "Speaking response as well")
+                await self.speakInChannel(ctx=ctx, text=resp)
 
     @tasks.loop(seconds=120)
     async def troll_task(self):
