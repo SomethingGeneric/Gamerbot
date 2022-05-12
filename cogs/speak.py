@@ -199,10 +199,10 @@ class Speak(commands.Cog):
             )
 
             if len(resp) < 1024:
-                await message.channel.send(resp)
+                await message.channel.send(resp, reference=message)
             else:
                 url = paste("<h1><code>" + resp + "</code></h1>")
-                await message.channel.send(url)
+                await message.channel.send(url, reference=message)
             if message.author.voice is not None:
                 ctx = await self.bot.get_context(message)
                 syslog.log("Speak-Client", "Speaking response as well")
