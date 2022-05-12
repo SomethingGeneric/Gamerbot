@@ -194,7 +194,7 @@ class Speak(commands.Cog):
         ):
             resp = await run_command_shell(
                 'python3 bin/thechatbot.py "'
-                + message.content.replace("'", '"').replace("hey chatterbot", "")
+                + message.content.replace("\"", '\'').replace("hey chatterbot", "")
                 + '"'
             )
 
