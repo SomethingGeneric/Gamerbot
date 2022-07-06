@@ -18,7 +18,7 @@ class About(commands.Cog):
         await ctx.send(
             embed=infmsg(
                 "Source",
-                "My source code lives here: https://git.tar.black/matt/gamerbot2",
+                "My source code lives here: https://github.com/SomethingGeneric/gamerbot2",
             )
         )
 
@@ -28,7 +28,7 @@ class About(commands.Cog):
         await ctx.send(
             embed=infmsg(
                 "License",
-                "My license lives here: https://git.tar.black/matt/gamerbot2/-/blob/main/LICENSE",
+                "My license lives here: https://github.com/SomethingGeneric/gamerbot2/-/blob/main/LICENSE",
             )
         )
 
@@ -38,7 +38,7 @@ class About(commands.Cog):
         await ctx.send(
             embed=infmsg(
                 "Issues",
-                "You can file issues here: https://git.tar.black/matt/gamerbot2/issues",
+                "You can file issues here: https://github.com/SomethingGeneric/gamerbot2/issues",
             )
         )
 
