@@ -1,7 +1,7 @@
 py-cord
 discord-pretty-help
 PyNaCl==1.4.0
-async-timeout==3.0.1
+async-timeout==4.0.2
 asyncio==3.4.3
 pillow
 requests
