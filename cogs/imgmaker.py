@@ -36,7 +36,7 @@ class ImageMaker(commands.Cog):
                 )
         except Exception as e:
             await ctx.send(
-                embed=errmsg("Error", "Had an issue running figlet: `" + str(e) + "`")
+                embed=err_msg("Error", "Had an issue running figlet: `" + str(e) + "`")
             )
             syslog.log(
                 "Memes-Important", "Had an issue running figlet: `" + str(e) + "`"

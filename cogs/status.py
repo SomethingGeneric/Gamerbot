@@ -3,7 +3,7 @@ import sys, datetime
 import discord
 from discord.ext import commands, tasks
 
-from global_config import configboi
+from global_config import ConfigManager
 
 from util_functions import *
 
@@ -13,7 +13,7 @@ class Status(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.confmgr = configboi("config.txt", False)
+        self.confmgr = ConfigManager("config.txt", False)
 
         self.status_task.start()
         self.uptime_logger.start()

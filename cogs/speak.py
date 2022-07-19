@@ -117,7 +117,7 @@ class Speak(commands.Cog):
                 else:
                     if not stealth:
                         await ctx.send(
-                            embed=errmsg(
+                            embed=err_msg(
                                 "Spoken Word", "You're not in a voice channel."
                             )
                         )
@@ -125,11 +125,11 @@ class Speak(commands.Cog):
                         return False
             except Exception as e:
                 syslog.log("Speak-Client-Important", "Error: " + str(e))
-                await ctx.send(embed=errmsg("Spoken Word", "`" + str(e) + "`"))
+                await ctx.send(embed=err_msg("Spoken Word", "`" + str(e) + "`"))
 
         else:
             await ctx.send(
-                embed=errmsg(
+                embed=err_msg(
                     "Spoken Word", "I'm already in a voice channel, and busy."
                 ),
                 reference=ctx.message,

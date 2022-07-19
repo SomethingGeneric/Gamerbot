@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 from util_functions import *
-from global_config import configboi
+from global_config import ConfigManager
 
 
 # Hopefully we'll never need logging here
@@ -13,7 +13,7 @@ class Debug(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.confmgr = configboi("config.txt", False)
+        self.confmgr = ConfigManager("config.txt", False)
 
     @commands.command()
     async def checkcog(self, ctx, *, n):
@@ -25,11 +25,11 @@ class Debug(commands.Cog):
                 )
             else:
                 await ctx.send(
-                    embed=errmsg("Debug Tools", "Bot was not able to find `" + n + "`")
+                    embed=err_msg("Debug Tools", "Bot was not able to find `" + n + "`")
                 )
         except Exception as e:
             await ctx.send(
-                embed=errmsg(
+                embed=err_msg(
                     "Debug Tools - ERROR",
                     "Had error `" + str(e) + "` while checking cog `" + n + "`",
                 )
@@ -52,7 +52,7 @@ class Debug(commands.Cog):
                 embed=infmsg("Syslog Purger", "We purged:\n```" + purged + "```")
             )
         else:
-            await ctx.send(embed=errmsg("Oops", wrongperms("purgesyslog")))
+            await ctx.send(embed=err_msg("Oops", wrong_perms("purgesyslog")))
 
 
 def setup(bot):

@@ -1,26 +1,20 @@
-# Standard python imports
-import os, string, unicodedata, sys, re, random, time, datetime, subprocess, json, traceback, signal
-import urllib.parse
-import importlib
-
+# Standard py stuff
 from os import listdir
 from os.path import isfile, join
 
 # Pycord
-import discord
 from discord.ext import commands
 
 # Kind've discord related
 from pretty_help import DefaultMenu, PrettyHelp
 
 # My own classes n such
-from global_config import configboi
+from global_config import ConfigManager
 from util_functions import *
 
 if os.path.sep == "\\":
     print("This bot is only supported on UNIX-like systems. Aborting.")
     sys.exit(1)
-
 
 intents = discord.Intents.default()
 intents.members = True
@@ -48,10 +42,11 @@ os.environ["PATH"] = new_path
 
 print("Our PATH is: " + os.getenv("PATH"))
 
+
 # Startup event
 @bot.event
 async def on_ready():
-    syslog.log("Main-Important", "Bot has restarted at " + getstamp())
+    syslog.log("Main-Important", "Bot has restarted at " + get_stamp())
     syslog.log("Main", f"\n{bot.user} has connected to Discord!\n")
 
     if check("restarted.txt"):
@@ -59,13 +54,13 @@ async def on_ready():
         chan = bot.get_channel(int(channel))
         if chan is not None:
             await chan.send(
-                embed=infmsg("System", "Finished restarting at: `" + getstamp() + "`")
+                embed=infmsg("System", "Finished restarting at: `" + get_stamp() + "`")
             )
         os.remove("restarted.txt")
 
     ownerman = await bot.fetch_user(bot.owner_id)
 
-    notifyowner = confmgr.getasbool("OWNER_DM_RESTART")
+    notifyowner = confmgr.get_as_bool("OWNER_DM_RESTART")
 
     cogs_dir = "cogs"
     for extension in [
@@ -75,9 +70,9 @@ async def on_ready():
             bot.load_extension(cogs_dir + "." + extension)
             syslog.log("Main", "Loaded " + extension)
             # await ownerman.send(embed=infmsg("System","Loaded `" + extension + "`"))
-        except (Exception) as e:
+        except Exception as e:
             await ownerman.send(
-                embed=errmsg(
+                embed=err_msg(
                     "System", "Error from cog: " + extension + ": ```" + str(e) + "```"
                 )
             )
@@ -86,7 +81,7 @@ async def on_ready():
 
     if notifyowner:
         await ownerman.send(
-            embed=infmsg("System", "Started/restarted at: `" + getstamp() + "`")
+            embed=infmsg("System", "Started/restarted at: `" + get_stamp() + "`")
         )
 
 
@@ -99,7 +94,7 @@ async def on_message(message):
 @bot.event
 async def on_command_error(ctx, error):
     syslog.log("Main", "Error in command: " + str(error))
-    await ctx.send(embed=errmsg("Error", "```" + str(error) + "```"))
+    await ctx.send(embed=err_msg("Error", "```" + str(error) + "```"))
 
 
 @bot.command()
@@ -110,20 +105,20 @@ async def removecog(ctx, name):
         try:
             bot.remove_cog(name)
             syslog.log("Main", "Disabled cog: " + name)
-            await ctx.send(embed=warnmsg("Done", "Disabled: `" + name + "`."))
+            await ctx.send(embed=warn_msg("Done", "Disabled: `" + name + "`."))
         except Exception as e:
             await ctx.send(
-                embed=errmsg("Broke", "Something went wrong: `" + str(e) + "`.")
+                embed=err_msg("Broke", "Something went wrong: `" + str(e) + "`.")
             )
     else:
-        await ctx.send(embed=errmsg("Oops", wrongperms("removecog")))
+        await ctx.send(embed=err_msg("Oops", wrong_perms("removecog")))
 
 
 @bot.command()
 async def getsyslog(ctx):
     """Get a copy of the system log"""
     if await bot.is_owner(ctx.message.author):
-        log = syslog.getlog()
+        log = syslog.get_log()
         if len(log) > 1994:
             text = paste(log)
             await ctx.send(embed=infmsg("Output", text))
@@ -132,7 +127,7 @@ async def getsyslog(ctx):
             await ctx.send("Here you go:")
             await ctx.send(text)
     else:
-        await ctx.send(embed=errmsg("Oops", wrongperms("getsyslog")))
+        await ctx.send(embed=err_msg("Oops", wrong_perms("getsyslog")))
 
 
 if UNLOAD_COGS is not None:
@@ -140,10 +135,10 @@ if UNLOAD_COGS is not None:
     for item in UNLOAD_COGS:
         if item != "" and item != " ":
             syslog.log("Main", "Trying to remove '" + item + "'")
-            try:
-                bot.remove_cog(item)
+            res = bot.remove_cog(item)
+            if res is not None:
                 syslog.log("Main", "Removed '" + item + "'")
-            except:
+            else:
                 syslog.log("Main", "Failed to remove '" + item + "'")
 
 bot.run(open(my_homedir + "/.token").read())

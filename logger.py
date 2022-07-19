@@ -1,7 +1,7 @@
 import os
 
 
-def getstamp():
+def get_stamp():
     os.system("date >> stamp")
     with open("stamp") as f:
         s = f.read()
@@ -21,11 +21,11 @@ class BotLogger:
         self.fn = filename
 
     def log(self, caller, text):
-        info = getstamp().strip() + " --> " + caller + ": " + text
+        info = get_stamp().strip() + " --> " + caller + ": " + text
         with open(self.fn, "a+") as f:
             f.write("\n" + info + "\n")
         print(info)
 
-    def getlog(self):
+    def get_log(self):
         with open(self.fn) as f:
             return f.read()

@@ -15,10 +15,10 @@ class Shells(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.confmgr = configboi("config.txt", False)
+        self.confmgr = ConfigManager("config.txt", False)
 
-        self.bash_priv = self.confmgr.getasbool("BASH_PRIV")
-        self.bash_sandboxed = self.confmgr.getasbool("BASH_SANDBOXED")
+        self.bash_priv = self.confmgr.get_as_bool("BASH_PRIV")
+        self.bash_sandboxed = self.confmgr.get_as_bool("BASH_SANDBOXED")
         self.sandbox_ssh_tgt = self.confmgr.get("SANDBOX_SSH_TGT")
 
         self.shell_channels = []
@@ -87,7 +87,7 @@ class Shells(commands.Cog):
         """Bash commands w/o sandboxing. (Must be admin or mod)"""
         if not self.bash_priv:
             await ctx.send(
-                embed=errmsg(
+                embed=err_msg(
                     "Shells error",
                     ctx.message.author.mention + ", privileged shells are not enabled.",
                 )
@@ -97,7 +97,7 @@ class Shells(commands.Cog):
                 await self.handle_bash(ctx=ctx, privileged=True, cmd=cmd)
             else:
                 await ctx.send(
-                    embed=errmsg(
+                    embed=err_msg(
                         "Shells error",
                         ctx.message.author.mention
                         + ", you don't have permission to use privileged shells.",
@@ -109,7 +109,7 @@ class Shells(commands.Cog):
         """Run bash shell commands. No, not forkbombs or rm /"""
         if not self.bash_sandboxed:
             await ctx.send(
-                embed=errmsg(
+                embed=err_msg(
                     "Shells error",
                     ctx.message.author.mention + ", bash shells are not enabled.",
                 )

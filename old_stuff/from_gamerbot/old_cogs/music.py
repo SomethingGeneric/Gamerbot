@@ -100,7 +100,7 @@ class Music(commands.Cog):
 
         ensure("music")
 
-        self.confmgr = configboi("config.txt", False)
+        self.confmgr = ConfigManager("config.txt", False)
         self.mt = MusicTimer()
         self.vs = VoiceState()
         self.bot = bot
@@ -144,7 +144,7 @@ class Music(commands.Cog):
             them += "```"
             await ctx.send(embed=infmsg("Queue", them))
         else:
-            await ctx.send(embed=warnmsg("Queue", "The queue is empty."))
+            await ctx.send(embed=warn_msg("Queue", "The queue is empty."))
 
     async def safeLeave(self, ctx):
         if self.voice_client is not None:
@@ -167,10 +167,10 @@ class Music(commands.Cog):
                     "Music-Client-Important",
                     "Failed to shut down voice correctly. Error: " + str(e),
                 )
-                await ctx.send(embed=errmsg("Music", "`" + str(e) + "`"))
+                await ctx.send(embed=err_msg("Music", "`" + str(e) + "`"))
         else:
             await ctx.send(
-                embed=warnmsg("Music", "It appears I'm not playing right now.")
+                embed=warn_msg("Music", "It appears I'm not playing right now.")
             )
 
     async def clearQueue(self):
@@ -199,7 +199,7 @@ class Music(commands.Cog):
                 )
             )
         else:
-            await ctx.send(embed=warnmsg("Music", "I'm not playing anything."))
+            await ctx.send(embed=warn_msg("Music", "I'm not playing anything."))
 
     @commands.command(aliases=["mq"])
     async def mass_queue(self, ctx):
@@ -221,7 +221,7 @@ class Music(commands.Cog):
             await self.safeLeave(ctx)
             await self.clearQueue()
         else:
-            await ctx.send(embed=warnmsg("Music", "I'm not playing anything."))
+            await ctx.send(embed=warn_msg("Music", "I'm not playing anything."))
 
     # This should be removed(?)
     @commands.command(aliases=["rq", "cq"])
@@ -247,13 +247,13 @@ class Music(commands.Cog):
                     embed=infmsg("Music", "Removed `" + song + "` from queue.")
                 )
             else:
-                await ctx.send(embed=warnmsg("Music", "Seems like queue is empty?"))
+                await ctx.send(embed=warn_msg("Music", "Seems like queue is empty?"))
         except Exception as e:
             syslog.log(
                 "Music-Client-Important",
                 "Failed to run dequeue and send. Error: " + str(e),
             )
-            await ctx.send(embed=errmsg("Music", "`" + str(e) + "`"))
+            await ctx.send(embed=err_msg("Music", "`" + str(e) + "`"))
 
     @commands.command(aliases=["lm", "songs"])
     async def listmusic(self, ctx):
@@ -281,7 +281,7 @@ class Music(commands.Cog):
                 "Music-Client-Important",
                 "Failed to run indexMusic and send. Error: " + str(e),
             )
-            await ctx.send(embed=errmsg("Music", "`" + str(e) + "`"))
+            await ctx.send(embed=err_msg("Music", "`" + str(e) + "`"))
 
     @commands.command(aliases=["sm"])
     async def searchmusic(self, ctx, *, query):
@@ -402,7 +402,7 @@ class Music(commands.Cog):
                                 "Target " + target + " not found, moving on to next.",
                             )
                             await ctx.send(
-                                embed=warnmsg(
+                                embed=warn_msg(
                                     "Music",
                                     "Could not find `" + current + "`, skipping...",
                                 )
@@ -438,7 +438,7 @@ class Music(commands.Cog):
                         "We've either been instructed by a user w/o voice channel, or another Cog is using voice.",
                     )
                     await ctx.send(
-                        embed=warnmsg(
+                        embed=warn_msg(
                             "Music", "I'm already in a voice channel, and busy."
                         )
                     )
@@ -460,7 +460,7 @@ class Music(commands.Cog):
         else:
             syslog.log("Music-Client", "We couldn't load Opus. No music today.")
             await ctx.send(
-                embed=errmsg("Music", "Opus couldn't be loaded. Is it installed?")
+                embed=err_msg("Music", "Opus couldn't be loaded. Is it installed?")
             )
 
     @commands.command()
@@ -476,14 +476,14 @@ class Music(commands.Cog):
                 syslog.log("Music-Client", "Player paused.")
             except Exception as e:
                 await ctx.send(
-                    embed=errmsg("Music", "Failed to pause. `" + str(e) + "`")
+                    embed=err_msg("Music", "Failed to pause. `" + str(e) + "`")
                 )
                 syslog.log(
                     "Music-Client-Important", "Failed to pause player: " + str(e)
                 )
         else:
             await ctx.send(
-                embed=warnmsg("Music", "It appears I'm not playing right now.")
+                embed=warn_msg("Music", "It appears I'm not playing right now.")
             )
 
     @commands.command()
@@ -497,14 +497,14 @@ class Music(commands.Cog):
                 syslog.log("Music-Client", "Succesfully resumed the paused player.")
             except Exception as e:
                 await ctx.send(
-                    embed=errmsg("Music", "Failed to resume. `" + str(e) + "`")
+                    embed=err_msg("Music", "Failed to resume. `" + str(e) + "`")
                 )
                 syslog.log(
                     "Music-Client-Important", "Failed to resume the player: " + str(e)
                 )
         else:
             await ctx.send(
-                embed=warnmsg("Music", "It appears I'm not playing right now.")
+                embed=warn_msg("Music", "It appears I'm not playing right now.")
             )
 
     @commands.command()
@@ -518,7 +518,7 @@ class Music(commands.Cog):
                 "We've requested a skip condition. You'll see outcome below.",
             )
         else:
-            await ctx.send(embed=warnmsg("Music", "Not playing."))
+            await ctx.send(embed=warn_msg("Music", "Not playing."))
 
     # Not currently logging (no room for improvement imo)
     @commands.command(aliases=["v", "vol"])
@@ -535,7 +535,7 @@ class Music(commands.Cog):
                     )
                 except Exception as e:
                     await ctx.send(
-                        embed=errmsg("Music", "Failed to set volume: `" + str(e) + "`")
+                        embed=err_msg("Music", "Failed to set volume: `" + str(e) + "`")
                     )
             else:
                 try:
@@ -549,7 +549,7 @@ class Music(commands.Cog):
                     )
                 except Exception as e:
                     await ctx.send(
-                        embed=errmsg("Music", "Failed to get volume: `" + str(e) + "`")
+                        embed=err_msg("Music", "Failed to get volume: `" + str(e) + "`")
                     )
                     syslog.log(
                         "Music-Client-Important",
@@ -557,7 +557,7 @@ class Music(commands.Cog):
                     )
         else:
             await ctx.send(
-                embed=warnmsg("Music", "It appears I'm not playing right now.")
+                embed=warn_msg("Music", "It appears I'm not playing right now.")
             )
 
     # Not currently logging (no room for improvement imo)
@@ -592,7 +592,7 @@ class Music(commands.Cog):
             syslog.log("Music-Client", "We've succesfully modified the queue!")
         else:
             await ctx.send(
-                embed=warnmsg("Music", "It appears I'm not playing right now.")
+                embed=warn_msg("Music", "It appears I'm not playing right now.")
             )
 
     @commands.command(aliases=["ytg", "ytd"])
@@ -604,7 +604,7 @@ class Music(commands.Cog):
                 "Trying to download " + url + " with getytvid() in util_functions.",
             )
             await ctx.send(embed=infmsg("Music", "Downloading: `" + url + "`"))
-            await getytvid(url, songname)
+            await get_yt_vid(url, songname)
             await ctx.send(
                 embed=infmsg(
                     "Music",
@@ -619,7 +619,7 @@ class Music(commands.Cog):
                 "Music-Client", "Download complete. (Download output should be above)"
             )
         except Exception as e:
-            await ctx.send(embed=errmsg("Music", "We had an issue: `" + str(e) + "`"))
+            await ctx.send(embed=err_msg("Music", "We had an issue: `" + str(e) + "`"))
             syslog.log(
                 "Music-Client-Important",
                 "We had an issue while calling getytvid(): " + str(e),
@@ -633,7 +633,7 @@ class Music(commands.Cog):
                 "Music-Client", "Calling getytvid() then playing a song. Target: " + url
             )
             await ctx.send(embed=infmsg("Music", "Downloading: " + url))
-            getytvid(url, songname)
+            get_yt_vid(url, songname)
             await ctx.send(
                 embed=infmsg("Music", "Download of " + url + " complete. One moment.")
             )
@@ -661,14 +661,14 @@ class Music(commands.Cog):
                     "Someone tried play_yt w/o current player. Shame on us for being lazy.",
                 )
                 await ctx.send(
-                    embed=warnmsg(
+                    embed=warn_msg(
                         "Music",
                         "This doesn't work yet without a current voice session. Please use `-play` first.",
                     )
                 )
 
         except Exception as e:
-            await ctx.send(embed=errmsg("Music", "We had an issue: `" + str(e) + "`"))
+            await ctx.send(embed=err_msg("Music", "We had an issue: `" + str(e) + "`"))
             syslog.log("Music-Client-Important", "Play_YT had an issue: " + str(e))
 
     @commands.command()
@@ -679,7 +679,7 @@ class Music(commands.Cog):
                 "Music-Client", "Trying to download playlist with the external script."
             )
             await ctx.send(
-                embed=warnmsg(
+                embed=warn_msg(
                     "Music",
                     "This will take a while. Go relax, or play some existing music :)",
                 )
@@ -709,7 +709,7 @@ class Music(commands.Cog):
             """
             syslog.log("Music-Client", "Songs are in place. All done.")
         except Exception as e:
-            await ctx.send(embed=errmsg("Music", "We had an issue: `" + str(e) + "`"))
+            await ctx.send(embed=err_msg("Music", "We had an issue: `" + str(e) + "`"))
             syslog.log("Music-Client-Important", "Get-Playlist had an issue: " + str(e))
 
     @commands.Cog.listener()

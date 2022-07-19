@@ -6,7 +6,7 @@ from discord.ext import commands
 import asyncio
 
 from util_functions import *
-from global_config import configboi
+from global_config import ConfigManager
 
 # Non-user stuff (mods/debug)
 class Admin(commands.Cog):
@@ -14,7 +14,7 @@ class Admin(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.confmgr = configboi("config.txt", False)
+        self.confmgr = ConfigManager("config.txt", False)
         self.store = None
 
     @commands.Cog.listener()
