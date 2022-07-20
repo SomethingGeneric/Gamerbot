@@ -1,8 +1,7 @@
-import discord
 from discord.ext import commands
 
-from util_functions import *
 from global_config import ConfigManager
+from util_functions import *
 
 
 # Hopefully we'll never need logging here

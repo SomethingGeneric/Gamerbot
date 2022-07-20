@@ -1,12 +1,7 @@
-import os, sys
-
-import discord
 from discord.ext import commands
 
-import asyncio
-
 from util_functions import *
-from global_config import ConfigManager
+
 
 # Non-user stuff (mods/debug)
 class Admin(commands.Cog):

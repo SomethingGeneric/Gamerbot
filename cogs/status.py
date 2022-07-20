@@ -1,9 +1,6 @@
-import sys, datetime
+import datetime
 
-import discord
 from discord.ext import commands, tasks
-
-from global_config import ConfigManager
 
 from util_functions import *
 

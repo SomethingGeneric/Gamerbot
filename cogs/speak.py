@@ -1,10 +1,5 @@
-# System
-import os, random
-
 # Pip
-import discord
 from discord.ext import commands, tasks
-import asyncio
 
 # Mine
 from channel_state import VoiceState

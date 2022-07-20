@@ -1,13 +1,7 @@
-import os, re, random
 import shutil
 import urllib
 
-from random import randint
-
-import discord
 from discord.ext import commands
-
-import asyncio
 
 from util_functions import *
 

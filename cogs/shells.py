@@ -1,9 +1,6 @@
 from discord.ext import commands
 
 from util_functions import *
-from discord.ext import commands
-
-from util_functions import *
 
 
 # Use isup in here perhaps?
