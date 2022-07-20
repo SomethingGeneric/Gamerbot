@@ -1,10 +1,6 @@
-import os, re, random
-from random import randint
+import re
 
-import discord
-from discord.ext import commands, tasks
-
-import asyncio
+from discord.ext import commands
 
 from util_functions import *
 
@@ -37,15 +33,11 @@ class Meows(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.troll_task.start()
         self.mm = MeowManager()
         self.keys = ["imageresponse", "snarkycomment", "sharkfact", "randommeow"]
 
-    def cog_unload(self):
-        self.troll_task.cancel()
-
     @commands.command()
-    async def togglemeow(self, ctx, key="", where=""):
+    async def toggle_meow(self, ctx, key="", where=""):
         """Disable or enable a given type of meow"""
         if key is None or key == "" or key not in self.keys:
             await ctx.send("Accepted keys are: ```\n" + "\n".join(self.keys) + "```")
@@ -63,7 +55,7 @@ class Meows(commands.Cog):
                 auth = True
 
         if auth:
-            owhere = where
+            old_where = where
             if where == "channel":
                 where = str(ctx.message.channel.id)
             else:
@@ -74,7 +66,7 @@ class Meows(commands.Cog):
                     "`"
                     + key
                     + "` is now enabled in this "
-                    + owhere
+                    + old_where
                     + " : `"
                     + where
                     + "`"
@@ -84,7 +76,7 @@ class Meows(commands.Cog):
                     "`"
                     + key
                     + "` is now disabled in this "
-                    + owhere
+                    + old_where
                     + " : `"
                     + where
                     + "`"
@@ -108,7 +100,7 @@ class Meows(commands.Cog):
         }
 
         mc = message.content.lower()
-        mchan = message.channel
+        message_chan = message.channel
 
         triggers = {
             "scratch": "all my homies hate scratch",
@@ -145,7 +137,7 @@ class Meows(commands.Cog):
                     if not self.mm.check_disabled(
                         "imageresponse", message.guild.id, message.channel.id
                     ):
-                        await mchan.send(
+                        await message_chan.send(
                             random.choice(IMAGE_RESPONSES), reference=message
                         )
 
@@ -161,29 +153,11 @@ class Meows(commands.Cog):
                     "sharkfact", message.guild.id, message.channel.id
                 ):
                     with open("data/sharkfacts.txt", encoding="cp1252") as f:
-                        sharkList = f.read().split("\n")
-                    await mchan.send(
-                        embed=infmsg("Sharkfact", random.choice(sharkList)),
+                        shark_list = f.read().split("\n")
+                    await message_chan.send(
+                        embed=infmsg("Sharkfact", random.choice(shark_list)),
                         reference=message,
                     )
-
-    @tasks.loop(seconds=60.0)
-    async def troll_task(self):
-        for guild in self.bot.guilds:
-            for chan in guild.text_channels:
-                try:
-                    if random.randint(1, 1000) == 500:
-                        if not self.mm.check_disabled(
-                            "randommeow", message.guild.id, message.channel.id
-                        ):
-                            await chan.send(random.choice(IMAGE_RESPONSES))
-                            break
-                except:
-                    pass
-
-    @troll_task.before_loop
-    async def before_the_troll_task(self):
-        await self.bot.wait_until_ready()
 
 
 def setup(bot):

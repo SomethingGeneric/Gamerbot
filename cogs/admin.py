@@ -51,7 +51,7 @@ class Admin(commands.Cog):
                     with open(".setupdone_" + str(message.guild.id), "w") as f:
                         f.write("THIS IS THE NEWER VERSION OF THE LOCKFILE")
 
-    def checkmod(self, member):
+    def check_mod(self, member):
         for role in member.roles:
             if role.name == "gb_mod":
                 return True

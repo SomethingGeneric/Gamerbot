@@ -1,12 +1,4 @@
-import os, re, random
-
-import discord
 from discord.ext import commands
-
-import asyncio
-
-from util_functions import *
-
 
 # I hate this file ngl
 
@@ -39,17 +31,6 @@ class ThatsFuckedUp(commands.Cog):
         )
 
     @commands.command()
-    async def cum(self, ctx):
-        try:
-            await ctx.message.delete()
-        except Exception as e:
-            # This should only break if we don't have manage message perm
-            pass
-        await ctx.send(
-            "https://cdn.discordapp.com/attachments/902778416238034984/902779807832625182/Cum_Song.mp4",
-        )
-
-    @commands.command()
     async def elb(self, ctx):
         try:
             await ctx.message.delete()
@@ -69,17 +50,6 @@ class ThatsFuckedUp(commands.Cog):
             pass
         await ctx.send(
             "https://tenor.com/view/facepalm-anime-jfc-gif-19368854",
-        )
-
-    @commands.command()
-    async def michal(self, ctx):
-        try:
-            await ctx.message.delete()
-        except Exception as e:
-            # This should only break if we don't have manage message perm
-            pass
-        await ctx.send(
-            "https://tenor.com/view/fnaf-security-breach-security-breach-vanessa-fnaf-vanny-fnaf-vanny-gif-24218761",
         )
 
 

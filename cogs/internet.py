@@ -1,32 +1,30 @@
-import os, json, random
-import urllib.parse
+import json
 import urllib
+import urllib.parse
 
-import discord
-from discord.ext import commands
-import asyncio
-import gmplot
-import requests
 import duckduckgo
+import gmplot
+from discord.ext import commands
 
+import random
 from util_functions import *
-from global_config import ConfigManager
 
 
 # Fun internet things
+async def get_as_json(url):
+    try:
+        data = await run_command_shell('curl "' + url + '"')
+        return json.loads(data)
+    except Exception as e:
+        return '{"haha":"heeho"}'
+
+
 class Internet(commands.Cog):
     """Useful tools on the interwebs"""
 
     def __init__(self, bot):
         self.bot = bot
         self.confmgr = ConfigManager("config.txt", False)
-
-    async def getasjson(self, url):
-        try:
-            data = await run_command_shell('curl "' + url + '"')
-            return json.loads(data)
-        except Exception as e:
-            return '{"haha":"heeho"}'
 
     @commands.command()
     async def weather(self, ctx, *, search):
@@ -39,13 +37,13 @@ class Internet(commands.Cog):
             og = search
             search = urllib.parse.quote(search)
 
-            commandstr = "http://api.weatherstack.com/current?access_key=KEY&query=QUERY&units=f".replace(
+            command_str = "http://api.weatherstack.com/current?access_key=KEY&query=QUERY&units=f".replace(
                 "KEY", self.confmgr.get("WS_KEY")
             ).replace(
                 "QUERY", search
             )
 
-            data = await self.getasjson(commandstr)
+            data = await get_as_json(command_str)
 
             things = data["current"]
 
@@ -85,7 +83,7 @@ class Internet(commands.Cog):
         """Get Linux kernel info for host and latest"""
         try:
             m = await ctx.send(embed=infmsg("Kernel", "Getting kernel info."))
-            data = await self.getasjson("https://www.kernel.org/releases.json")
+            data = await get_as_json("https://www.kernel.org/releases.json")
             new_ver = data["latest_stable"]["version"]
             mine = await run_command_shell("uname -r")
             msg = (
@@ -306,13 +304,13 @@ class Internet(commands.Cog):
             for line in cleanup:
                 print("Getting data for: " + line)
                 dat = get_geoip(line)
-                if not "message" in dat.keys():
-                    lat_list.append(float(dat["latitude"]))
-                    long_list.append(float(dat["longitude"]))
-                else:
+                if "message" in dat.keys():
                     await ctx.send(
                         embed=err_msg("Trace-map", "No location data for `" + line + "`")
                     )
+                else:
+                    lat_list.append(float(dat["latitude"]))
+                    long_list.append(float(dat["longitude"]))
 
             gmap3 = gmplot.GoogleMapPlotter(
                 0.0, 0.0, 0, apikey=self.confmgr.get("MAPS_KEY")

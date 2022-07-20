@@ -1,11 +1,10 @@
-import os, re, random
-
-import discord
 from discord.ext import commands
 
-import asyncio
+from util_functions import *
+from discord.ext import commands
 
 from util_functions import *
+
 
 # Use isup in here perhaps?
 
@@ -48,21 +47,21 @@ class Shells(commands.Cog):
         out = await run_command_shell(prepend + cmd + append)
 
         if len(out) == 0:
-            if ctx != None:
+            if ctx is not None:
                 await ctx.send(
                     embed=infmsg("Shells: `" + cmd + "`", "Returned nothing"),
                     reference=ctx.message,
                 )
         elif len(out) > 1000:
             url = paste(out)
-            if ctx != None:
+            if ctx is not None:
                 await ctx.send(
                     embed=infmsg(
                         "Shells: Paste URL", "Output was too long. See: " + url
                     ),
                     reference=ctx.message,
                 )
-            elif msg != None:
+            elif msg is not None:
                 await msg.channel.send(
                     embed=infmsg(
                         "Shells: Paste URL", "Output was too long. See: " + url
@@ -72,12 +71,12 @@ class Shells(commands.Cog):
             else:
                 print("Neither response option was valid")
         else:
-            if ctx != None:
+            if ctx is not None:
                 await ctx.send(
                     embed=infmsg("Shells: `" + cmd + "`", "```" + out + "```"),
                     reference=ctx.message,
                 )
-            elif msg != None:
+            elif msg is not None:
                 await msg.channel.send("```\n" + out + "```")
             else:
                 print("Neither response option was valid")
@@ -178,14 +177,14 @@ class Shells(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         if (
-            message.channel.id in self.shell_channels
-            and message.author != self.bot.user
-            and message.content != "-makeshellchannel"
+                message.channel.id in self.shell_channels
+                and message.author != self.bot.user
+                and message.content != "-makeshellchannel"
         ):
             await self.handle_bash(msg=message, privileged=False, cmd=message.content)
 
     @commands.command()
-    async def makeshellchannel(self, ctx):
+    async def make_shell_channel(self, ctx):
         adm = False
         for role in ctx.message.author.roles:
             if role.name == "gb_mod":

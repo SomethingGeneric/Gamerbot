@@ -74,7 +74,7 @@ class Speak(commands.Cog):
                         "Speak-Client",
                         "The author is in a channel, so we're attempting to join them.",
                     )
-                    if file == None:
+                    if file is None:
                         await run_command_shell(
                             'espeak-ng -w espeak.wav "' + text + '"'
                         )
@@ -88,7 +88,7 @@ class Speak(commands.Cog):
                     self.vs.set_state("1")
                     syslog.log("Speak-Client", "We're in voice now.")
                     fn = "espeak.wav"
-                    if file != None:
+                    if file is not None:
                         fn = file
                     self.audiosrc = discord.FFmpegPCMAudio(fn)
                     self.isDone = False
@@ -100,7 +100,7 @@ class Speak(commands.Cog):
                     )
                     while self.voice_client.is_playing():
                         self.isDone = False
-                        if self.isDone == True:
+                        if self.isDone:
                             break
                         await asyncio.sleep(1)
                     syslog.log("Speak-Client", "We're done playing. Cleaning up.")
