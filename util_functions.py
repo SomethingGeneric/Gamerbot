@@ -40,16 +40,7 @@ DEFAULT_STATUS_TEXT = confmgr.get("DEFAULT_STATUS_TEXT")
 LIFX_IP = confmgr.get("LIFX_IP")
 LIFX_MAC = confmgr.get("LIFX_MAC").replace("-", ":")
 
-SMTP_SERVER_ADDR = confmgr.get("SMTP_SERVER_ADDR")
-SMTP_SERVER_PORT = confmgr.get_as_int("SMTP_SERVER_PORT")
-SMTP_EMAIL_ADDR = confmgr.get("SMTP_EMAIL_ADDR")
-SMTP_PASSWORD_FILE = confmgr.get("SMTP_PASSWORD_FILE")
-
 NAG_RECIEVER = confmgr.get("NAG_RECIEVER")
-
-DO_WEBCAM = confmgr.get_as_bool("DO_WEBCAM")
-WEBCAM_LOCAL = confmgr.get_as_bool("WEBCAM_LOCAL")
-SSH_TGT = confmgr.get("SSH_TGT")
 
 UNLOAD_COGS = confmgr.get_as_list("UNLOAD_COGS")
 # <-------------- End --------------------->

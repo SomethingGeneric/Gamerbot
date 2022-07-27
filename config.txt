@@ -41,9 +41,6 @@ INTRO_CHANNEL:You should go to {channel}, since it's your first time here.
 # Don't spook these people if they're in vc
 NO_SCARY:692958846024548382,116547210698555395
 
-# Weather API
-WS_KEY:f35006ff9cb12a5d660572cb4791508f
-
 # Music Stuff
 # NEED TO CHANGE (unless also on an ubuntu-based distro)
 # you can just "sudo find / -name "libopus.so"
@@ -78,19 +75,5 @@ LIFX_IP:10.0.0.32
 # Replace ":" w/ "-"
 LIFX_MAC:d0-73-d5-03-58-0d
 
-# Email config
-SMTP_SERVER_ADDR:tar.black
-SMTP_SERVER_PORT:587
-# (vv) sender addr
-SMTP_EMAIL_ADDR:matt@tar.black
-SMTP_PASSWORD_FILE:.emailpw
-
 # Nag config (ntfy.sh/<SOMETHING>)
 NAG_RECIEVER:gb_owner
-
-# Webcam config
-# please leave bottom two set even if you decide to disable webcam
-DO_WEBCAM:True
-WEBCAM_LOCAL:False
-# If not local (vv) (must have passwordless ssh!!)
-SSH_TGT:matt@10.0.0.47

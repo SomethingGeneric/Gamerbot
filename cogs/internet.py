@@ -27,58 +27,6 @@ class Internet(commands.Cog):
         self.confmgr = ConfigManager("config.txt", False)
 
     @commands.command()
-    async def weather(self, ctx, *, search):
-        """Forecast gang"""
-        try:
-            await ctx.send(
-                embed=infmsg("Weather", "Getting data for: `" + search + "`")
-            )
-
-            og = search
-            search = urllib.parse.quote(search)
-
-            command_str = "http://api.weatherstack.com/current?access_key=KEY&query=QUERY&units=f".replace(
-                "KEY", self.confmgr.get("WS_KEY")
-            ).replace(
-                "QUERY", search
-            )
-
-            data = await get_as_json(command_str)
-
-            things = data["current"]
-
-            icon = things["weather_icons"][0]
-
-            data = [
-                ("Temperature", things["temperature"]),
-                ("Feels like", things["feelslike"]),
-                ("Overview", things["weather_descriptions"][0]),
-                ("Wind speed", things["wind_speed"]),
-                ("Precipitation %", things["precip"]),
-                ("Humidity %", things["humidity"]),  # %?
-                ("Cloud cover %", things["cloudcover"]),  # %?
-                ("Visibility (miles?)", things["visibility"]),
-            ]
-
-            # final_message = "" + icon + "\n```"
-            final_message = "\n```"
-
-            for item in data:
-                disp, val = item
-                final_message += disp + ": " + str(val) + "\n"
-
-            final_message += "```"
-
-            the_embed = infmsg("Weather", final_message)
-            the_embed.set_thumbnail(url=icon)
-
-            await ctx.send(embed=the_embed)
-
-        except Exception as e:
-            await ctx.send(embed=err_msg("Weather had an error", "`" + str(e) + "`"))
-            syslog.log("Internet-Important", "Had an issue with weather: " + str(e))
-
-    @commands.command()
     async def kernel(self, ctx):
         """Get Linux kernel info for host and latest"""
         try:
