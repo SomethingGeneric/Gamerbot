@@ -1,6 +1,7 @@
 import shutil
 import urllib
 
+import requests
 from discord.ext import commands
 
 from util_functions import *

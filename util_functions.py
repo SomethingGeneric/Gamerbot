@@ -1,8 +1,10 @@
-# System
-import os, sys, random, string, threading
-
-# Pip
-import asyncio, requests, discord, geoip2.database
+import asyncio
+import discord
+import geoip2.database
+import os
+import random
+import string
+import threading
 
 # Me
 from global_config import ConfigManager
@@ -28,14 +30,7 @@ WRONG_PERMS = confmgr.get("WRONG_PERMS")
 NEW_MEMBER = confmgr.get("NEW_MEMBER")
 INTRO_CHANNEL = confmgr.get("INTRO_CHANNEL")
 
-# and a list (vv)
-IMAGE_RESPONSES = confmgr.get_as_list("IMAGE_RESPONSES")
-
 DONT_SCARE = confmgr.get_as_list("NO_SCARY")
-
-# and a boolean (vv)
-DO_IMAGE_RESPONSE = confmgr.get_as_bool("DO_IMAGE_RESPONSES")
-IMAGE_RESPONSE_PROB = confmgr.get_as_int("IMAGE_RESPONSE_PROB")
 
 OWNER_ID = confmgr.get_as_int("OWNER_ID")
 
