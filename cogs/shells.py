@@ -15,7 +15,6 @@ class Shells(commands.Cog):
 
         self.bash_priv = self.confmgr.get_as_bool("BASH_PRIV")
         self.bash_sandboxed = self.confmgr.get_as_bool("BASH_SANDBOXED")
-        self.sandbox_ssh_tgt = self.confmgr.get("SANDBOX_SSH_TGT")
 
         self.shell_channels = []
 
@@ -31,8 +30,9 @@ class Shells(commands.Cog):
         append = ""
 
         if not privileged:
-            prepend = "ssh " + self.sandbox_ssh_tgt + ' "'
-            append = '"'
+            # this is the bit that will fool people (i hope)
+            prepend = "docker run -h $(uname -n) crystallinux/crystal /bin/bash -c \""
+            append = "\""
 
         if "\n" in cmd:
             cmd = cmd.split("\n")[0]
