@@ -31,7 +31,7 @@ class Shells(commands.Cog):
 
         if not privileged:
             # this is the bit that will fool people (i hope)
-            prepend = "docker run -h $(uname -n) crystallinux/crystal /bin/bash -c \""
+            prepend = "podman run -h $(uname -n) crystallinux/crystal /bin/bash -c \""
             append = "\""
 
         if "\n" in cmd:

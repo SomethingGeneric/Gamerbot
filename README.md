@@ -17,7 +17,7 @@ Discord bot with many functions
         * Arch: `sudo pacman -S espeak-ng`
         * Debian-based are probably the same
     * Shells:
-      * For non-priv, you need `docker`, and the user running the bot needs to be able to use `docker run` without `sudo`
+      * For non-priv, you need `podman`, and the user running the bot needs to be able to use `podman run` without `sudo` (rootless mode)
 * Review things in config labeled `# NEED TO CHANGE`
 * Put bot's token in the user's `~/.token`, and run `python3 combo.py`
     * System-d service example:
