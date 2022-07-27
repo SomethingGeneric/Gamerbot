@@ -1,7 +1,7 @@
-import discord
 from discord.ext import commands
 
 from util_functions import *
+
 
 # Hopefully we'll never need logging here
 

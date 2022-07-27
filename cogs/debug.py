@@ -1,8 +1,7 @@
-import discord
 from discord.ext import commands
 
+from global_config import ConfigManager
 from util_functions import *
-from global_config import configboi
 
 
 # Hopefully we'll never need logging here
@@ -13,10 +12,10 @@ class Debug(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.confmgr = configboi("config.txt", False)
+        self.confmgr = ConfigManager("config.txt", False)
 
     @commands.command()
-    async def checkcog(self, ctx, *, n):
+    async def check_cog(self, ctx, *, n):
         """check if cog is a thing"""
         try:
             if ctx.bot.get_cog(n) is not None:
@@ -25,18 +24,18 @@ class Debug(commands.Cog):
                 )
             else:
                 await ctx.send(
-                    embed=errmsg("Debug Tools", "Bot was not able to find `" + n + "`")
+                    embed=err_msg("Debug Tools", "Bot was not able to find `" + n + "`")
                 )
         except Exception as e:
             await ctx.send(
-                embed=errmsg(
+                embed=err_msg(
                     "Debug Tools - ERROR",
                     "Had error `" + str(e) + "` while checking cog `" + n + "`",
                 )
             )
 
     @commands.command()
-    async def gitstatus(self, ctx):
+    async def git_status(self, ctx):
         """Show the output of git status"""
         commit_msg = await run_command_shell(
             "git --no-pager log --decorate=short --pretty=oneline -n1"
@@ -44,7 +43,7 @@ class Debug(commands.Cog):
         await ctx.send(embed=infmsg("Git Status", "```" + commit_msg + "```"))
 
     @commands.command()
-    async def purgesyslog(self, ctx):
+    async def purge_syslog(self, ctx):
         """Delete all existing syslogs (USE WITH CARE) (Owner only)"""
         if ctx.message.author.id == self.bot.owner_id:
             purged = await run_command_shell("rm system_log* -v")
@@ -52,7 +51,7 @@ class Debug(commands.Cog):
                 embed=infmsg("Syslog Purger", "We purged:\n```" + purged + "```")
             )
         else:
-            await ctx.send(embed=errmsg("Oops", wrongperms("purgesyslog")))
+            await ctx.send(embed=err_msg("Oops", wrong_perms("purgesyslog")))
 
 
 def setup(bot):

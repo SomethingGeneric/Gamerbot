@@ -1,91 +1,37 @@
-import os, json, random
-import urllib.parse
+import json
 import urllib
+import urllib.parse
 
-import discord
-from discord.ext import commands
-import asyncio
-import gmplot
-import requests
 import duckduckgo
+import gmplot
+from discord.ext import commands
 
+import random
 from util_functions import *
-from global_config import configboi
 
 
 # Fun internet things
+async def get_as_json(url):
+    try:
+        data = await run_command_shell('curl "' + url + '"')
+        return json.loads(data)
+    except Exception as e:
+        return '{"haha":"heeho"}'
+
+
 class Internet(commands.Cog):
     """Useful tools on the interwebs"""
 
     def __init__(self, bot):
         self.bot = bot
-        self.confmgr = configboi("config.txt", False)
-
-    async def getasjson(self, url):
-        try:
-            data = await run_command_shell('curl "' + url + '"')
-            return json.loads(data)
-        except Exception as e:
-            return '{"haha":"heeho"}'
-
-    @commands.command()
-    async def weather(self, ctx, *, search):
-        """Forecast gang"""
-        try:
-            await ctx.send(
-                embed=infmsg("Weather", "Getting data for: `" + search + "`")
-            )
-
-            og = search
-            search = urllib.parse.quote(search)
-
-            commandstr = "http://api.weatherstack.com/current?access_key=KEY&query=QUERY&units=f".replace(
-                "KEY", self.confmgr.get("WS_KEY")
-            ).replace(
-                "QUERY", search
-            )
-
-            data = await self.getasjson(commandstr)
-
-            things = data["current"]
-
-            icon = things["weather_icons"][0]
-
-            data = [
-                ("Temperature", things["temperature"]),
-                ("Feels like", things["feelslike"]),
-                ("Overview", things["weather_descriptions"][0]),
-                ("Wind speed", things["wind_speed"]),
-                ("Precipitation %", things["precip"]),
-                ("Humidity %", things["humidity"]),  # %?
-                ("Cloud cover %", things["cloudcover"]),  # %?
-                ("Visibility (miles?)", things["visibility"]),
-            ]
-
-            # final_message = "" + icon + "\n```"
-            final_message = "\n```"
-
-            for item in data:
-                disp, val = item
-                final_message += disp + ": " + str(val) + "\n"
-
-            final_message += "```"
-
-            the_embed = infmsg("Weather", final_message)
-            the_embed.set_thumbnail(url=icon)
-
-            await ctx.send(embed=the_embed)
-
-        except Exception as e:
-            await ctx.send(embed=errmsg("Weather had an error", "`" + str(e) + "`"))
-            syslog.log("Internet-Important", "Had an issue with weather: " + str(e))
+        self.confmgr = ConfigManager("config.txt", False)
 
     @commands.command()
     async def kernel(self, ctx):
         """Get Linux kernel info for host and latest"""
         try:
             m = await ctx.send(embed=infmsg("Kernel", "Getting kernel info."))
-            data = await self.getasjson("https://www.kernel.org/releases.json")
+            data = await get_as_json("https://www.kernel.org/releases.json")
             new_ver = data["latest_stable"]["version"]
             mine = await run_command_shell("uname -r")
             msg = (
@@ -99,7 +45,7 @@ class Internet(commands.Cog):
             await ctx.send(embed=infmsg("Kernel", msg))
         except Exception as e:
             await ctx.send(
-                embed=errmsg("Kernel", "Had an issue getting info: `" + str(e) + "`")
+                embed=err_msg("Kernel", "Had an issue getting info: `" + str(e) + "`")
             )
             syslog.log("Internet-Important", "Kernel command had error: " + str(e))
 
@@ -121,7 +67,7 @@ class Internet(commands.Cog):
                     url = url.split(" ")[0]
                 await ctx.send(
                     ctx.message.author.mention,
-                    embed=warnmsg(
+                    embed=warn_msg(
                         "Wait time for traceroute", "This will take a while. Working..."
                     ),
                 )
@@ -148,10 +94,10 @@ class Internet(commands.Cog):
             else:
                 await ctx.send(
                     ctx.message.author.mention,
-                    embed=errmsg("You goofed", " that's not an address :|"),
+                    embed=err_msg("You goofed", " that's not an address :|"),
                 )
         except Exception as e:
-            await ctx.send(embed=errmsg("Traceroute error", "`" + str(e) + "`"))
+            await ctx.send(embed=err_msg("Traceroute error", "`" + str(e) + "`"))
             syslog.log(
                 "Internet-Imporant", "Had an issue running traceroute: `" + str(e) + "`"
             )
@@ -166,7 +112,7 @@ class Internet(commands.Cog):
                     url = url.split(" ")[0]
                 await ctx.send(
                     ctx.message.author.mention,
-                    embed=warnmsg(
+                    embed=warn_msg(
                         "Wait time for whois", "This will take a while. Working..."
                     ),
                 )
@@ -189,10 +135,10 @@ class Internet(commands.Cog):
             else:
                 await ctx.send(
                     ctx.message.author.mention,
-                    embed=errmsg("You goofed", " that's not an address :|"),
+                    embed=err_msg("You goofed", " that's not an address :|"),
                 )
         except Exception as e:
-            await ctx.send(embed=errmsg("Whois error", "`" + str(e) + "`"))
+            await ctx.send(embed=err_msg("Whois error", "`" + str(e) + "`"))
             syslog.log(
                 "Internet-Important", "Had an issue running whois: `" + str(e) + "`"
             )
@@ -207,7 +153,7 @@ class Internet(commands.Cog):
                     url = url.split(" ")[0]
                 await ctx.send(
                     ctx.message.author.mention,
-                    embed=warnmsg(
+                    embed=warn_msg(
                         "Wait time for nmap", "This will take a while. Working..."
                     ),
                 )
@@ -230,10 +176,10 @@ class Internet(commands.Cog):
             else:
                 await ctx.send(
                     ctx.message.author.mention,
-                    embed=errmsg("You goofed", " that's not an address :|"),
+                    embed=err_msg("You goofed", " that's not an address :|"),
                 )
         except Exception as e:
-            await ctx.send(embed=errmsg("NMAP error", "`" + str(e) + "`"))
+            await ctx.send(embed=err_msg("NMAP error", "`" + str(e) + "`"))
             syslog.log(
                 "Internet-Important", "Had an issue running nmap: `" + str(e) + "`"
             )
@@ -242,7 +188,7 @@ class Internet(commands.Cog):
     async def geoip(self, ctx, *, ip):
         """Get GeoIP of an address"""
         try:
-            dat = getgeoip(ip)
+            dat = get_geoip(ip)
 
             msg = "```"
 
@@ -259,7 +205,7 @@ class Internet(commands.Cog):
 
         except Exception as e:
             await ctx.send(
-                embed=errmsg(
+                embed=err_msg(
                     "GeoIP error", "Had an issue getting GeoIP data: `" + str(e) + "`"
                 )
             )
@@ -278,7 +224,7 @@ class Internet(commands.Cog):
             )
 
             await ctx.send(
-                embed=warnmsg(
+                embed=warn_msg(
                     "Trace-map",
                     "Running traceroute for `" + ip + "`\n This will take a while.",
                 )
@@ -305,14 +251,14 @@ class Internet(commands.Cog):
 
             for line in cleanup:
                 print("Getting data for: " + line)
-                dat = getgeoip(line)
-                if not "message" in dat.keys():
+                dat = get_geoip(line)
+                if "message" in dat.keys():
+                    await ctx.send(
+                        embed=err_msg("Trace-map", "No location data for `" + line + "`")
+                    )
+                else:
                     lat_list.append(float(dat["latitude"]))
                     long_list.append(float(dat["longitude"]))
-                else:
-                    await ctx.send(
-                        embed=errmsg("Trace-map", "No location data for `" + line + "`")
-                    )
 
             gmap3 = gmplot.GoogleMapPlotter(
                 0.0, 0.0, 0, apikey=self.confmgr.get("MAPS_KEY")
@@ -345,7 +291,7 @@ class Internet(commands.Cog):
         except Exception as e:
             await ctx.send(
                 ctx.message.author.mention,
-                embed=errmsg("GeoIP", "Had an issue making your map: `" + str(e) + "`"),
+                embed=err_msg("GeoIP", "Had an issue making your map: `" + str(e) + "`"),
             )
             syslog.log(
                 "Internet-Important", "Had an issue making trmap: `" + str(e) + "`"

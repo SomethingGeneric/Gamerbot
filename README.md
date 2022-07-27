@@ -1,9 +1,5 @@
 # Gamerbot2
 Discord bot with many functions
-(It's a hot mess around here but it works)
-
-## Note
-The update function from git will not work unless you properly clone the repo and have some service like sytemd keeping the bot process alive (Example system-d unit is below)
 
 ## Setup
 * Ensure you have git and pip
@@ -20,8 +16,8 @@ The update function from git will not work unless you properly clone the repo an
     * Speak:
         * Arch: `sudo pacman -S espeak-ng`
         * Debian-based are probably the same
-    * Lights (LIFX):
-        * If you want webcam command to work, you need `fswebcam`. On Arch, this is in the AUR
+    * Shells:
+      * For non-priv, you need `docker`, and the user running the bot needs to be able to use `docker run` without `sudo`
 * Review things in config labeled `# NEED TO CHANGE`
 * Put bot's token in the user's `~/.token`, and run `python3 combo.py`
     * System-d service example:
@@ -34,7 +30,7 @@ The update function from git will not work unless you properly clone the repo an
             [Service]
             User=gamerbot
             WorkingDirectory=/home/gamerbot/Gamerbot2
-            ExecStart=python3 combo.py
+            ExecStart=python3 bot.py
             Restart=always
 
             [Install]

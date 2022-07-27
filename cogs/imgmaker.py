@@ -1,11 +1,5 @@
-import os, re, random, asyncio
-from tempfile import TemporaryFile
-
-import discord
-from discord.ext import commands
-
-import asyncio
 from PIL import Image, ImageDraw, ImageFont
+from discord.ext import commands
 
 from util_functions import *
 
@@ -36,7 +30,7 @@ class ImageMaker(commands.Cog):
                 )
         except Exception as e:
             await ctx.send(
-                embed=errmsg("Error", "Had an issue running figlet: `" + str(e) + "`")
+                embed=err_msg("Error", "Had an issue running figlet: `" + str(e) + "`")
             )
             syslog.log(
                 "Memes-Important", "Had an issue running figlet: `" + str(e) + "`"
@@ -49,30 +43,30 @@ class ImageMaker(commands.Cog):
         if text == "":
             text = ctx.message.author.mention
 
-        newtext = text.strip()
+        new_text = text.strip()
         extra = ""
 
-        if "<@!" in newtext or "<@" in newtext:
+        if "<@!" in new_text or "<@" in new_text:
             try:
-                pid = newtext.replace("<@!", "").replace("<@", "").replace(">", "")
+                pid = new_text.replace("<@!", "").replace("<@", "").replace(">", "")
                 person = await self.bot.fetch_user(int(pid))
-                if person != None:
-                    newtext = person.display_name
+                if person is not None:
+                    new_text = person.display_name
                     extra = "Get bonked, " + person.mention
                 else:
                     await ctx.send("Had trouble getting a user from: " + text)
             except Exception as e:
                 await ctx.send("We had a failure: `" + str(e) + "`")
 
-        if newtext != "":
+        if new_text != "":
             img = Image.open("images/bonk.png")
-            bfont = ImageFont.truetype("fonts/arial.ttf", (50 - len(str(newtext))))
+            arial_font = ImageFont.truetype("fonts/arial.ttf", (50 - len(str(new_text))))
             draw = ImageDraw.Draw(img)
             draw.text(
-                (525 - len(str(newtext)) * 5, 300),
-                str(newtext),
+                (525 - len(str(new_text)) * 5, 300),
+                str(new_text),
                 (0, 0, 0),
-                font=bfont,
+                font=arial_font,
             )
             img.save("bonk-s.png")
             await ctx.send(extra, file=discord.File("bonk-s.png"))
@@ -89,7 +83,7 @@ class ImageMaker(commands.Cog):
             try:
                 pid = user.replace("<@!", "").replace("<@", "").replace(">", "")
                 person = await self.bot.fetch_user(int(pid))
-                if person != None:
+                if person is not None:
                     pfp = str(person.avatar_url)
                     os.system("wget " + pfp + " -O prof.webp")
                     bg = Image.open("images/spacex.jpg")
@@ -106,7 +100,7 @@ class ImageMaker(commands.Cog):
                     os.remove("temp.png")
                     os.remove("prof.webp")
                 else:
-                    await ctx.send("Had trouble getting a user from: " + text)
+                    await ctx.send("Had trouble getting a user from: " + who)
             except Exception as e:
                 await ctx.send("We had a failure: `" + str(e) + "`")
         else:
@@ -123,11 +117,11 @@ class ImageMaker(commands.Cog):
             try:
                 pid = user.replace("<@!", "").replace("<@", "").replace(">", "")
                 person = await self.bot.fetch_user(int(pid))
-                if person != None:
+                if person is not None:
                     pfp = str(person.avatar_url)
                     await ctx.send(ctx.message.author.mention + " here: " + pfp)
                 else:
-                    await ctx.send("Had trouble getting a user from: " + text)
+                    await ctx.send("Had trouble getting a user from: " + who)
             except Exception as e:
                 await ctx.send("We had a failure: `" + str(e) + "`")
         else:

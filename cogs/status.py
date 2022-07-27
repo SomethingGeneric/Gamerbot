@@ -1,9 +1,6 @@
-import sys, datetime
+import datetime
 
-import discord
 from discord.ext import commands, tasks
-
-from global_config import configboi
 
 from util_functions import *
 
@@ -13,7 +10,7 @@ class Status(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.confmgr = configboi("config.txt", False)
+        self.confmgr = ConfigManager("config.txt", False)
 
         self.status_task.start()
         self.uptime_logger.start()
@@ -24,7 +21,7 @@ class Status(commands.Cog):
         self.status_task.cancel()
         self.uptime_logger.cancel()
 
-    async def setDefaultStatus(self):
+    async def set_default_status(self):
         ac_type = None
 
         if self.confmgr.get("DEFAULT_STATUS_TYPE") == "watching":
@@ -55,11 +52,11 @@ class Status(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         syslog.log("Bot Status", "Setting default status as per config")
-        await self.setDefaultStatus()
+        await self.set_default_status()
 
     @tasks.loop(seconds=60.0)
     async def status_task(self):
-        await self.setDefaultStatus()
+        await self.set_default_status()
 
     @status_task.before_loop
     async def before_status_task(self):
@@ -78,7 +75,7 @@ class Status(commands.Cog):
         await self.bot.wait_until_ready()
 
     @commands.command(aliases=["uptime"])
-    async def getuptime(self, ctx):
+    async def get_uptime(self, ctx):
         await ctx.send(
             embed=infmsg(
                 "Bot Stats",

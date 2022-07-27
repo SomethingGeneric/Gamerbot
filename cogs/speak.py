@@ -1,10 +1,5 @@
-# System
-import os, random
-
 # Pip
-import discord
 from discord.ext import commands, tasks
-import asyncio
 
 # Mine
 from channel_state import VoiceState
@@ -22,8 +17,6 @@ class Speak(commands.Cog):
         self.audiosrc = None
         self.isDone = False
 
-        self.troll_task.start()
-
         self.chat_channels = []
 
         if os.path.exists(".chatchannels"):
@@ -33,9 +26,6 @@ class Speak(commands.Cog):
                 self.chat_channels.append(int(chan))
 
         syslog.log("Speak-Client", "Instance created and setup")
-
-    def cog_unload(self):
-        self.troll_task.cancel()
 
     def setDone(self):
         self.isDone = True
@@ -74,7 +64,7 @@ class Speak(commands.Cog):
                         "Speak-Client",
                         "The author is in a channel, so we're attempting to join them.",
                     )
-                    if file == None:
+                    if file is None:
                         await run_command_shell(
                             'espeak-ng -w espeak.wav "' + text + '"'
                         )
@@ -88,7 +78,7 @@ class Speak(commands.Cog):
                     self.vs.set_state("1")
                     syslog.log("Speak-Client", "We're in voice now.")
                     fn = "espeak.wav"
-                    if file != None:
+                    if file is not None:
                         fn = file
                     self.audiosrc = discord.FFmpegPCMAudio(fn)
                     self.isDone = False
@@ -100,7 +90,7 @@ class Speak(commands.Cog):
                     )
                     while self.voice_client.is_playing():
                         self.isDone = False
-                        if self.isDone == True:
+                        if self.isDone:
                             break
                         await asyncio.sleep(1)
                     syslog.log("Speak-Client", "We're done playing. Cleaning up.")
@@ -117,7 +107,7 @@ class Speak(commands.Cog):
                 else:
                     if not stealth:
                         await ctx.send(
-                            embed=errmsg(
+                            embed=err_msg(
                                 "Spoken Word", "You're not in a voice channel."
                             )
                         )
@@ -125,11 +115,11 @@ class Speak(commands.Cog):
                         return False
             except Exception as e:
                 syslog.log("Speak-Client-Important", "Error: " + str(e))
-                await ctx.send(embed=errmsg("Spoken Word", "`" + str(e) + "`"))
+                await ctx.send(embed=err_msg("Spoken Word", "`" + str(e) + "`"))
 
         else:
             await ctx.send(
-                embed=errmsg(
+                embed=err_msg(
                     "Spoken Word", "I'm already in a voice channel, and busy."
                 ),
                 reference=ctx.message,
@@ -207,34 +197,6 @@ class Speak(commands.Cog):
                 ctx = await self.bot.get_context(message)
                 syslog.log("Speak-Client", "Speaking response as well")
                 await self.speakInChannel(ctx=ctx, text=resp)
-
-    @tasks.loop(seconds=120)
-    async def troll_task(self):
-        for guild in self.bot.guilds:
-            for vc in guild.voice_channels:
-                if len(vc.members) != 0:
-                    fail = False
-                    for member in vc.members:
-                        if str(member.id) in DONT_SCARE:
-                            fail = True
-                    if random.randint(1, 10) == 5:
-                        if not fail:
-                            if random.randint(1, 3) == 2:
-                                await self.speakInChannel(
-                                    None,
-                                    text="Hi folks of "
-                                    + str(guild.name)
-                                    + random.choice(IMAGE_RESPONSES),
-                                    chan=vc,
-                                    stealth=True,
-                                )
-                            else:
-                                await self.do_meow(chan=vc)
-
-    @troll_task.before_loop
-    async def before_the_troll_task(self):
-        await self.bot.wait_until_ready()
-
 
 def setup(bot):
     bot.add_cog(Speak(bot))

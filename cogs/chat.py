@@ -1,10 +1,8 @@
-import os, re, random
-from random import randint
+import shutil
+import urllib
 
-import discord
+import requests
 from discord.ext import commands
-
-import asyncio
 
 from util_functions import *
 
@@ -138,7 +136,7 @@ class Chat(commands.Cog):
     @commands.command()
     async def poll(self, ctx, *, info=None):
         """Make a poll with numeric options"""
-        EMOJIS = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"]
+        emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟"]
         if not info:
             await ctx.send(
                 "Please format your poll like: `-poll question,option1,option2, ... `"
@@ -159,14 +157,14 @@ class Chat(commands.Cog):
                     eid = 0
                     for choice in things:
                         embed.add_field(
-                            name=f"{choice}", value=f"{EMOJIS[eid]}", inline=False
+                            name=f"{choice}", value=f"{emojis[eid]}", inline=False
                         )
                         eid += 1
                     embed.set_footer(text="Remember, count reactions-1 as total votes.")
                     msg = await ctx.send(embed=embed)
                     eid = 0
-                    for choice in things:
-                        await msg.add_reaction(EMOJIS[eid])
+                    for _ in things:
+                        await msg.add_reaction(emojis[eid])
                         eid += 1
                 else:
                     await ctx.send("Too many choices :(")

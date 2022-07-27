@@ -1,15 +1,17 @@
-# System
-import os, sys, random, string, threading
-
-# Pip
-import asyncio, requests, discord, geoip2.database
+import asyncio
+import discord
+import geoip2.database
+import os
+import random
+import string
+import threading
 
 # Me
-from global_config import configboi
+from global_config import ConfigManager
 from logger import BotLogger
 
 # lol
-confmgr = configboi("config.txt", False)
+confmgr = ConfigManager("config.txt", False)
 syslog = BotLogger("system_log.txt")
 
 # <-------------- Don't touch pls --------------->
@@ -28,16 +30,9 @@ WRONG_PERMS = confmgr.get("WRONG_PERMS")
 NEW_MEMBER = confmgr.get("NEW_MEMBER")
 INTRO_CHANNEL = confmgr.get("INTRO_CHANNEL")
 
-# and a list (vv)
-IMAGE_RESPONSES = confmgr.getaslist("IMAGE_RESPONSES")
+DONT_SCARE = confmgr.get_as_list("NO_SCARY")
 
-DONT_SCARE = confmgr.getaslist("NO_SCARY")
-
-# and a boolean (vv)
-DO_IMAGE_RESPONSE = confmgr.getasbool("DO_IMAGE_RESPONSES")
-IMAGE_RESPONSE_PROB = confmgr.getasint("IMAGE_RESPONSE_PROB")
-
-OWNER_ID = confmgr.getasint("OWNER_ID")
+OWNER_ID = confmgr.get_as_int("OWNER_ID")
 
 DEFAULT_STATUS_TYPE = confmgr.get("DEFAULT_STATUS_TYPE")
 DEFAULT_STATUS_TEXT = confmgr.get("DEFAULT_STATUS_TEXT")
@@ -45,24 +40,15 @@ DEFAULT_STATUS_TEXT = confmgr.get("DEFAULT_STATUS_TEXT")
 LIFX_IP = confmgr.get("LIFX_IP")
 LIFX_MAC = confmgr.get("LIFX_MAC").replace("-", ":")
 
-SMTP_SERVER_ADDR = confmgr.get("SMTP_SERVER_ADDR")
-SMTP_SERVER_PORT = confmgr.getasint("SMTP_SERVER_PORT")
-SMTP_EMAIL_ADDR = confmgr.get("SMTP_EMAIL_ADDR")
-SMTP_PASSWORD_FILE = confmgr.get("SMTP_PASSWORD_FILE")
-
 NAG_RECIEVER = confmgr.get("NAG_RECIEVER")
 
-DO_WEBCAM = confmgr.getasbool("DO_WEBCAM")
-WEBCAM_LOCAL = confmgr.getasbool("WEBCAM_LOCAL")
-SSH_TGT = confmgr.get("SSH_TGT")
-
-UNLOAD_COGS = confmgr.getaslist("UNLOAD_COGS")
+UNLOAD_COGS = confmgr.get_as_list("UNLOAD_COGS")
 # <-------------- End --------------------->
 
 WHITELIST = []
 
 
-def fancymsg(title, text, color, footnote=None):
+def fancy_msg(title, text, color, footnote=None):
 
     e = discord.Embed(colour=color)
     e.add_field(name=title, value=text, inline=False)
@@ -73,36 +59,37 @@ def fancymsg(title, text, color, footnote=None):
     return e
 
 
-def errmsg(title, text, footnote=None):
-    return fancymsg(title, text, discord.Colour.red(), footnote)
+def err_msg(title, text, footnote=None):
+    return fancy_msg(title, text, discord.Colour.red(), footnote)
 
 
-def warnmsg(title, text, footnote=None):
-    return fancymsg(title, text, discord.Colour.gold(), footnote)
+def warn_msg(title, text, footnote=None):
+    return fancy_msg(title, text, discord.Colour.gold(), footnote)
 
 
 def infmsg(title, text, footnote=None):
-    return fancymsg(title, text, discord.Colour.blurple(), footnote)
+    return fancy_msg(title, text, discord.Colour.blurple(), footnote)
 
 
-def imgbed(title, type, dat):
-    # see https://discordpy.readthedocs.io/en/stable/faq.html?highlight=embed#how-do-i-use-a-local-image-file-for-an-embed-image
+def image_embed(title, msg_type, dat):
+    # see docs at
+    # https://discordpy.readthedocs.io/en/stable/faq.html?highlight=embed#how-do-i-use-a-local-image-file-for-an-embed-image
     e = discord.Embed(color=discord.Colour.blurple())
     e.add_field(name="foo", value=title, inline=False)
-    if type == "rem":
+    if msg_type == "rem":
         e.set_image(url=dat)
     else:
         e.set_image(url="attachment://" + dat)
     return e
 
 
-# Youtube Stuff
-async def getytvid(link, songname):
+# YouTube Stuff
+async def get_yt_vid(link, song_name):
     syslog.log("Util-GetYTvid", "We're starting a download session")
-    syslog.log("Util-GetYTvid", "Target filename is: " + songname)
+    syslog.log("Util-GetYTvid", "Target filename is: " + song_name)
 
     await run_command_shell(
-        "cd bin && python3 download_one.py " + link + " " + songname + " && cd ../"
+        "cd bin && python3 download_one.py " + link + " " + song_name + " && cd ../"
     )
 
     syslog.log("Util-GetYTvid", "All done!")
@@ -132,7 +119,7 @@ def ensure(fn):
         os.makedirs(fn, exist_ok=True)
 
 
-def getstamp():
+def get_stamp():
     os.system("date >> stamp")
     with open("stamp") as f:
         s = f.read()
@@ -140,14 +127,14 @@ def getstamp():
     return s
 
 
-def iswhitelisted(word):
+def is_whitelisted(word):
     if word in WHITELIST:
         return True
     else:
         return False
 
 
-def wrongperms(command):
+def wrong_perms(command):
     syslog.log("System", "Someone just failed to run: '" + command + "'")
     return WRONG_PERMS.replace("{command}", command)
 
@@ -190,7 +177,7 @@ async def run_command_shell(command, grc=False):
         # Return stdout
         return result
     else:
-        return (process.returncode, result)
+        return process.returncode, result
 
 
 async def isup(host):
@@ -202,13 +189,13 @@ async def isup(host):
 
 
 def paste(text):
-    N = 25
+    n = 25
     fn = (
         "".join(
             random.choice(
                 string.ascii_uppercase + string.digits + string.ascii_lowercase
             )
-            for _ in range(N)
+            for _ in range(n)
         )
         + ".html"
     )
@@ -217,7 +204,7 @@ def paste(text):
     return PASTE_URL_BASE + fn
 
 
-def getgeoip(ip):
+def get_geoip(ip):
     with geoip2.database.Reader("GeoLite2-City.mmdb") as reader:
         try:
             response = reader.city(ip)
