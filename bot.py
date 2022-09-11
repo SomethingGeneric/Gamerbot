@@ -93,7 +93,7 @@ async def on_ready():
                 found = True
         if not found:
             try:
-                invites = server.invites()
+                invites = await server.invites()
                 await ownerman.send(f"Didn't find you in {server.name}.")
                 if len(invites) == 0:
                     await ownerman.send("Trying to make a new invite.")
