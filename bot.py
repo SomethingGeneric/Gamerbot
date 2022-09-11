@@ -92,24 +92,7 @@ async def on_ready():
             if member.id == bot.owner_id:
                 found = True
         if not found:
-            try:
-                invites = await server.invites()
-                await ownerman.send(f"Didn't find you in {server.name}.")
-                if len(invites) == 0:
-                    await ownerman.send("Trying to make a new invite.")
-                    chan = server.text_channels[0]
-                    try:
-                        invite = await chan.create_invite()
-                        await ownerman.send(f"New invite: {invite.url}")
-                    except discord.Forbidden:
-                        await ownerman.send(f"No perms to make a new invite :( The guild id is {str(server.id)} btw")
-                else:
-                    for invite in invites:
-                        await ownerman.send(f"Invite: {invite.url}")
-            except discord.Forbidden:
-                await ownerman.send(f"Didn't find your in {server.name} with {str(server.id)}, but I can't invite you to it.")
-        else:
-            await ownerman.send(f"We're both in {server.name}")
+            await server.leave()
 
 
 @bot.event
