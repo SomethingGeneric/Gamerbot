@@ -16,7 +16,7 @@ class About(commands.Cog):
     async def source(self, ctx):
         """Bot source code link"""
         await ctx.send(
-            embed=infmsg(
+            embed=inf_msg(
                 "Source",
                 "My source code lives here: https://github.com/SomethingGeneric/gamerbot2",
             )
@@ -26,7 +26,7 @@ class About(commands.Cog):
     async def license(self, ctx):
         """Bot license file"""
         await ctx.send(
-            embed=infmsg(
+            embed=inf_msg(
                 "License",
                 "My license lives here: https://github.com/SomethingGeneric/gamerbot2/-/blob/main/LICENSE",
             )
@@ -36,7 +36,7 @@ class About(commands.Cog):
     async def report(self, ctx):
         """Report bot issues"""
         await ctx.send(
-            embed=infmsg(
+            embed=inf_msg(
                 "Issues",
                 "You can file issues here: https://github.com/SomethingGeneric/gamerbot2/issues",
             )
@@ -46,7 +46,7 @@ class About(commands.Cog):
     async def suggest(self, ctx):
         """Suggest bot feature(s)"""
         await ctx.send(
-            embed=infmsg(
+            embed=inf_msg(
                 "Issues",
                 "You can file issues here: https://gitlab.xhec.us/Generic/Gamerbot2/issues",
             )
@@ -61,13 +61,13 @@ class About(commands.Cog):
         msg = ""
         msg += "Latest Git commit: \n"
         msg += "```" + commit_msg + "```"
-        await ctx.send(embed=infmsg("Bot Stats", msg))
+        await ctx.send(embed=inf_msg("Bot Stats", msg))
 
     @commands.command()
     async def invite(self, ctx):
         """Add me to another server"""
         await ctx.send(
-            embed=infmsg(
+            embed=inf_msg(
                 "Invite me :)",
                 "https://discord.com/api/oauth2/authorize?client_id=763559371628085288&permissions=8&scope=bot%20applications.commands",
             )
@@ -77,7 +77,7 @@ class About(commands.Cog):
     async def support(self, ctx):
         """Get support for Gamerbot"""
         await ctx.send(
-            embed=infmsg("Join our server. :)", "https://discord.gg/j4nAea7cAs")
+            embed=inf_msg("Join our server. :)", "https://discord.gg/j4nAea7cAs")
         )
 
 

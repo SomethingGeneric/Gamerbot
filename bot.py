@@ -10,7 +10,6 @@ from discord.ext import commands
 from pretty_help import DefaultMenu, PrettyHelp
 
 # My own classes n such
-from global_config import ConfigManager
 from util_functions import *
 
 if os.path.sep == "\\":
@@ -55,7 +54,7 @@ async def on_ready():
         chan = bot.get_channel(int(channel))
         if chan is not None:
             await chan.send(
-                embed=infmsg("System", "Finished restarting at: `" + get_stamp() + "`")
+                embed=inf_msg("System", "Finished restarting at: `" + get_stamp() + "`")
             )
         os.remove("restarted.txt")
 
@@ -82,7 +81,7 @@ async def on_ready():
 
     if notifyowner:
         await ownerman.send(
-            embed=infmsg("System", "Started/restarted at: `" + get_stamp() + "`")
+            embed=inf_msg("System", "Started/restarted at: `" + get_stamp() + "`")
         )
 
     for server in bot.guilds:
@@ -106,6 +105,7 @@ async def on_command_error(ctx, error):
     syslog.log("Main", "Error in command: " + str(error))
     await ctx.send(embed=err_msg("Error", "```" + str(error) + "```"))
 
+
 @bot.command()
 async def guilds(ctx):
     """Show all guilds the bot is in"""
@@ -115,11 +115,12 @@ async def guilds(ctx):
     msg += "```"
     await ctx.send(msg)
 
+
 @bot.command()
 async def removecog(ctx, name):
     """Un-load a cog that was loaded by default."""
     if await bot.is_owner(ctx.message.author):
-        await ctx.send(embed=infmsg("Gotcha", "Ok, I'll try to disable `" + name + "`"))
+        await ctx.send(embed=inf_msg("Gotcha", "Ok, I'll try to disable `" + name + "`"))
         try:
             bot.remove_cog(name)
             syslog.log("Main", "Disabled cog: " + name)
@@ -139,7 +140,7 @@ async def getsyslog(ctx):
         log = syslog.get_log()
         if len(log) > 1994:
             text = paste(log)
-            await ctx.send(embed=infmsg("Output", text))
+            await ctx.send(embed=inf_msg("Output", text))
         else:
             text = "```" + log + "```"
             await ctx.send("Here you go:")

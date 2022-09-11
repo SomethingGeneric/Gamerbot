@@ -77,7 +77,7 @@ class Status(commands.Cog):
     @commands.command(aliases=["uptime"])
     async def get_uptime(self, ctx):
         await ctx.send(
-            embed=infmsg(
+            embed=inf_msg(
                 "Bot Stats",
                 "Uptime: `" + str(datetime.timedelta(seconds=self.upt)) + "`",
             )

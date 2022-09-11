@@ -24,7 +24,7 @@ class Admin(commands.Cog):
                             found_role = True
 
                     if not found_role:
-                        modr = await guild.create_role(
+                        await guild.create_role(
                             name="gb_mod",
                             reason="Role used to designate who can use our admin commands.",
                         )

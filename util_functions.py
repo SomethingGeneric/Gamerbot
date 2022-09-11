@@ -40,7 +40,7 @@ DEFAULT_STATUS_TEXT = confmgr.get("DEFAULT_STATUS_TEXT")
 LIFX_IP = confmgr.get("LIFX_IP")
 LIFX_MAC = confmgr.get("LIFX_MAC").replace("-", ":")
 
-NAG_RECIEVER = confmgr.get("NAG_RECIEVER")
+NAG_RECEIVER = confmgr.get("NAG_RECIEVER")
 
 UNLOAD_COGS = confmgr.get_as_list("UNLOAD_COGS")
 # <-------------- End --------------------->
@@ -49,7 +49,6 @@ WHITELIST = []
 
 
 def fancy_msg(title, text, color, footnote=None):
-
     e = discord.Embed(colour=color)
     e.add_field(name=title, value=text, inline=False)
 
@@ -67,7 +66,7 @@ def warn_msg(title, text, footnote=None):
     return fancy_msg(title, text, discord.Colour.gold(), footnote)
 
 
-def infmsg(title, text, footnote=None):
+def inf_msg(title, text, footnote=None):
     return fancy_msg(title, text, discord.Colour.blurple(), footnote)
 
 
@@ -191,13 +190,13 @@ async def isup(host):
 def paste(text):
     n = 25
     fn = (
-        "".join(
-            random.choice(
-                string.ascii_uppercase + string.digits + string.ascii_lowercase
+            "".join(
+                random.choice(
+                    string.ascii_uppercase + string.digits + string.ascii_lowercase
+                )
+                for _ in range(n)
             )
-            for _ in range(n)
-        )
-        + ".html"
+            + ".html"
     )
     with open(PASTE_BASE + fn, "w") as f:
         f.write(text)

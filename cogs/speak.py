@@ -27,11 +27,11 @@ class Speak(commands.Cog):
 
         syslog.log("Speak-Client", "Instance created and setup")
 
-    def setDone(self):
+    def set_done(self):
         self.isDone = True
 
     @commands.command()
-    async def makechatchannel(self, ctx):
+    async def make_chat_channel(self, ctx):
         adm = False
         for role in ctx.message.author.roles:
             if role.name == "gb_mod":
@@ -45,7 +45,7 @@ class Speak(commands.Cog):
         else:
             await ctx.send("You're not a mod")
 
-    async def speakInChannel(self, ctx, text="", chan=None, stealth=False, file=None):
+    async def speak_in_channel(self, ctx, text="", chan=None, stealth=False, file=None):
         if self.voice_client is None and not self.vs.check_state():
             syslog.log(
                 "Speak-Client",
@@ -86,7 +86,7 @@ class Speak(commands.Cog):
                         self.audiosrc,
                         after=lambda e: print("Player error: %s" % e)
                         if e
-                        else self.setDone(),
+                        else self.set_done(),
                     )
                     while self.voice_client.is_playing():
                         self.isDone = False
@@ -132,7 +132,7 @@ class Speak(commands.Cog):
         syslog.log(
             "Speak-Client", "Calling speakInChannel for " + ctx.author.display_name
         )
-        await self.speakInChannel(
+        await self.speak_in_channel(
             ctx, ctx.author.display_name + " says " + thing, None, False
         )
 
@@ -140,7 +140,7 @@ class Speak(commands.Cog):
         files = os.listdir("sounds")
         fn = "sounds/" + random.choice(files)
         syslog.log("Meow-Client", "Playing: " + fn)
-        await self.speakInChannel(ctx=ctx, chan=chan, file=fn)
+        await self.speak_in_channel(ctx=ctx, chan=chan, file=fn)
 
     @commands.command()
     async def meow(self, ctx):
@@ -156,7 +156,7 @@ class Speak(commands.Cog):
                 if message.author.voice is not None:
                     ctx = await self.bot.get_context(message)
                     syslog.log("Speak-Client", "Initializing meme session")
-                    tried = await self.speakInChannel(ctx, quote, None, True)
+                    tried = await self.speak_in_channel(ctx, quote, None, True)
                     if tried:
                         syslog.log(
                             "Speak-Memes", "SPOKE BEE MOVIE QUOTE IN VOICE CHANNEL!!"
@@ -196,7 +196,7 @@ class Speak(commands.Cog):
             if message.author.voice is not None:
                 ctx = await self.bot.get_context(message)
                 syslog.log("Speak-Client", "Speaking response as well")
-                await self.speakInChannel(ctx=ctx, text=resp)
+                await self.speak_in_channel(ctx=ctx, text=resp)
 
 def setup(bot):
     bot.add_cog(Speak(bot))

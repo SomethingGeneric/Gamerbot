@@ -42,21 +42,21 @@ class Shells(commands.Cog):
         if len(out) == 0:
             if ctx is not None:
                 await ctx.send(
-                    embed=infmsg("Shells: `" + cmd + "`", "Returned nothing"),
+                    embed=inf_msg("Shells: `" + cmd + "`", "Returned nothing"),
                     reference=ctx.message,
                 )
         elif len(out) > 1000:
             url = paste(out)
             if ctx is not None:
                 await ctx.send(
-                    embed=infmsg(
+                    embed=inf_msg(
                         "Shells: Paste URL", "Output was too long. See: " + url
                     ),
                     reference=ctx.message,
                 )
             elif msg is not None:
                 await msg.channel.send(
-                    embed=infmsg(
+                    embed=inf_msg(
                         "Shells: Paste URL", "Output was too long. See: " + url
                     ),
                     reference=msg,
@@ -66,7 +66,7 @@ class Shells(commands.Cog):
         else:
             if ctx is not None:
                 await ctx.send(
-                    embed=infmsg("Shells: `" + cmd + "`", "```" + out + "```"),
+                    embed=inf_msg("Shells: `" + cmd + "`", "```" + out + "```"),
                     reference=ctx.message,
                 )
             elif msg is not None:
@@ -108,7 +108,6 @@ class Shells(commands.Cog):
             )
         else:  # it's enabled
             await self.handle_bash(ctx=ctx, privileged=False, cmd=cmd)
-
 
     @commands.Cog.listener()
     async def on_message(self, message):

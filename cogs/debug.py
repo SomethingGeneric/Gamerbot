@@ -20,7 +20,7 @@ class Debug(commands.Cog):
         try:
             if ctx.bot.get_cog(n) is not None:
                 await ctx.send(
-                    embed=infmsg("Debug Tools", "Bot was able to find `" + n + "`")
+                    embed=inf_msg("Debug Tools", "Bot was able to find `" + n + "`")
                 )
             else:
                 await ctx.send(
@@ -40,7 +40,7 @@ class Debug(commands.Cog):
         commit_msg = await run_command_shell(
             "git --no-pager log --decorate=short --pretty=oneline -n1"
         )
-        await ctx.send(embed=infmsg("Git Status", "```" + commit_msg + "```"))
+        await ctx.send(embed=inf_msg("Git Status", "```" + commit_msg + "```"))
 
     @commands.command()
     async def purge_syslog(self, ctx):
@@ -48,7 +48,7 @@ class Debug(commands.Cog):
         if ctx.message.author.id == self.bot.owner_id:
             purged = await run_command_shell("rm system_log* -v")
             await ctx.send(
-                embed=infmsg("Syslog Purger", "We purged:\n```" + purged + "```")
+                embed=inf_msg("Syslog Purger", "We purged:\n```" + purged + "```")
             )
         else:
             await ctx.send(embed=err_msg("Oops", wrong_perms("purgesyslog")))

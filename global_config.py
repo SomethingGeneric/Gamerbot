@@ -34,7 +34,7 @@ class ConfigManager:
                         if logging:
                             syslog.log("Config", "Added " + key + ": " + val)
                         self.config[key] = val
-            self.islogging = logging
+            self.is_logging = logging
 
     def reload_config(self):
         if not check(self.fn):

@@ -11,6 +11,8 @@ from util_functions import *
 
 
 # Fun internet things
+
+#TODO: find correct exceptions for this
 async def get_as_json(url):
     try:
         data = await run_command_shell('curl "' + url + '"')
@@ -30,7 +32,7 @@ class Internet(commands.Cog):
     async def kernel(self, ctx):
         """Get Linux kernel info for host and latest"""
         try:
-            m = await ctx.send(embed=infmsg("Kernel", "Getting kernel info."))
+            m = await ctx.send(embed=inf_msg("Kernel", "Getting kernel info."))
             data = await get_as_json("https://www.kernel.org/releases.json")
             new_ver = data["latest_stable"]["version"]
             mine = await run_command_shell("uname -r")
@@ -42,7 +44,7 @@ class Internet(commands.Cog):
                 + "`"
             )
             await m.delete()
-            await ctx.send(embed=infmsg("Kernel", msg))
+            await ctx.send(embed=inf_msg("Kernel", msg))
         except Exception as e:
             await ctx.send(
                 embed=err_msg("Kernel", "Had an issue getting info: `" + str(e) + "`")
@@ -55,7 +57,7 @@ class Internet(commands.Cog):
         url = "https://www.google.com/search?q="
         async with ctx.typing():
             await asyncio.sleep(1)
-        await ctx.send(embed=infmsg("Go to: ", url + urllib.parse.quote(query)))
+        await ctx.send(embed=inf_msg("Go to: ", url + urllib.parse.quote(query)))
 
     @commands.command()
     async def traceroute(self, ctx, *, url):
@@ -77,13 +79,13 @@ class Internet(commands.Cog):
                 out = await run_command_shell("traceroute " + url)
                 if len(out) < 1024:
                     await ctx.send(
-                        embed=infmsg("Traceroute output", "```" + str(out) + "```")
+                        embed=inf_msg("Traceroute output", "```" + str(out) + "```")
                     )
                 else:
                     link = paste(out)
                     await ctx.send(
                         ctx.message.author.mention,
-                        embed=infmsg(
+                        embed=inf_msg(
                             "Output",
                             "The traceroute output is too long, so here's a link: "
                             + link,
@@ -122,14 +124,14 @@ class Internet(commands.Cog):
                     link = paste(out)
                     await ctx.send(
                         ctx.message.author.mention,
-                        embed=infmsg(
+                        embed=inf_msg(
                             "Output",
                             "The whois output is too long, so here's a link: " + link,
                         ),
                     )
                 else:
                     await ctx.send(
-                        embed=infmsg("Whois output", "```" + str(out) + "```")
+                        embed=inf_msg("Whois output", "```" + str(out) + "```")
                     )
                 syslog.log("Internet", "Done querying WHOIS for " + url)
             else:
@@ -163,14 +165,14 @@ class Internet(commands.Cog):
                     link = paste(out)
                     await ctx.send(
                         ctx.message.author.mention,
-                        embed=infmsg(
+                        embed=inf_msg(
                             "Output",
                             "The nmap output is too long, so here's a link: " + link,
                         ),
                     )
                 else:
                     await ctx.send(
-                        embed=infmsg("Nmap output", "```" + str(out) + "```")
+                        embed=inf_msg("Nmap output", "```" + str(out) + "```")
                     )
                 syslog.log("Internet", "Done querying NMAP for " + url)
             else:
@@ -200,7 +202,7 @@ class Internet(commands.Cog):
                 "{lat}", str(dat["latitude"])
             ).replace("{lng}", str(dat["longitude"]))
 
-            await ctx.send(embed=infmsg("GeoIP for `" + ip + "`", msg))
+            await ctx.send(embed=inf_msg("GeoIP for `" + ip + "`", msg))
             syslog.log("Internet", "Queried GeoIP for " + ip)
 
         except Exception as e:
@@ -244,7 +246,7 @@ class Internet(commands.Cog):
                         cleanup.append(line)
                         sum_hops += "- " + line + "\n"
 
-            await ctx.send(embed=infmsg("Trace-map", "Hops:\n```" + sum_hops + "```"))
+            await ctx.send(embed=inf_msg("Trace-map", "Hops:\n```" + sum_hops + "```"))
 
             lat_list = []
             long_list = []
@@ -282,7 +284,7 @@ class Internet(commands.Cog):
 
             await ctx.send(
                 ctx.message.author.mention,
-                embed=infmsg(
+                embed=inf_msg(
                     "GeoIP",
                     "Map is available at: " + self.confmgr.get("PASTE_URL_BASE") + idh,
                 ),

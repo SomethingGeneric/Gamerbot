@@ -25,11 +25,11 @@ class Random(commands.Cog):
         res = await run_command_shell('echo "' + exp + '" | bc')
         if len(res) != 0:
             if len(res) < 1998:
-                await ctx.send(embed=infmsg("Eval", "`" + str(res) + "`"))
+                await ctx.send(embed=inf_msg("Eval", "`" + str(res) + "`"))
             else:
                 url = paste(res)
                 await ctx.send(
-                    embed=infmsg(
+                    embed=inf_msg(
                         "Eval", "Output was too many characters. Here's a link: " + url
                     )
                 )
