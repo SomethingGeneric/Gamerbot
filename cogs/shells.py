@@ -30,7 +30,7 @@ class Shells(commands.Cog):
         append = ""
 
         if not privileged:
-            # this is the bit that will fool people (i hope)
+            # this is the bit that will fool people (I hope)
             prepend = "podman run -h $(uname -n) crystallinux/crystal /bin/bash -c \""
             append = "\""
 

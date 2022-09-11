@@ -65,10 +65,9 @@ OWNER_DM_RESTART:True
 
 # NEED TO (review)
 # Can mods/admins use bash w/ any command?
-BASH_PRIV:True
+BASH_PRIV:False
 # Can anyone use the (safer (but not fully secure)) shell command
-BASH_SANDBOXED:True
-SANDBOX_SSH_TGT:foobar@10.0.0.125
+BASH_SANDBOXED:False
 
 # For LIFX/IOT Cog:
 LIFX_IP:10.0.0.32
