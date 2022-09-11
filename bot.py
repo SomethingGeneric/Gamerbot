@@ -1,6 +1,7 @@
 # Standard py stuff
 from os import listdir
 from os.path import isfile, join
+import sys
 
 # Pycord
 from discord.ext import commands
@@ -83,6 +84,21 @@ async def on_ready():
         await ownerman.send(
             embed=infmsg("System", "Started/restarted at: `" + get_stamp() + "`")
         )
+
+    for server in bot.guilds:
+        found = False
+        members = server.members
+        for member in members:
+            if member.id == bot.owner_id:
+                found = True
+        if not found:
+            try:
+                invites = server.invites
+                await ownerman.send(f"Didn't find you in {server.name}.")
+                for invite in invites:
+                    await ownerman.send(f"Invite: {invite.url}")
+            except discord.Forbidden:
+                await ownerman.send(f"Didn't find your in {server.name} with {str(server.id)}, but I can't invite you to it.")
 
 
 @bot.event
