@@ -106,6 +106,14 @@ async def on_command_error(ctx, error):
     syslog.log("Main", "Error in command: " + str(error))
     await ctx.send(embed=err_msg("Error", "```" + str(error) + "```"))
 
+@bot.command()
+async def guilds(ctx):
+    """Show all guilds the bot is in"""
+    msg = "```"
+    for server in bot.guilds:
+        msg += f"- {server.name}\n"
+    msg += "```"
+    await ctx.send(msg)
 
 @bot.command()
 async def removecog(ctx, name):
