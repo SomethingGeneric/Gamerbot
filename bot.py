@@ -103,7 +103,11 @@ async def on_message(message):
 @bot.event
 async def on_command_error(ctx, error):
     syslog.log("Main", "Error in command: " + str(error))
-    await ctx.send(embed=err_msg("Error", "```" + str(error) + "```"))
+    if "Command" in str(error) and "not found" in str(error):
+        ownerman = await bot.fetch_user(bot.owner_id)
+        await ownerman.send(f"```{str(error)}```")
+    else:
+        await ctx.send(embed=err_msg("Error", "```" + str(error) + "```"))
 
 
 @bot.command()
