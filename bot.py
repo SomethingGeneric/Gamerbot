@@ -108,6 +108,8 @@ async def on_ready():
                         await ownerman.send(f"Invite: {invite.url}")
             except discord.Forbidden:
                 await ownerman.send(f"Didn't find your in {server.name} with {str(server.id)}, but I can't invite you to it.")
+        else:
+            await ownerman.send(f"We're both in {server.name}")
 
 
 @bot.event
