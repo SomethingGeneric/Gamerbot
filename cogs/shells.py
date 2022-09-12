@@ -31,11 +31,22 @@ class Shells(commands.Cog):
 
         if not privileged:
             # this is the bit that will fool people (I hope)
-            prepend = "podman run -h $(uname -n) crystallinux/crystal /bin/bash -c \""
-            append = "\""
+            fn = (
+                "".join(
+                    random.choice(
+                        string.ascii_uppercase + string.digits + string.ascii_lowercase
+                    )
+                    for _ in range(64)
+                )
+                + ".txt"
+            )
 
-        if "\n" in cmd:
-            cmd = cmd.split("\n")[0]
+            with open(fn, "w") as f:
+                f.write(cmd)
+
+            prepend = f'podman run -h $(uname -n) crystallinux/crystal /bin/bash -c "$(cat {fn})'
+            append = '"'
+            cmd = ""
 
         out = await run_command_shell(prepend + cmd + append)
 
@@ -112,9 +123,9 @@ class Shells(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         if (
-                message.channel.id in self.shell_channels
-                and message.author != self.bot.user
-                and message.content != "-makeshellchannel"
+            message.channel.id in self.shell_channels
+            and message.author != self.bot.user
+            and message.content != "-makeshellchannel"
         ):
             await self.handle_bash(msg=message, privileged=False, cmd=message.content)
 

@@ -190,13 +190,13 @@ async def isup(host):
 def paste(text):
     n = 25
     fn = (
-            "".join(
-                random.choice(
-                    string.ascii_uppercase + string.digits + string.ascii_lowercase
-                )
-                for _ in range(n)
+        "".join(
+            random.choice(
+                string.ascii_uppercase + string.digits + string.ascii_lowercase
             )
-            + ".html"
+            for _ in range(n)
+        )
+        + ".html"
     )
     with open(PASTE_BASE + fn, "w") as f:
         f.write(text)

@@ -121,7 +121,9 @@ async def guilds(ctx):
 async def removecog(ctx, name):
     """Un-load a cog that was loaded by default."""
     if await bot.is_owner(ctx.message.author):
-        await ctx.send(embed=inf_msg("Gotcha", "Ok, I'll try to disable `" + name + "`"))
+        await ctx.send(
+            embed=inf_msg("Gotcha", "Ok, I'll try to disable `" + name + "`")
+        )
         try:
             bot.remove_cog(name)
             syslog.log("Main", "Disabled cog: " + name)

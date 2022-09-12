@@ -60,7 +60,9 @@ class ImageMaker(commands.Cog):
 
         if new_text != "":
             img = Image.open("images/bonk.png")
-            arial_font = ImageFont.truetype("fonts/arial.ttf", (50 - len(str(new_text))))
+            arial_font = ImageFont.truetype(
+                "fonts/arial.ttf", (50 - len(str(new_text)))
+            )
             draw = ImageDraw.Draw(img)
             draw.text(
                 (525 - len(str(new_text)) * 5, 300),

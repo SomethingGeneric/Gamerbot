@@ -7,7 +7,7 @@ from util_functions import *
 
 
 def hex_to_hsbk(hex_dat):
-    rgb = tuple(int(hex_dat[i: i + 2], 16) for i in (0, 2, 4))
+    rgb = tuple(int(hex_dat[i : i + 2], 16) for i in (0, 2, 4))
     r = rgb[0] / 255
     g = rgb[1] / 255
     b = rgb[2] / 255

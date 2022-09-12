@@ -184,7 +184,7 @@ class Speak(commands.Cog):
         ):
             resp = await run_command_shell(
                 'python3 bin/thechatbot.py "'
-                + message.content.replace("\"", '\'').replace("hey chatterbot", "")
+                + message.content.replace('"', "'").replace("hey chatterbot", "")
                 + '"'
             )
 
@@ -197,6 +197,7 @@ class Speak(commands.Cog):
                 ctx = await self.bot.get_context(message)
                 syslog.log("Speak-Client", "Speaking response as well")
                 await self.speak_in_channel(ctx=ctx, text=resp)
+
 
 def setup(bot):
     bot.add_cog(Speak(bot))

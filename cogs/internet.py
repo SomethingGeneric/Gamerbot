@@ -12,7 +12,7 @@ from util_functions import *
 
 # Fun internet things
 
-#TODO: find correct exceptions for this
+# TODO: find correct exceptions for this
 async def get_as_json(url):
     try:
         data = await run_command_shell('curl "' + url + '"')
@@ -256,7 +256,9 @@ class Internet(commands.Cog):
                 dat = get_geoip(line)
                 if "message" in dat.keys():
                     await ctx.send(
-                        embed=err_msg("Trace-map", "No location data for `" + line + "`")
+                        embed=err_msg(
+                            "Trace-map", "No location data for `" + line + "`"
+                        )
                     )
                 else:
                     lat_list.append(float(dat["latitude"]))
@@ -293,7 +295,9 @@ class Internet(commands.Cog):
         except Exception as e:
             await ctx.send(
                 ctx.message.author.mention,
-                embed=err_msg("GeoIP", "Had an issue making your map: `" + str(e) + "`"),
+                embed=err_msg(
+                    "GeoIP", "Had an issue making your map: `" + str(e) + "`"
+                ),
             )
             syslog.log(
                 "Internet-Important", "Had an issue making trmap: `" + str(e) + "`"
