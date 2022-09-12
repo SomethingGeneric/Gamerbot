@@ -53,5 +53,5 @@ class ThatsFuckedUp(commands.Cog):
         )
 
 
-def setup(bot):
-    bot.add_cog(ThatsFuckedUp(bot))
+async def setup(bot):
+    await bot.add_cog(ThatsFuckedUp(bot))

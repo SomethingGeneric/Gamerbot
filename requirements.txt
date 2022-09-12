@@ -1,4 +1,4 @@
-py-cord
+discord.py
 discord-pretty-help
 PyNaCl
 async-timeout

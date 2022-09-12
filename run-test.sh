@@ -6,4 +6,4 @@ else
     cat ~/.testtube_token > ~/.token
 fi
 
-python3 combo.py
+python3 bot.py

@@ -317,5 +317,5 @@ class Internet(commands.Cog):
 
 
 # End fun internet things
-def setup(bot):
-    bot.add_cog(Internet(bot))
+async def setup(bot):
+    await bot.add_cog(Internet(bot))

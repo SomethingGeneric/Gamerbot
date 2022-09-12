@@ -131,5 +131,5 @@ class ImageMaker(commands.Cog):
 
 
 # End memes
-def setup(bot):
-    bot.add_cog(ImageMaker(bot))
+async def setup(bot):
+    await bot.add_cog(ImageMaker(bot))

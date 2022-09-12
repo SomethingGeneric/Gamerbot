@@ -37,5 +37,5 @@ class Random(commands.Cog):
             await ctx.send(embed=warn_msg("Eval", "No output."))
 
 
-def setup(bot):
-    bot.add_cog(Random(bot))
+async def setup(bot):
+    await bot.add_cog(Random(bot))

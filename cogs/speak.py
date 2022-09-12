@@ -199,5 +199,5 @@ class Speak(commands.Cog):
                 await self.speak_in_channel(ctx=ctx, text=resp)
 
 
-def setup(bot):
-    bot.add_cog(Speak(bot))
+async def setup(bot):
+    await bot.add_cog(Speak(bot))

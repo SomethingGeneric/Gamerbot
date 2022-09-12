@@ -170,5 +170,5 @@ class Chat(commands.Cog):
                     await ctx.send("Too many choices :(")
 
 
-def setup(bot):
-    bot.add_cog(Chat(bot))
+async def setup(bot):
+    await bot.add_cog(Chat(bot))

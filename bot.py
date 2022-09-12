@@ -3,21 +3,23 @@ from os import listdir
 from os.path import isfile, join
 import sys
 
-# Pycord
+# Discord-py
 from discord.ext import commands
 
 # Kind've discord related
-from pretty_help import DefaultMenu, PrettyHelp
+from pretty_help import PrettyHelp
 
 # My own classes n such
 from util_functions import *
 
+# noinspection PyPackageRequirements
 if os.path.sep == "\\":
     print("This bot is only supported on UNIX-like systems. Aborting.")
     sys.exit(1)
 
 intents = discord.Intents.default()
 intents.members = True
+intents.message_content = True
 
 # Start event handling and bot creation
 bot = commands.Bot(
@@ -25,11 +27,7 @@ bot = commands.Bot(
     description="It's always gamer hour",
     intents=intents,
     owner_id=OWNER_ID,
-)
-
-helpmenu = DefaultMenu("◀️", "▶️", "❌")
-bot.help_command = PrettyHelp(
-    no_category="Commands", navigation=helpmenu, color=discord.Colour.blurple()
+    help_command=PrettyHelp(),
 )
 
 # Sane default?
@@ -67,22 +65,28 @@ async def on_ready():
         f.replace(".py", "") for f in listdir(cogs_dir) if isfile(join(cogs_dir, f))
     ]:
         try:
-            bot.load_extension(cogs_dir + "." + extension)
+            await bot.load_extension(cogs_dir + "." + extension)
             syslog.log("Main", "Loaded " + extension)
             # await ownerman.send(embed=infmsg("System","Loaded `" + extension + "`"))
         except Exception as e:
-            await ownerman.send(
-                embed=err_msg(
-                    "System", "Error from cog: " + extension + ": ```" + str(e) + "```"
+            try:
+                await ownerman.send(
+                    embed=err_msg(
+                        "System",
+                        "Error from cog: " + extension + ": ```" + str(e) + "```",
+                    )
                 )
-            )
-            syslog.log("Main", f"Failed to load extension {extension}.")
+            except:
+                syslog.log("Main", f"Failed to load extension {extension}.")
             # traceback.print_exc()
 
     if notifyowner:
-        await ownerman.send(
-            embed=inf_msg("System", "Started/restarted at: `" + get_stamp() + "`")
-        )
+        try:
+            await ownerman.send(
+                embed=inf_msg("System", "Started/restarted at: `" + get_stamp() + "`")
+            )
+        except:
+            pass
 
     for server in bot.guilds:
         found = False

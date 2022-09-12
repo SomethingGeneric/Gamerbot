@@ -146,5 +146,5 @@ class IOT(commands.Cog):
             await ctx.send("You're not the bot owner. :angry:")
 
 
-def setup(bot):
-    bot.add_cog(IOT(bot))
+async def setup(bot):
+    await bot.add_cog(IOT(bot))

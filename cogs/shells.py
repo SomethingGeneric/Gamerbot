@@ -145,5 +145,5 @@ class Shells(commands.Cog):
             await ctx.send("You're not a mod")
 
 
-def setup(bot):
-    bot.add_cog(Shells(bot))
+async def setup(bot):
+    await bot.add_cog(Shells(bot))
