@@ -33,7 +33,7 @@ mastodon.log_in(
 )
 
 with open(f"{volpath}/post-log.txt", "a+") as f:
-    f.write(f"User {un}#{str(dc)} posted: '{text}'")
+    f.write(f"User {un}#{str(dc)} posted: '{text}'\n")
 
 res = mastodon.toot(f"{text} - {un}#{str(dc)}")
 
