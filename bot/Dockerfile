@@ -8,4 +8,5 @@ RUN mkdir -p /root/.ssh
 RUN echo "StrictHostKeyChecking no" > /root/.ssh/config
 RUN mv /bot/gb /root/.ssh/id_rsa
 RUN mv /bot/gb.pub /root/.ssh/id_rsa.pub
+RUN chmod -R 600 /root/.ssh
 CMD ["python3", "bot.py"]
