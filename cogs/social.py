@@ -22,33 +22,14 @@ class Social(commands.Cog):
     @commands.command()
     async def toot(self, ctx, *, text="Enmpty"):
         """Send a post out to the fediverse"""
-        if not os.path.isfile(f"{self.volpath}/{self.ccredpath}"):
-            r = RandomWords()
-            w = r.get_random_word()
-            Mastodon.create_app(
-                f"gamerthebot-{w}-{str(randint(1,10))}",
-                api_base_url=os.environ.get("MASTODON_URL"),
-                to_file=f"{self.volpath}/{self.ccredpath}",
-            )
-
-        mastodon = Mastodon(client_id=f"{self.volpath}/{self.ccredpath}")
-
-        mastodon.log_in(
-            os.environ.get("MASTODON_EMAIL"),
-            os.environ.get("MASTODON_PASSWORD"),
-            to_file=f"{self.volpath}/{self.ucredpath}",
+        url = os.environ.get("MASTODON_URL")
+        email = os.environ.get("MASTODON_EMAIL")
+        passw = os.environ.get("MASTODON_PASSWORD")
+        output = await run_command_shell(
+            f"python3 bin/do_toot.py {url} {email} {passw} {self.volpath} {self.ccredpath} {self.ucredpath} '{text}' {ctx.message.author.name} {str(ctx.message.author.discriminator)}"
         )
 
-        with open(f"{self.volpath}/post-log.txt", "a+") as f:
-            f.write(
-                f"User {ctx.message.author.name}#{str(ctx.message.author.discriminator)} posted: '{text}'"
-            )
-
-        res = mastodon.toot(
-            f"{text} - {ctx.message.author.name}#{str(ctx.message.author.discriminator)}"
-        )
-
-        await ctx.send(f"See your post here: {res['url']}", reference=ctx.message)
+        await ctx.send(f"See your post here: {output}", reference=ctx.message)
 
     @commands.command()
     async def post_log(self, ctx):
