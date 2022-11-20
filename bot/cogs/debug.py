@@ -53,6 +53,18 @@ class Debug(commands.Cog):
         else:
             await ctx.send(embed=err_msg("Oops", wrong_perms("purgesyslog")))
 
+    @commands.command()
+    async def ds(self, ctx, *, what):
+        if ctx.message.author.id == OWNER_ID:
+            out = await run_command_shell(f"/bin/bash -c '{what}'")
+            msg = f"```{out}```"
+            if len(msg) > 1023:
+                link = await paste(out)
+                msg = f"See output here: {link}"
+            await ctx.send(msg, reference=ctx.message)
+        else:
+            await ctx.send("Go away")
+
 
 async def setup(bot):
     await bot.add_cog(Debug(bot))

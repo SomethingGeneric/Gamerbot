@@ -1,0 +1,16 @@
+discord.py
+discord-pretty-help
+PyNaCl
+async-timeout
+asyncio==3.4.3
+pillow
+requests
+gmplot
+black
+duckduckgo3
+chatbotAI
+wikipedia
+geoip2
+Mastodon.py
+toml
+random-word
