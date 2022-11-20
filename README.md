@@ -3,5 +3,6 @@ Discord bot with many functions
 
 ## Setup
 * Install `git`, `make`, and Docker/Docker builder
-* `make docker` to create an image
-* `make test` to (build if needed), and run the image
+* `make mkdocker` to create an image
+* `make test` to (build if needed), and run the image (attached)
+* `make run` to run and detach (also builds if needed)

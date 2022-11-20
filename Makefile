@@ -1,4 +1,6 @@
-docker:
+mkdocker:
 	./build_docker.sh
-test: docker
+test: mkdocker
 	docker run gamerbot
+run: mkdocker
+	docker run -d gamerbot
