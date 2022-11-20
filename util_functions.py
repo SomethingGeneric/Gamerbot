@@ -68,6 +68,7 @@ def image_embed(title, msg_type, dat):
         e.set_image(url="attachment://" + dat)
     return e
 
+
 # Simple file wrappers
 def check(fn):
     if os.path.exists(fn):

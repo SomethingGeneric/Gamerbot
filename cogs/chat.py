@@ -1,7 +1,8 @@
-import shutil
+import shutil, os
 import urllib
 
 import requests
+from PIL import Image, ImageDraw, ImageFont
 from discord.ext import commands
 
 from util_functions import *
@@ -105,7 +106,6 @@ class Chat(commands.Cog):
         )
         open(name, "wb").write(r.content)
         await ctx.send(file=discord.File(name))
-        
 
     @commands.command()
     async def catgif(self, ctx):
@@ -115,7 +115,6 @@ class Chat(commands.Cog):
         )
         open(name, "wb").write(r.content)
         await ctx.send(file=discord.File(name))
-        
 
     @commands.command()
     async def catsays(self, ctx, *, msg):
@@ -128,7 +127,6 @@ class Chat(commands.Cog):
         )
         open(name, "wb").write(r.content)
         await ctx.send(file=discord.File(name))
-        
 
     @commands.command()
     async def poll(self, ctx, *, info=None):
@@ -165,6 +163,43 @@ class Chat(commands.Cog):
                         eid += 1
                 else:
                     await ctx.send("Too many choices :(")
+
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if "shut" in message.content and "the fuck up" in message.content:
+            msg = "no u"
+
+            if "shut the" in message.content:
+                new_text = message.author.display_name
+            else:
+                new_text = message.content.split(" ")[1]
+                pid = new_text.replace("<@!", "").replace("<@", "").replace(">", "")
+                try:
+                    person = await self.bot.fetch_user(int(pid))
+                    if person is not None:
+                        new_text = person.display_name
+                        msg = "silence " + person.mention
+                    else:
+                        msg = ""
+                except:
+                    msg = "silence"
+            img = Image.open("images/bonk.png")
+
+            arial_font = ImageFont.truetype(
+                "fonts/arial.ttf", (50 - len(str(new_text)))
+            )
+            draw = ImageDraw.Draw(img)
+            draw.text(
+                (525 - len(str(new_text)) * 5, 300),
+                str(new_text),
+                (0, 0, 0),
+                font=arial_font,
+            )
+            img.save("bonk-s.png")
+            await message.channel.send(
+                msg, reference=message, file=discord.File("bonk-s.png")
+            )
+            os.remove("bonk-s.png")
 
 
 async def setup(bot):
