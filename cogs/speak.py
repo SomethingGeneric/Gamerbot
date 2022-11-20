@@ -30,21 +30,6 @@ class Speak(commands.Cog):
     def set_done(self):
         self.isDone = True
 
-    @commands.command()
-    async def make_chat_channel(self, ctx):
-        adm = False
-        for role in ctx.message.author.roles:
-            if role.name == "gb_mod":
-                adm = True
-
-        if adm:
-            self.chat_channels.append(ctx.message.channel.id)
-            with open(".chatchannels", "a+") as f:
-                f.write(str(ctx.message.channel.id) + "\n")
-            await ctx.send("Done!")
-        else:
-            await ctx.send("You're not a mod")
-
     async def speak_in_channel(self, ctx, text="", chan=None, stealth=False, file=None):
         if self.voice_client is None and not self.vs.check_state():
             syslog.log(
@@ -188,10 +173,10 @@ class Speak(commands.Cog):
                 + '"'
             )
 
-            if len(resp) < 1024:
+            if len(resp) < 400:
                 await message.channel.send(resp, reference=message)
             else:
-                url = paste("<h1><code>" + resp + "</code></h1>")
+                url = await paste(resp)
                 await message.channel.send(url, reference=message)
             if message.author.voice is not None:
                 ctx = await self.bot.get_context(message)

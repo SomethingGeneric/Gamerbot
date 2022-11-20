@@ -22,7 +22,7 @@ class ImageMaker(commands.Cog):
             if len(out) < 1994:
                 await ctx.send("```\n " + str(out) + "```")
             else:
-                link = paste(out)
+                link = await paste(out)
                 await ctx.send(
                     ctx.message.author.mention
                     + ", the figlet output is too long, so here's a link: "

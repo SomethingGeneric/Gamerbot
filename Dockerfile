@@ -1,6 +1,6 @@
 FROM archlinux:latest
 RUN pacman -Syu --noconfirm
-RUN pacman -S --noconfirm base-devel git python-pip curl traceroute whois nmap wget figlet espeak-ng bc
+RUN pacman -S --noconfirm --needed base-devel git python-pip curl traceroute whois nmap wget figlet espeak-ng ffmpeg bc gnu-netcat
 WORKDIR /bot
 COPY .token /root/.
 COPY . .

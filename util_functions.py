@@ -81,19 +81,6 @@ def image_embed(title, msg_type, dat):
         e.set_image(url="attachment://" + dat)
     return e
 
-
-# YouTube Stuff
-async def get_yt_vid(link, song_name):
-    syslog.log("Util-GetYTvid", "We're starting a download session")
-    syslog.log("Util-GetYTvid", "Target filename is: " + song_name)
-
-    await run_command_shell(
-        "cd bin && python3 download_one.py " + link + " " + song_name + " && cd ../"
-    )
-
-    syslog.log("Util-GetYTvid", "All done!")
-
-
 # Simple file wrappers
 def check(fn):
     if os.path.exists(fn):
@@ -187,20 +174,12 @@ async def isup(host):
         return False
 
 
-def paste(text):
-    n = 25
-    fn = (
-        "".join(
-            random.choice(
-                string.ascii_uppercase + string.digits + string.ascii_lowercase
-            )
-            for _ in range(n)
-        )
-        + ".html"
-    )
-    with open(PASTE_BASE + fn, "w") as f:
+async def paste(text):
+    with open("temp_paste.txt", "w") as f:
         f.write(text)
-    return PASTE_URL_BASE + fn
+    link = await run_command_shell("cat temp_paste.txt | nc termbin.com 9999")
+    os.remove("temp_paste.txt")
+    return link.strip()
 
 
 def get_geoip(ip):

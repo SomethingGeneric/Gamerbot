@@ -27,7 +27,7 @@ class Random(commands.Cog):
             if len(res) < 1998:
                 await ctx.send(embed=inf_msg("Eval", "`" + str(res) + "`"))
             else:
-                url = paste(res)
+                url = await paste(res)
                 await ctx.send(
                     embed=inf_msg(
                         "Eval", "Output was too many characters. Here's a link: " + url

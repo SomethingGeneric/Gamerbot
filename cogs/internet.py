@@ -82,7 +82,7 @@ class Internet(commands.Cog):
                         embed=inf_msg("Traceroute output", "```" + str(out) + "```")
                     )
                 else:
-                    link = paste(out)
+                    link = await paste(out)
                     await ctx.send(
                         ctx.message.author.mention,
                         embed=inf_msg(
@@ -121,7 +121,7 @@ class Internet(commands.Cog):
                 syslog.log("Internet", "Querying WHOIS for " + url)
                 out = await run_command_shell("whois " + url)
                 if len(out) > 1024:
-                    link = paste(out)
+                    link = await paste(out)
                     await ctx.send(
                         ctx.message.author.mention,
                         embed=inf_msg(
@@ -162,7 +162,7 @@ class Internet(commands.Cog):
                 syslog.log("Internet", "Querying NMAP for " + url)
                 out = await run_command_shell("nmap -A -vv -Pn " + url)
                 if len(out) > 1024:
-                    link = paste(out)
+                    link = await paste(out)
                     await ctx.send(
                         ctx.message.author.mention,
                         embed=inf_msg(
@@ -216,9 +216,9 @@ class Internet(commands.Cog):
                 "Had an issue getting GeoIP data: `" + str(e) + "`",
             )
 
+    """
     @commands.command(aliases=["tr-map"])
     async def trmap(self, ctx, *, ip):
-        """Get a Google Maps view of traceroute"""
         try:
 
             cmd = "traceroute -n 8.8.8.8 | tail -n+2 | awk '{ print $2 }'".replace(
@@ -302,6 +302,7 @@ class Internet(commands.Cog):
             syslog.log(
                 "Internet-Important", "Had an issue making trmap: `" + str(e) + "`"
             )
+    """
 
     @commands.command()
     async def ddg(self, ctx, *, query):

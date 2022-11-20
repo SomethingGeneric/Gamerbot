@@ -7,7 +7,7 @@ from util_functions import *
 
 
 class About(commands.Cog):
-    """Stuff that the developer couldn't find a better category for"""
+    """I hope this is self-explanatory"""
 
     def __init__(self, bot):
         self.bot = bot

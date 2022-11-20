@@ -97,9 +97,6 @@ class Chat(commands.Cog):
 
             await ctx.send("No such lahmoji: `" + emote + "`", reference=ctx.message)
 
-    def save_cat(self, fn):
-        shutil.move(fn, PASTE_BASE + "/" + fn)
-
     @commands.command()
     async def catpic(self, ctx):
         r = requests.get("https://cataas.com/cat", allow_redirects=True)
@@ -108,7 +105,7 @@ class Chat(commands.Cog):
         )
         open(name, "wb").write(r.content)
         await ctx.send(file=discord.File(name))
-        self.save_cat(name)
+        
 
     @commands.command()
     async def catgif(self, ctx):
@@ -118,7 +115,7 @@ class Chat(commands.Cog):
         )
         open(name, "wb").write(r.content)
         await ctx.send(file=discord.File(name))
-        self.save_cat(name)
+        
 
     @commands.command()
     async def catsays(self, ctx, *, msg):
@@ -131,7 +128,7 @@ class Chat(commands.Cog):
         )
         open(name, "wb").write(r.content)
         await ctx.send(file=discord.File(name))
-        self.save_cat(name)
+        
 
     @commands.command()
     async def poll(self, ctx, *, info=None):
