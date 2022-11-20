@@ -5,6 +5,7 @@ services:
     build:
       context: ./punching-bag
     restart: unless-stopped
+    container_name: punchingbag
     networks:
       funny:
   bot:
