@@ -9,30 +9,45 @@ class Shell(commands.Cog):
     @commands.command()
     async def bash(self, ctx, *, cmd):
         """Run a command"""
+        try:
 
-        with open("run_this", "w") as f:
-            f.write(cmd)
+            un = ctx.message.author.name.lower()
+            un = un.replace("-", "").replace("_", "")
+            if un[0] in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
+                un = un[1:]
 
-        await run_command_shell("scp run_this root@punchingbag:.")
+            await run_command_shell("scp /bot/bin/has_user punchingbag:.")
+            test_user = await run_command_shell(f"ssh punchingbag './has_user {un}'")
 
-        await run_command_shell("ssh root@punchingbag 'chmod +x run_this'")
+            if "n" in test_user:  # no user
+                await run_command_shell("scp /bot/bin/mk_user punchingbag:.")
+                await run_command_shell(f"ssh punchingbag './mk_user {un}'")
 
-        output = await run_command_shell("ssh root@punchingbag './run_this'")
+            with open("run_this", "w") as f:
+                f.write(cmd)
 
-        await run_command_shell("ssh root@punchingbag 'rm run_this'")
+            await run_command_shell(f"scp run_this {un}@punchingbag:.")
 
-        msg = ""
+            await run_command_shell(f"ssh {un}@punchingbag 'chmod +x run_this'")
 
-        if len(output) > 1000:
-            link = await paste(output)
-            msg = f"See output: {link}"
-        else:
-            if len(output) != 0:
-                msg = f"```{output}```"
+            output = await run_command_shell(f"ssh {un}@punchingbag './run_this'")
+
+            await run_command_shell(f"ssh {un}@punchingbag 'rm run_this'")
+
+            msg = ""
+
+            if len(output) > 1000:
+                link = await paste(output)
+                msg = f"See output: {link}"
             else:
-                msg = "No output"
+                if len(output) != 0:
+                    msg = f"```{output}```"
+                else:
+                    msg = "No output"
 
-        await ctx.send(msg, reference=ctx.message)
+            await ctx.send(msg, reference=ctx.message)
+        except Exception as e:
+            await ctx.send(f"Error: ```{str(e)}```")
 
 
 async def setup(bot):

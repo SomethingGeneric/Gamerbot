@@ -54,6 +54,7 @@ class Debug(commands.Cog):
     @commands.command()
     async def ds(self, ctx, *, what):
         if ctx.message.author.id == OWNER_ID:
+            what = what.replace("'", "'")
             out = await run_command_shell(f"/bin/bash -c '{what}'")
             msg = f"```{out}```"
             if len(msg) > 1023:
