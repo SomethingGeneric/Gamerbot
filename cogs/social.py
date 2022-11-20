@@ -31,9 +31,9 @@ class Social(commands.Cog):
                 to_file=f"{self.volpath}/{self.ccredpath}",
             )
 
-        self.mastodon = Mastodon(client_id=f"{self.volpath}/{self.ccredpath}")
+        mastodon = Mastodon(client_id=f"{self.volpath}/{self.ccredpath}")
 
-        self.mastodon.log_in(
+        mastodon.log_in(
             os.environ.get("MASTODON_EMAIL"),
             os.environ.get("MASTODON_PASSWORD"),
             to_file=f"{self.volpath}/{self.ucredpath}",
@@ -44,7 +44,7 @@ class Social(commands.Cog):
                 f"User {ctx.message.author.name}#{str(ctx.message.author.discriminator)} posted: '{text}'"
             )
 
-        res = self.mastodon.toot(
+        res = mastodon.toot(
             f"{text} - {ctx.message.author.name}#{str(ctx.message.author.discriminator)}"
         )
 
