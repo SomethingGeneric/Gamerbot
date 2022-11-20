@@ -4,8 +4,13 @@ ip a
 
 usermod -p $(echo "toor" | openssl passwd -6 -stdin) root
 
-ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
-ssh-keygen -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa
+[[ ! -d /etc/ssh ]] && mkdir -p /etc/ssh
+
+mv /stuff/ssh* /etc/ssh/.
+
+[[ ! -d $HOME/.ssh ]] && mkdir -p $HOME/.ssh
+
+cat /stuff/gb.pub >> $HOME/.ssh/authorized_keys
 
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 

@@ -4,6 +4,8 @@ RUN pacman -S --noconfirm --needed base-devel git python-pip curl traceroute who
 WORKDIR /bot
 COPY . .
 RUN pip3 install -r requirements.txt
-RUN ssh-keygen -t rsa -q -f "$HOME/.ssh/id_rsa" -N ""
-RUN echo "StrictHostKeyChecking no" >> "$HOME/.ssh/config"
+RUN mkdir -p /root/.ssh
+RUN echo "StrictHostKeyChecking no" > /root/.ssh/config
+RUN mv /bot/gb /root/.ssh/id_rsa
+RUN mv /bot/gb.pub /root/.ssh/id_rsa.pub
 CMD ["python3", "bot.py"]
