@@ -1,6 +1,5 @@
 from discord.ext import commands
 
-from global_config import ConfigManager
 from util_functions import *
 
 
@@ -12,7 +11,6 @@ class Debug(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.confmgr = ConfigManager("config.txt", False)
 
     @commands.command()
     async def check_cog(self, ctx, *, n):

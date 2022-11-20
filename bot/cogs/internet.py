@@ -26,7 +26,6 @@ class Internet(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.confmgr = ConfigManager("config.txt", False)
 
     @commands.command()
     async def kernel(self, ctx):
@@ -265,7 +264,7 @@ class Internet(commands.Cog):
                     long_list.append(float(dat["longitude"]))
 
             gmap3 = gmplot.GoogleMapPlotter(
-                0.0, 0.0, 0, apikey=self.confmgr.get("MAPS_KEY")
+                0.0, 0.0, 0, apikey=os.getenv(("MAPS_KEY")
             )
 
             # Points gang
@@ -279,7 +278,7 @@ class Internet(commands.Cog):
                 + ".html"
             )
 
-            fn = self.confmgr.get("PASTE_BASE") + idh
+            fn = os.getenv(("PASTE_BASE") + idh
 
             # Save time
             gmap3.draw(fn)
@@ -288,7 +287,7 @@ class Internet(commands.Cog):
                 ctx.message.author.mention,
                 embed=inf_msg(
                     "GeoIP",
-                    "Map is available at: " + self.confmgr.get("PASTE_URL_BASE") + idh,
+                    "Map is available at: " + os.getenv(("PASTE_URL_BASE") + idh,
                 ),
             )
 

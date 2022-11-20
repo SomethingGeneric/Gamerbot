@@ -59,7 +59,7 @@ async def on_ready():
 
     ownerman = await bot.fetch_user(bot.owner_id)
 
-    notifyowner = confmgr.get_as_bool("OWNER_DM_RESTART")
+    notifyowner = bool(os.getenv("OWNER_DM_RESTART"))
 
     cogs_dir = "cogs"
     for extension in [

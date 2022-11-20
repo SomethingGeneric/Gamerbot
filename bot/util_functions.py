@@ -7,11 +7,9 @@ import string
 import threading
 
 # Me
-from global_config import ConfigManager
 from logger import BotLogger
 
 # lol
-confmgr = ConfigManager("config.txt", False)
 syslog = BotLogger("system_log.txt")
 
 # <-------------- Don't touch pls --------------->
@@ -20,16 +18,20 @@ syslog = BotLogger("system_log.txt")
 # own if needed.
 # .get is string
 
-HELP_LOC = confmgr.get("HELP_LOC")
+HELP_LOC = os.getenv("HELP_LOC")
 
-WRONG_PERMS = confmgr.get("WRONG_PERMS")
+WRONG_PERMS = os.getenv("WRONG_PERMS")
 
-OWNER_ID = confmgr.get_as_int("OWNER_ID")
+OWNER_ID = int(os.getenv("OWNER_ID"))
 
-DEFAULT_STATUS_TYPE = confmgr.get("DEFAULT_STATUS_TYPE")
-DEFAULT_STATUS_TEXT = confmgr.get("DEFAULT_STATUS_TEXT")
+DEFAULT_STATUS_TYPE = os.getenv("DEFAULT_STATUS_TYPE")
+DEFAULT_STATUS_TEXT = os.getenv("DEFAULT_STATUS_TEXT")
 
-UNLOAD_COGS = confmgr.get_as_list("UNLOAD_COGS")
+UNLOAD_COGS = (
+    os.getenv("UNLOAD_COGS").split(",")
+    if "," in os.getenv("UNLOAD_COGS")
+    else [os.getenv("UNLOAD_COGS")]
+)
 # <-------------- End --------------------->
 
 WHITELIST = []

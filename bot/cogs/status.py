@@ -10,7 +10,6 @@ class Status(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
-        self.confmgr = ConfigManager("config.txt", False)
 
         self.status_task.start()
         self.uptime_logger.start()
@@ -24,15 +23,15 @@ class Status(commands.Cog):
     async def set_default_status(self):
         ac_type = None
 
-        if self.confmgr.get("DEFAULT_STATUS_TYPE") == "watching":
+        if os.getenv("DEFAULT_STATUS_TYPE") == "watching":
             ac_type = discord.ActivityType.watching
-        elif self.confmgr.get("DEFAULT_STATUS_TYPE") == "listening":
+        elif os.getenv("DEFAULT_STATUS_TYPE") == "listening":
             ac_type = discord.ActivityType.listening
-        elif self.confmgr.get("DEFAULT_STATUS_TYPE") == "streaming":
+        elif os.getenv("DEFAULT_STATUS_TYPE") == "streaming":
             ac_type = discord.ActivityType.streaming
 
         total = 0
-        if "{number_users}" in self.confmgr.get("DEFAULT_STATUS_TEXT"):
+        if "{number_users}" in os.getenv("DEFAULT_STATUS_TEXT"):
             guilds = self.bot.guilds
             for guild in guilds:
                 total += guild.member_count
@@ -43,7 +42,7 @@ class Status(commands.Cog):
         await self.bot.change_presence(
             activity=discord.Activity(
                 type=ac_type,
-                name=self.confmgr.get("DEFAULT_STATUS_TEXT")
+                name=os.getenv("DEFAULT_STATUS_TEXT")
                 .replace("{guild_count}", str(len(list(self.bot.guilds))))
                 .replace("{number_users}", str(total)),
             )
