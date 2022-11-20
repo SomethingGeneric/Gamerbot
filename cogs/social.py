@@ -26,7 +26,7 @@ class Social(commands.Cog):
         email = os.environ.get("MASTODON_EMAIL")
         passw = os.environ.get("MASTODON_PASSWORD")
         output = await run_command_shell(
-            f"python3 bin/do_toot.py {url} {email} {passw} {self.volpath} {self.ccredpath} {self.ucredpath} '{text}' {ctx.message.author.name} {str(ctx.message.author.discriminator)}"
+            f"python3 bin/do_toot.py '{url}' '{email}' '{passw}' '{self.volpath}' '{self.ccredpath}' '{self.ucredpath}' '{text}' '{ctx.message.author.name}' '{str(ctx.message.author.discriminator)}'"
         )
 
         await ctx.send(f"See your post here: {output}", reference=ctx.message)
