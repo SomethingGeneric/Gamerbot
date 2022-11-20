@@ -27,7 +27,10 @@ class Shell(commands.Cog):
             link = await paste(output)
             msg = f"See output: {link}"
         else:
-            msg = f"```{output}```"
+            if len(output) != 0:
+                msg = f"```{output}```"
+            else:
+                msg = "No output"
 
         await ctx.send(msg, reference=ctx.message)
 
