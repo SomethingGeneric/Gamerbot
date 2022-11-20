@@ -4,7 +4,7 @@ from discord.ext import commands
 
 
 class ThatsFuckedUp(commands.Cog):
-    """Stuff from Jasio"""
+    """Stuff from jasio"""
 
     def __init__(self, bot):
         self.bot = bot
