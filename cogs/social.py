@@ -8,6 +8,7 @@ from util_functions import *
 
 # /gb-data
 
+
 class Social(commands.Cog):
     """Funny social internet stuff"""
 
@@ -15,32 +16,38 @@ class Social(commands.Cog):
         self.bot = bot
 
         self.volpath = "/gb-data"
-        ccredpath = "tootclientcred.secret"
-        ucredpath = "tootusercred.secret"
-
-        if not os.path.isfile(f"{self.volpath}/{ccredpath}"):
-            r = RandomWords()
-            w = r.get_random_word()
-            Mastodon.create_app(
-                 f"gamerthebot-{w}-{str(randint(1,10))}",
-                 api_base_url=os.environ.get('MASTODON_URL'),
-                 to_file=f"{self.volpath}/{ccredpath}"
-            )
-
-        self.mastodon = Mastodon(client_id=f"{self.volpath}/{ccredpath}")
-
-        self.mastodon.log_in(
-            os.environ.get("MASTODON_EMAIL"),
-            os.environ.get("MASTODON_PASSWORD"),
-            to_file=f"{self.volpath}/{ucredpath}"
-        )
+        self.ccredpath = "tootclientcred.secret"
+        self.ucredpath = "tootusercred.secret"
 
     @commands.command()
     async def toot(self, ctx, *, text="Enmpty"):
         """Send a post out to the fediverse"""
-        with open(f"{self.volpath}/post-log.txt","a+") as f:
-            f.write(f"User {ctx.message.author.name}#{str(ctx.message.author.discriminator)} posted: '{text}'")
-        res = self.mastodon.toot(f"{text} - {ctx.message.author.name}#{str(ctx.message.author.discriminator)}")
+        if not os.path.isfile(f"{self.volpath}/{self.ccredpath}"):
+            r = RandomWords()
+            w = r.get_random_word()
+            Mastodon.create_app(
+                f"gamerthebot-{w}-{str(randint(1,10))}",
+                api_base_url=os.environ.get("MASTODON_URL"),
+                to_file=f"{self.volpath}/{self.ccredpath}",
+            )
+
+        self.mastodon = Mastodon(client_id=f"{self.volpath}/{self.ccredpath}")
+
+        self.mastodon.log_in(
+            os.environ.get("MASTODON_EMAIL"),
+            os.environ.get("MASTODON_PASSWORD"),
+            to_file=f"{self.volpath}/{self.ucredpath}",
+        )
+
+        with open(f"{self.volpath}/post-log.txt", "a+") as f:
+            f.write(
+                f"User {ctx.message.author.name}#{str(ctx.message.author.discriminator)} posted: '{text}'"
+            )
+
+        res = self.mastodon.toot(
+            f"{text} - {ctx.message.author.name}#{str(ctx.message.author.discriminator)}"
+        )
+
         await ctx.send(f"See your post here: {res['url']}", reference=ctx.message)
 
     @commands.command()
@@ -55,7 +62,6 @@ class Social(commands.Cog):
             await ctx.send(msg, reference=ctx.message)
         else:
             await ctx.send(wrong_perms("post_log"))
-
 
 
 async def setup(bot):
