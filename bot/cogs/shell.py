@@ -1,14 +1,19 @@
 from discord.ext import commands
 from util_functions import *
 
+
 class Shell(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.init_done = False
 
     async def extrainit(self):
-        await run_command_shell("/bin/bash -c \"echo 'toor' | ssh root@punchingbag 'uname'\"")
-        await run_command_shell("/bin/bash -c \"echo 'toor' | ssh-copy-id root@punchingbag\"")
+        await run_command_shell(
+            "/bin/bash -c \"echo 'toor' | ssh root@punchingbag 'uname'\""
+        )
+        await run_command_shell(
+            "/bin/bash -c \"echo 'toor' | ssh-copy-id root@punchingbag\""
+        )
         self.init_done = True
 
     @commands.command()
@@ -37,7 +42,7 @@ class Shell(commands.Cog):
         else:
             msg = f"```{output}```"
 
-        await ctx.send(msg, reference=ctx.message)        
+        await ctx.send(msg, reference=ctx.message)
 
 
 async def setup(bot):

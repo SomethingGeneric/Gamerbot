@@ -22,6 +22,9 @@ class Social(commands.Cog):
     @commands.command()
     async def toot(self, ctx, *, text="Enmpty"):
         """Send a post out to the fediverse"""
+
+        print(len(ctx.message.attachments))
+
         url = os.environ.get("MASTODON_URL")
         email = os.environ.get("MASTODON_EMAIL")
         passw = os.environ.get("MASTODON_PASSWORD")
@@ -43,7 +46,6 @@ class Social(commands.Cog):
             await ctx.send(msg, reference=ctx.message)
         else:
             await ctx.send(wrong_perms("post_log"))
-
 
 
 async def setup(bot):

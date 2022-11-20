@@ -1,6 +1,7 @@
 # Standard py stuff
 from os import listdir
 from os.path import isfile, join
+import os
 import sys
 
 # Discord-py
@@ -167,5 +168,6 @@ if UNLOAD_COGS is not None:
             else:
                 syslog.log("Main", "Failed to remove '" + item + "'")
 
-# bot.run(open(my_homedir + "/.token").read())
-bot.run(os.environ.get("SECRET_TOKEN"))
+token = os.environ.get("SECRET_TOKEN")
+print(f"Token: {token}")
+bot.run(token)
