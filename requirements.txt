@@ -13,3 +13,4 @@ wikipedia
 geoip2
 Mastodon.py
 toml
+random-word

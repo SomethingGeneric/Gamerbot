@@ -1,5 +1,7 @@
 from discord.ext import commands
 from mastodon import Mastodon
+from random_word import RandomWords
+from random import randint
 import os
 
 from util_functions import *
@@ -17,8 +19,10 @@ class Social(commands.Cog):
         ucredpath = "tootusercred.secret"
 
         if not os.path.isfile(f"{self.volpath}/{ccredpath}"):
+            r = RandomWords()
+            w = r.get_random_word()
             Mastodon.create_app(
-                 'gamerthebot',
+                 f"gamerthebot-{w}-{str(randint(1,10))}",
                  api_base_url=os.environ.get('MASTODON_URL'),
                  to_file=f"{self.volpath}/{ccredpath}"
             )
