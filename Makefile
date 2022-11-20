@@ -1,6 +1,6 @@
 mkdocker:
 	./build_docker.sh
 test: mkdocker
-	docker run gamerbot
+	./run_docker.sh
 run: mkdocker
-	docker run -d gamerbot
+	./run_docker.sh -d

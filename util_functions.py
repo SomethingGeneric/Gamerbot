@@ -20,27 +20,14 @@ syslog = BotLogger("system_log.txt")
 # own if needed.
 # .get is string
 
-PASTE_BASE = confmgr.get("PASTE_BASE")
-PASTE_URL_BASE = confmgr.get("PASTE_URL_BASE")
-
 HELP_LOC = confmgr.get("HELP_LOC")
 
 WRONG_PERMS = confmgr.get("WRONG_PERMS")
-
-NEW_MEMBER = confmgr.get("NEW_MEMBER")
-INTRO_CHANNEL = confmgr.get("INTRO_CHANNEL")
-
-DONT_SCARE = confmgr.get_as_list("NO_SCARY")
 
 OWNER_ID = confmgr.get_as_int("OWNER_ID")
 
 DEFAULT_STATUS_TYPE = confmgr.get("DEFAULT_STATUS_TYPE")
 DEFAULT_STATUS_TEXT = confmgr.get("DEFAULT_STATUS_TEXT")
-
-LIFX_IP = confmgr.get("LIFX_IP")
-LIFX_MAC = confmgr.get("LIFX_MAC").replace("-", ":")
-
-NAG_RECEIVER = confmgr.get("NAG_RECIEVER")
 
 UNLOAD_COGS = confmgr.get_as_list("UNLOAD_COGS")
 # <-------------- End --------------------->

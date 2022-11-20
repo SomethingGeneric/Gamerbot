@@ -167,4 +167,5 @@ if UNLOAD_COGS is not None:
             else:
                 syslog.log("Main", "Failed to remove '" + item + "'")
 
-bot.run(open(my_homedir + "/.token").read())
+#bot.run(open(my_homedir + "/.token").read())
+bot.run(os.environ.get('SECRET_TOKEN'))
