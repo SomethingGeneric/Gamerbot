@@ -11,7 +11,7 @@ if [[ ! -f .token ]]; then
 fi
 
 if [[ "$1" == "-d" ]]; then
-  docker run -d -e SECRET_TOKEN="$(cat .token)" gamerbot
+  docker run -d -v gamerbot-store:/gb-data -e SECRET_TOKEN="$(cat .token)" -e MASTODON_URL="https://social.xhec.dev" -e MASTODON_EMAIL="$(cat .m_email)" -e MASTODON_PASSWORD="$(cat .m_password)" gamerbot
 else
-  docker run -e SECRET_TOKEN="$(cat .token)" gamerbot
+  docker run -v gamerbot-store:/gb-data -e SECRET_TOKEN="$(cat .token)" -e MASTODON_URL="https://social.xhec.dev" -e MASTODON_EMAIL="$(cat .m_email)" -e MASTODON_PASSWORD="$(cat .m_password)" gamerbot
 fi

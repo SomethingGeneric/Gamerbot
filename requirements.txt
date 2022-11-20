@@ -11,3 +11,5 @@ duckduckgo3
 chatbotAI
 wikipedia
 geoip2
+Mastodon.py
+toml

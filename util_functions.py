@@ -169,6 +169,11 @@ async def paste(text):
     os.remove("temp_paste.txt")
     return link.strip()
 
+async def pastef(fn):
+    link = await run_command_shell(f"cat {fn} | nc termbin.com 9999")
+    return link.strip()
+
+
 
 def get_geoip(ip):
     with geoip2.database.Reader("GeoLite2-City.mmdb") as reader:

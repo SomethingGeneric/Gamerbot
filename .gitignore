@@ -1,5 +1,6 @@
 # Custom
 .token
+.m_*
 server-data/
 link_log.txt
 restarted.txt
