@@ -41,7 +41,6 @@ INTRO_CHANNEL:You should go to {channel}, since it's your first time here.
 # Don't spook these people if they're in vc
 NO_SCARY:692958846024548382,116547210698555395
 
-# Music Stuff
 # NEED TO CHANGE (unless also on an ubuntu-based distro)
 # you can just "sudo find / -name "libopus.so"
 OPUS_FN:/usr/lib/libopus.so

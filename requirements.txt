@@ -5,9 +5,7 @@ async-timeout
 asyncio==3.4.3
 pillow
 requests
-youtube_dl
 gmplot
-lifxlan
 black
 duckduckgo3
 chatbotAI
