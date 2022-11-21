@@ -4,6 +4,7 @@ from random_word import RandomWords
 from time import sleep
 from random import randint
 import os
+import toml
 
 from util_functions import *
 
@@ -19,10 +20,27 @@ class Social(commands.Cog):
         self.volpath = "/gb-data"
         self.ccredpath = "tootclientcred.secret"
         self.ucredpath = "tootusercred.secret"
+        self.acf = f"{self.volpath}/mastodon_linked.toml"
+
+    @commands.command()
+    async def linkfediverse(self, ctx, username):
+        """Tell gamerbot of your mastodon handle"""
+        try:
+            if os.path.exists(self.acf):
+                data = toml.load(self.acf)
+            else:
+                data = {}
+            data[str(ctx.message.author.id)] = username
+            f = open(self.acf, "w")
+            toml.dump(data, f)
+            f.write()
+            await ctx.send("Thanks! I'll keep track of that.", reference=ctx.message)
+        except Exception as e:
+            await ctx.send(f"Error: ```{str(e)}```", reference=ctx.message)
 
     @commands.command()
     async def toot(self, ctx, *, text="Enmpty"):
-        """Send a post out to the fediverse"""
+        """Send a post out to the fediverse. (Add your handle in the form of a mention)"""
 
         try:
             await ctx.send(
@@ -69,17 +87,27 @@ class Social(commands.Cog):
             un = ctx.message.author.name
             dc = ctx.message.author.discriminator
 
+            if os.path.exists(self.acf):
+                data = toml.load(self.acf)
+            else:
+                data = {}
+
+            cred = f"{un}#{str(dc)}"
+
+            if str(ctx.message.author.id) in data.keys():
+                cred = data[str(ctx.message.author.id)]
+
             if has_attach:
                 med = []
                 for fn in fns:
                     med.append(mastodon.media_post(fn))
                     sleep(4)
-                res = mastodon.status_post(f"{text} - {un}#{str(dc)}", media_ids=med)
+                res = mastodon.status_post(f"{text} - {cred}", media_ids=med)
             else:
-                res = mastodon.toot(f"{text} - {un}#{str(dc)}")
+                res = mastodon.toot(f"{text} - {cred}")
 
             with open(f"{self.volpath}/post-log.txt", "a+") as f:
-                f.write(f"User {un}#{str(dc)} posted: '{text}'\n")
+                f.write(f"User {cred} posted: '{text}'\n")
 
             await ctx.send(f"See your post here: {res['url']}", reference=ctx.message)
 

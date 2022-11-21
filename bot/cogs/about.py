@@ -69,7 +69,7 @@ class About(commands.Cog):
         await ctx.send(
             embed=inf_msg(
                 "Invite me :)",
-                "https://discord.com/api/oauth2/authorize?client_id=763559371628085288&permissions=8&scope=bot%20applications.commands",
+                "https://discord.com/api/oauth2/authorize?client_id=763559371628085288&permissions=1629910589175&scope=bot%20applications.commands",
             )
         )
 
