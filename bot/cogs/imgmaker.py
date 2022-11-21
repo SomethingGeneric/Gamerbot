@@ -37,6 +37,26 @@ class ImageMaker(commands.Cog):
             )
 
     @commands.command()
+    async def onceagain(self, ctx, *, text="for your financial support"):
+        """What is bernie's campaign this time?"""
+        new_text = text
+
+        img = Image.open("images/bernie.jpg")
+        arial_font = ImageFont.truetype(
+            "fonts/arial.ttf", (50 - len(str(new_text)))
+        )
+        draw = ImageDraw.Draw(img)
+        draw.text(
+            (130, 585), #xy
+            str(new_text), # text
+            "white", # fill
+            font=arial_font, # font
+        )
+        img.save("bernie-gen.png")
+        await ctx.send(file=discord.File("bernie-gen.png"), reference=ctx.message)
+        os.remove("bernie-gen.png")
+
+    @commands.command()
     async def bonk(self, ctx, *, text=""):
         """Bonk a buddy"""
 
