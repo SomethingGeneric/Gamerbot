@@ -33,7 +33,7 @@ class Social(commands.Cog):
             data[str(ctx.message.author.id)] = username
             f = open(self.acf, "w")
             toml.dump(data, f)
-            f.write()
+            f.close()
             await ctx.send("Thanks! I'll keep track of that.", reference=ctx.message)
         except Exception as e:
             await ctx.send(f"Error: ```{str(e)}```", reference=ctx.message)
