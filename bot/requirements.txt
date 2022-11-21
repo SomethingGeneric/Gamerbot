@@ -1,5 +1,6 @@
 discord.py
 discord-pretty-help
+PyNaCl
 async-timeout
 asyncio==3.4.3
 pillow
