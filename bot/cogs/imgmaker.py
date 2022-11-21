@@ -86,7 +86,7 @@ class ImageMaker(commands.Cog):
                 pid = user.replace("<@!", "").replace("<@", "").replace(">", "")
                 person = await self.bot.fetch_user(int(pid))
                 if person is not None:
-                    pfp = str(person.avatar_url)
+                    pfp = str(person.display_avatar.url)
                     os.system("wget " + pfp + " -O prof.webp")
                     bg = Image.open("images/spacex.jpg")
                     fg = Image.open("prof.webp")
@@ -120,7 +120,7 @@ class ImageMaker(commands.Cog):
                 pid = user.replace("<@!", "").replace("<@", "").replace(">", "")
                 person = await self.bot.fetch_user(int(pid))
                 if person is not None:
-                    pfp = str(person.avatar_url)
+                    pfp = str(person.display_avatar.url)
                     await ctx.send(ctx.message.author.mention + " here: " + pfp)
                 else:
                     await ctx.send("Had trouble getting a user from: " + who)

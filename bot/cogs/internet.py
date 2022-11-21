@@ -197,9 +197,9 @@ class Internet(commands.Cog):
                 msg += key.replace("_", " ") + ": " + str(value) + "\n"
 
             msg += "```\n"
-            msg += "Google maps: http://www.google.com/maps/place/{lat},{lng}".replace(
-                "{lat}", str(dat["latitude"])
-            ).replace("{lng}", str(dat["longitude"]))
+
+            if "latitude" in dat.keys() and "longitude" in dat.keys():
+                msg += f"Google maps: http://www.google.com/maps/place/{dat['latitude']},{dat['longitude']}"
 
             await ctx.send(embed=inf_msg("GeoIP for `" + ip + "`", msg))
             syslog.log("Internet", "Queried GeoIP for " + ip)
