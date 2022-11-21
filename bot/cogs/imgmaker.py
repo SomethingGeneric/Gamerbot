@@ -42,18 +42,20 @@ class ImageMaker(commands.Cog):
         new_text = text
 
         img = Image.open("images/bernie.jpg")
-        arial_font = ImageFont.truetype(
-            "fonts/arial.ttf", (50 - len(str(new_text)))
-        )
+        arial_font = ImageFont.truetype("fonts/arial.ttf", (50 - len(str(new_text))))
         draw = ImageDraw.Draw(img)
         draw.text(
-            (130, 585), #xy
-            str(new_text), # text
-            "white", # fill
-            font=arial_font, # font
+            (130, 585),  # xy
+            str(new_text),  # text
+            "white",  # fill
+            font=arial_font,  # font
         )
         img.save("bernie-gen.png")
-        await ctx.send(file=discord.File("bernie-gen.png"), reference=ctx.message)
+        await ctx.send(
+            f"{ctx.message.author.mention} is once again asking...",
+            file=discord.File("bernie-gen.png"),
+            reference=ctx.message,
+        )
         os.remove("bernie-gen.png")
 
     @commands.command()
