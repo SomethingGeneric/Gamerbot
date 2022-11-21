@@ -43,15 +43,10 @@ class Social(commands.Cog):
             await ctx.send(f"Error: ```{str(e)}```", reference=ctx.message)
 
     @commands.command()
-    async def toot(self, ctx, *, text="Enmpty"):
+    async def toot(self, ctx, *, text=""):
         """Send a post out to the fediverse. (Add your handle in the form of a mention)"""
 
         try:
-            await ctx.send(
-                f"Going to post `{text}`, this could take a sec.",
-                reference=ctx.message,
-            )
-
             has_attach = False
             fns = []
             if (
@@ -79,6 +74,15 @@ class Social(commands.Cog):
                     api_base_url=url,
                     to_file=f"{self.volpath}/{self.ccredpath}",
                 )
+
+            if not has_attach and text == "":
+                await ctx.send("Please include an image and/or some text.", reference=ctx.message)
+                return
+
+            await ctx.send(
+                f"Going to post `{text}`, this could take a sec.",
+                reference=ctx.message,
+            )
 
             mastodon = Mastodon(client_id=f"{self.volpath}/{self.ccredpath}")
 
