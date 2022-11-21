@@ -6,4 +6,4 @@ Discord bot with many functions
 * `cp .env-dist .env` & edit it
 
 ## Run
-`docker-compose up -d`
+`docker-compose up -d` or just `make test` if you have make installed
