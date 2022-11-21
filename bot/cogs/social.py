@@ -30,6 +30,10 @@ class Social(commands.Cog):
                 data = toml.load(self.acf)
             else:
                 data = {}
+
+            if username[0] != "@":
+                username = "@" + username
+
             data[str(ctx.message.author.id)] = username
             f = open(self.acf, "w")
             toml.dump(data, f)
