@@ -10,6 +10,8 @@ class Shell(commands.Cog):
 
         self.bp = "/gb-data/no_bash.txt"
 
+        self.dont = ["dd", "fallocate", "doas", "pkexec"]
+
         self.ignore = []
         self.reload_ignore()
         
@@ -78,6 +80,14 @@ class Shell(commands.Cog):
     async def bash(self, ctx, *, cmd):
         """Run a command"""
         try:
+
+            if " " in cmd:
+                if cmd.split(" ")[0] in self.dont:
+                    await ctx.send(f"Do not `{cmd.split(' ')[0]}`", reference=ctx.message)
+                    return
+            elif cmd in self.dont:
+                await ctx.send(f"Do not `{cmd}`", reference=ctx.message)
+                return
 
             if str(ctx.message.author.id) in self.ignore:
                 await ctx.send("No more bash for you", reference=ctx.message)
