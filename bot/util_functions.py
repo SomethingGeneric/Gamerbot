@@ -169,7 +169,7 @@ async def paste(text):
     paste_fn = "." + str(binascii.b2a_hex(os.urandom(15)).decode("utf-8"))
     with open(paste_fn, "w") as f:
         f.write(text)
-    link = await run_command_shell("cat temp_paste.txt | nc termbin.com 9999")
+    link = await run_command_shell(f"cat {paste_fn} | nc termbin.com 9999")
     os.remove(paste_fn)
     return link.strip()
 
