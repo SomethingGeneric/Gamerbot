@@ -1,5 +1,6 @@
 from discord.ext import commands
 from util_functions import *
+import binascii
 
 
 class Shell(commands.Cog):
@@ -49,16 +50,18 @@ class Shell(commands.Cog):
                 await run_command_shell("scp /bot/bin/mk_user punchingbag:.")
                 await run_command_shell(f"ssh punchingbag './mk_user {un}'")
 
-            with open("run_this", "w") as f:
+            temp_script_fn = "." + str(binascii.b2a_hex(os.urandom(15)).decode("utf-8"))
+
+            with open(temp_script_fn, "w") as f:
                 f.write(cmd)
 
-            await run_command_shell(f"scp run_this {un}@punchingbag:.")
+            await run_command_shell(f"scp {temp_script_fn} {un}@punchingbag:.")
 
-            await run_command_shell(f"ssh {un}@punchingbag 'chmod +x run_this'")
+            await run_command_shell(f"ssh {un}@punchingbag 'chmod +x {temp_script_fn}'")
 
-            output = await run_command_shell(f"ssh {un}@punchingbag './run_this'")
+            output = await run_command_shell(f"ssh {un}@punchingbag './{temp_script_fn}'")
 
-            await run_command_shell(f"ssh {un}@punchingbag 'rm run_this'")
+            await run_command_shell(f"ssh {un}@punchingbag 'rm {temp_script_fn}'")
 
             msg = ""
 

@@ -5,6 +5,7 @@ import os
 import random
 import string
 import threading
+import binascii
 
 # Me
 from logger import BotLogger
@@ -165,10 +166,11 @@ async def isup(host):
 
 
 async def paste(text):
-    with open("temp_paste.txt", "w") as f:
+    paste_fn = "." + str(binascii.b2a_hex(os.urandom(15)).decode("utf-8"))
+    with open(paste_fn, "w") as f:
         f.write(text)
     link = await run_command_shell("cat temp_paste.txt | nc termbin.com 9999")
-    os.remove("temp_paste.txt")
+    os.remove(paste_fn)
     return link.strip()
 
 
