@@ -1,6 +1,6 @@
-FROM archlinux:latest
+FROM lopsided/archlinux 
 RUN pacman -Sy
-RUN pacman -S --noconfirm --needed base-devel git python-pip curl traceroute whois nmap wget figlet espeak-ng ffmpeg bc gnu-netcat openssh
+RUN pacman -S --noconfirm --needed glibc base-devel python-pynacl git python-pip curl traceroute whois nmap wget figlet espeak-ng ffmpeg bc gnu-netcat openssh
 WORKDIR /bot
 COPY . .
 RUN pip3 install -r requirements.txt
