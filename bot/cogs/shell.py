@@ -33,6 +33,10 @@ class Shell(commands.Cog):
         """Run a command"""
         try:
 
+            if ":(){ :|:& };:" in cmd:
+                await ctx.send("No forkbombs", reference=ctx.message)
+                return
+
             un = ctx.message.author.name.lower()
             un = un.replace("-", "").replace("_", "")
             if un[0] in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:

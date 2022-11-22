@@ -15,9 +15,4 @@ cat /stuff/gb.pub >> $HOME/.ssh/authorized_keys
 
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 
-groupadd discord
-
-echo "@discord  hard    nproc   10" >> /etc/security/limits.conf
-echo "@discord  hard    nofile  20" >> /etc/security/limits.conf
-
 /usr/bin/sshd -De
