@@ -1,11 +1,56 @@
 from discord.ext import commands
 from util_functions import *
 import binascii
+import os
 
 
 class Shell(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+        self.bp = "/gb-data/no_bash.txt"
+
+        self.ignore = []
+        self.reload_ignore()
+        
+    def reload_ignore(self):
+        if os.path.exists(self.bp):
+            self.ignore = []
+            ids = []
+            with open(self.bp) as f:
+                ids = f.read().split("\n")
+            for nid in ids:
+                self.ignore.append(nid)
+
+    def write_ignore(self, uid):
+        with open(self.bp, "a+") as f:
+            f.write(str(uid) + "\n")
+        self.reload_ignore()
+
+    def remove_ignore(self, uid):
+        self.ignore.remove(uid)
+        with open(self.bp, "w") as f:
+            f.write("\n".join(self.ignore))
+        self.reload_ignore()
+
+    @commands.command()
+    async def add_nobash(self, ctx, uid):
+        """I hope this is easy to figure out"""
+        if not ctx.message.author.id == OWNER_ID:
+            await ctx.send("Nope", reference=ctx.message)
+            return
+        self.write_ignore(uid)
+        await ctx.send("Done", reference=ctx.message)
+
+    @commands.command()
+    async def remove_nobash(self, ctx, uid):
+        """I hope this is easy to figure out"""
+        if not ctx.message.author.id == OWNER_ID:
+            await ctx.send("Nope", reference=ctx.message)
+            return
+        self.remove_ignore(uid)
+        await ctx.send("Done", reference=ctx.message)
+    
 
     @commands.command()
     async def reset_bash(self, ctx, confirm="n"):
@@ -33,6 +78,10 @@ class Shell(commands.Cog):
     async def bash(self, ctx, *, cmd):
         """Run a command"""
         try:
+
+            if str(ctx.message.author.id) in self.ignore:
+                await ctx.send("No more bash for you", reference=ctx.message)
+                return
 
             if ":(){ :|:& };:" in cmd:
                 await ctx.send("No forkbombs", reference=ctx.message)
