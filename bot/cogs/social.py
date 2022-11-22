@@ -5,6 +5,7 @@ from time import sleep
 from random import randint
 import os, binascii
 import toml
+import re
 
 from util_functions import *
 
@@ -75,6 +76,11 @@ class Social(commands.Cog):
         """Tell gamerbot of your mastodon handle"""
         try:
             # todo validate username
+            if not re.search(r"^[@]\w+[@]\w+\.\w+", username):
+                await ctx.send(
+                    "That doesn't look like a mastodon username.", reference=ctx.message
+                )
+                return
 
             person = {
                 "code": str(binascii.b2a_hex(os.urandom(15)).decode("utf-8")),
