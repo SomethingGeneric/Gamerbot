@@ -3,7 +3,7 @@ from mastodon import Mastodon
 from random_word import RandomWords
 from time import sleep
 from random import randint
-import os
+import os, binascii
 import toml
 
 from util_functions import *
@@ -21,24 +21,106 @@ class Social(commands.Cog):
         self.ccredpath = "tootclientcred.secret"
         self.ucredpath = "tootusercred.secret"
         self.acf = f"{self.volpath}/mastodon_linked.toml"
+        self.conf_f = f"{self.volpath}/mastodon_temp.toml"
+
+    @commands.command()
+    async def fediconfirm(self, ctx, code=""):
+        try:
+            pending = {}
+            if os.path.exists(self.conf_f):
+                pending = toml.load(self.conf_f)
+
+            if str(ctx.message.author.id) in pending.keys():
+                # we have a conf in progress
+                person = pending[str(ctx.message.author.id)]
+                if person["code"] == code:
+
+                    # commit association to self.acf
+                    if os.path.exists(self.acf):
+                        data = toml.load(self.acf)
+                    else:
+                        data = {}
+
+                    username = person["username"]
+
+                    if username[0] != "@":
+                        username = "@" + username
+
+                    data[str(ctx.message.author.id)] = username
+                    f = open(self.acf, "w")
+                    toml.dump(data, f)
+                    f.close()
+
+                    # remove user info from self.conf_f
+                    pending.pop(str(ctx.message.author.id))
+                    f = open(self.conf_f, "w")
+                    toml.dump(pending, f)
+                    f.close()
+
+                    await ctx.send(
+                        "Thanks! I'll keep track of that.", reference=ctx.message
+                    )
+                else:
+                    await ctx.send("Wrong confirmation code", reference=ctx.message)
+            else:
+                await ctx.send(
+                    "You need to run `-linkfediverse` first!", reference=ctx.message
+                )
+
+        except Exception as e:
+            await ctx.send(f"Error: ```{str(e)}```", reference=ctx.message)
 
     @commands.command()
     async def linkfediverse(self, ctx, username):
         """Tell gamerbot of your mastodon handle"""
         try:
-            if os.path.exists(self.acf):
-                data = toml.load(self.acf)
-            else:
-                data = {}
+            # todo validate username
 
-            if username[0] != "@":
-                username = "@" + username
+            person = {
+                "code": str(binascii.b2a_hex(os.urandom(15)).decode("utf-8")),
+                "username": username,
+            }
 
-            data[str(ctx.message.author.id)] = username
-            f = open(self.acf, "w")
-            toml.dump(data, f)
+            pending = {}
+            if os.path.exists(self.conf_f):
+                pending = toml.load(self.conf_f)
+
+            pending[str(ctx.message.author.id)] = person
+
+            f = open(self.conf_f, "w")
+            toml.dump(pending, f)
             f.close()
-            await ctx.send("Thanks! I'll keep track of that.", reference=ctx.message)
+
+            if not os.path.isfile(f"{self.volpath}/{self.ccredpath}"):
+                r = RandomWords()
+                w = r.get_random_word()
+                Mastodon.create_app(
+                    f"gamerthebot-{w}-{str(randint(1, 10))}",
+                    api_base_url=url,
+                    to_file=f"{self.volpath}/{self.ccredpath}",
+                )
+
+            mastodon = Mastodon(client_id=f"{self.volpath}/{self.ccredpath}")
+
+            url = os.environ.get("MASTODON_URL")
+            email = os.environ.get("MASTODON_EMAIL")
+            passw = os.environ.get("MASTODON_PASSWORD")
+
+            mastodon.log_in(
+                email,
+                passw,
+                to_file=f"{self.volpath}/{self.ucredpath}",
+            )
+
+            mastodon.status_post(
+                f"{username}, your code: {person['code']}", visibility="direct"
+            )
+
+            await ctx.send(
+                "I've sent your mastodon account a confirmation code. Run `-fediconfirm <code>` to finish the link.",
+                reference=ctx.message,
+            )
+
         except Exception as e:
             await ctx.send(f"Error: ```{str(e)}```", reference=ctx.message)
 
@@ -76,7 +158,9 @@ class Social(commands.Cog):
                 )
 
             if not has_attach and text == "":
-                await ctx.send("Please include an image and/or some text.", reference=ctx.message)
+                await ctx.send(
+                    "Please include an image and/or some text.", reference=ctx.message
+                )
                 return
 
             await ctx.send(
