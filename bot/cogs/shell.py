@@ -102,6 +102,9 @@ class Shell(commands.Cog):
             if un[0] in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]:
                 un = un[1:]
 
+            if un == "root":
+                un += "not"
+
             await run_command_shell("scp /bot/bin/has_user punchingbag:.")
             test_user = await run_command_shell(f"ssh punchingbag './has_user {un}'")
 
