@@ -3,6 +3,7 @@ from os import listdir
 from os.path import isfile, join
 import os
 import sys
+import discord
 
 # Discord-py
 from discord.ext import commands
@@ -29,6 +30,7 @@ bot = commands.Bot(
     intents=intents,
     owner_id=OWNER_ID,
     help_command=PrettyHelp(),
+    allowed_mentions = discord.AllowedMentions(roles=True, users=True, everyone=False)
 )
 
 # Sane default?
