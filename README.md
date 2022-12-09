@@ -1,3 +1,5 @@
+# Note! primary development is now at https://github.com/SomethingGeneric/GamerbotAgain/
+---
 # Gamerbot2
 Discord bot with many functions
 
