@@ -1,4 +1,4 @@
-FROM archlinux:latest
+FROM lopsided/archlinux 
 RUN pacman -Sy
 RUN pacman -S --noconfirm --needed figlet banner cowsay openssh sudo
 WORKDIR /stuff
